@@ -14,6 +14,13 @@ class ComplaitsApp extends StatelessWidget {
     return MaterialApp.router(
       theme: ThemeData().copyWith(scaffoldBackgroundColor: AppColor.white),
       routerConfig: AppRourer.router,
+      builder: (context, child) {
+        return Directionality(
+          textDirection:
+              TextDirection.rtl,
+          child: child!,
+        );
+      },
     );
   }
 }

@@ -8,5 +8,6 @@ class AppImage{
 
     ///////// splash screennnnnnn
     static String get splashLogo => '$_baseIcon/logo.svg';
-
+    /////////// welcome screen
+    static String get zigzagLine => '$_baseImage/zigzagLine.svg';
 }
