@@ -32,7 +32,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      //height: 50,
       child: TextFormField(
         controller: controller,
         keyboardType: keyboardType,
@@ -49,7 +49,7 @@ class CustomTextField extends StatelessWidget {
             fontFamily: AppFonts.tasees,
           ),
 
-          suffixIcon: suffixIcon == null ? null : IconButton( onPressed: onSuffixTap ,icon: Icon(suffixIcon ,size: 24,)),
+          suffixIcon: suffixIcon == null ? null : IconButton( onPressed: onSuffixTap ,icon: Icon(suffixIcon ,size: 20,)),
           suffixIconColor: Color(0xffACACAC),
           filled: true,
           fillColor: AppColor.grey,

@@ -1,21 +1,18 @@
-
 class LoginState {
   final String email;
   final String password;
-  final bool isSubmitting; //////for loadingggggggggg
+  final bool isSubmitting;
   final String? errorMessage;
   final bool isSuccess;
-    final bool isPasswordObscure;
-
-
+  final bool isPasswordObscure;
 
   const LoginState({
     this.email = '',
     this.password = '',
     this.isSubmitting = false,
     this.errorMessage,
-    this.isSuccess =false , 
-    this.isPasswordObscure=true
+    this.isSuccess = false,
+    this.isPasswordObscure = true,
   });
 
   LoginState copyWith({

@@ -120,6 +120,7 @@ class _SplashViewbodyState extends State<SplashViewBody>
   }
 
   void initSlidingAnimation() {
+    Future.delayed(const Duration(seconds: 2));
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -134,7 +135,7 @@ class _SplashViewbodyState extends State<SplashViewBody>
   }
 
   void navigateToHome() {
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 4), () {
       context.pushNamed(AppRouteRName.welcomeView);
 
     });

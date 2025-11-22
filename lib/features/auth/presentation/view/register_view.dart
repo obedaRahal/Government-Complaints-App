@@ -4,10 +4,12 @@ import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/config/route_name.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
+import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:complaints_app/features/auth/presentation/manager/register%20cubit/register_cubit.dart';
 import 'package:complaints_app/features/auth/presentation/manager/register%20cubit/register_state.dart';
 import 'package:complaints_app/features/auth/presentation/widget/auth_field_label.dart';
+import 'package:complaints_app/features/auth/presentation/widget/tow_text_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,10 +22,7 @@ class RegisterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => RegisterCubit(),
-      child: Scaffold(
-        //resizeToAvoidBottomInset: ,
-        body: SafeArea(child: RegisterViewBody()),
-      ),
+      child: Scaffold(body: SafeArea(child: RegisterViewBody())),
     );
   }
 }
@@ -38,14 +37,16 @@ class RegisterViewBody extends StatelessWidget {
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
         if (state.errorMessage != null) {
-          ScaffoldMessenger.of(
+          showTopSnackBar(
             context,
-          ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+            message: state.errorMessage ?? "حدث خطأ غير متوقع",
+            isSuccess: false,
+          );
         }
 
         if (state.isSuccess) {
           debugPrint(
-            "im at registerrr view at BlocListener anddd Login success ✅",
+            "im at registerrr view at BlocListener anddd register success ✅",
           );
           context.pushNamed(AppRouteRName.verifyRegisterView);
         }
@@ -82,7 +83,6 @@ class RegisterViewBody extends StatelessWidget {
 
                 AuthFieldLabel(
                   label: "الاسم",
-                  //controller: _nameController,
                   hint: 'ادخل اسمك باللغة العربية...',
                   suffixIcon: Icons.person_2_outlined,
                   keyboardType: TextInputType.name,
@@ -101,7 +101,6 @@ class RegisterViewBody extends StatelessWidget {
 
                 AuthFieldLabel(
                   label: "البريد الالكتروني",
-                  //controller: _emailController,
                   hint: 'ادخل بريدك الالكتروني...',
                   suffixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
@@ -116,6 +115,7 @@ class RegisterViewBody extends StatelessWidget {
                     return null;
                   },
                 ),
+
                 SizedBox(height: SizeConfig.height * .01),
 
                 AuthFieldLabel(
@@ -138,6 +138,7 @@ class RegisterViewBody extends StatelessWidget {
                     return null;
                   },
                 ),
+
                 SizedBox(height: SizeConfig.height * .01),
 
                 BlocBuilder<RegisterCubit, RegisterState>(
@@ -189,7 +190,7 @@ class RegisterViewBody extends StatelessWidget {
                           debugPrint("confirmmmm  registerrrr");
                           context.read<RegisterCubit>().registerSubmitted();
                         } else {
-                          debugPrint("form not valid ❌");
+                          debugPrint("form not validddddd");
                         }
                       },
                       child: CustomTextWidget(
@@ -202,27 +203,13 @@ class RegisterViewBody extends StatelessWidget {
                 ),
 
                 SizedBox(height: SizeConfig.height * .02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomTextWidget(
-                      "لديك حساب ؟ قم بعملية  ",
-                      fontSize: SizeConfig.diagonal * .018,
-                      color: AppColor.middleGrey,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        GoRouter.of(
-                          context,
-                        ).replaceNamed(AppRouteRName.loginView);
-                      },
-                      child: CustomTextWidget(
-                        "تسجيل الدخول",
-                        fontSize: SizeConfig.diagonal * .02,
-                        color: AppColor.primary,
-                      ),
-                    ),
-                  ],
+
+                TowTextRow(
+                  text: "لديك حساب ؟ قم بعملية  ",
+                  actionText: "تسجيل الدخول",
+                  onTap: () {
+                    GoRouter.of(context).replaceNamed(AppRouteRName.loginView);
+                  },
                 ),
               ],
             ),

@@ -50,6 +50,8 @@ class VerifyRegisterCubit extends Cubit<VerifyRegisterState> {
 
   void resendCode() {
     _startTimer();
+    emit(state.copyWith(isSubmitting: false, isSuccess: false));
+
   }
 
   @override

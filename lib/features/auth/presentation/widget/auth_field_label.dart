@@ -37,7 +37,7 @@ final VoidCallback? onSuffixTap ;
       children: [
         CustomTextWidget(
           label,
-          fontSize: SizeConfig.diagonal * .035,
+          fontSize: SizeConfig.diagonal * .032,
           color: AppColor.black,
         ),
         SizedBox(height: SizeConfig.height * .01),
