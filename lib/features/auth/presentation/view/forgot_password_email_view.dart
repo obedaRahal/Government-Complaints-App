@@ -47,6 +47,11 @@ class ForgetPasswordEmailViewBody extends StatelessWidget {
         }
 
         if (state.isSuccess) {
+          showTopSnackBar(
+            context,
+            message: state.successMessage ?? "تم إرسال رمز التحقق إلى بريدك",
+            isSuccess: true,
+          );
           debugPrint("ForgetPassword  Email success ✅");
           context.read<ForgotPasswordCubit>().resetStatus();
           context.pushNamed(AppRouteRName.forgotPasswordOtpCodeView);

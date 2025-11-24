@@ -6,6 +6,7 @@ class ForgotPasswordState {
 
   final bool isSubmitting;
   final String? errorMessage;
+  final String? successMessage;
   final bool isSuccess;
 
   final int remainingSeconds;
@@ -20,6 +21,7 @@ class ForgotPasswordState {
     this.confirmPassword = '',
     this.isSubmitting = false,
     this.errorMessage,
+    this.successMessage,
     this.isSuccess = false,
     this.remainingSeconds = 300,
     this.isPasswordObscure = true
@@ -34,6 +36,7 @@ class ForgotPasswordState {
     String? confirmPassword,
     bool? isSubmitting,
     String? errorMessage,
+    String? successMessage,
     bool? isSuccess,
     int? remainingSeconds,
     bool? isPasswordObscure
@@ -45,6 +48,7 @@ class ForgotPasswordState {
       confirmPassword: confirmPassword ?? this.confirmPassword,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       errorMessage: errorMessage,
+      successMessage: successMessage,
       isSuccess: isSuccess ?? this.isSuccess,
       remainingSeconds: remainingSeconds ?? this.remainingSeconds,
       isPasswordObscure: isPasswordObscure ?? this.isPasswordObscure,

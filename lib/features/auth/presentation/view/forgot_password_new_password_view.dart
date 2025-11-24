@@ -45,6 +45,13 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
         }
 
         if (state.isSuccess) {
+          showTopSnackBar(
+            context,
+            message:
+                state.successMessage ??
+                "تم تعيين كلمة المرور الجديدة بنجاح، يمكنك تسجيل الدخول الآن",
+            isSuccess: true,
+          );
           debugPrint("ForgetPasswordNewwwPassssssss success ✅");
           context.read<ForgotPasswordCubit>().resetStatus();
           context.goNamed(AppRouteRName.welcomeView);

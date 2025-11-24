@@ -20,10 +20,7 @@ class RegisterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => RegisterCubit(),
-      child: Scaffold(body: SafeArea(child: RegisterViewBody())),
-    );
+    return Scaffold(body: SafeArea(child: RegisterViewBody()));
   }
 }
 
@@ -45,10 +42,18 @@ class RegisterViewBody extends StatelessWidget {
         }
 
         if (state.isSuccess) {
+          showTopSnackBar(
+            context,
+            message: state.successMessage ?? "تمت العملية بنجاح",
+            isSuccess: true,
+          );
           debugPrint(
             "im at registerrr view at BlocListener anddd register success ✅",
           );
-          context.pushNamed(AppRouteRName.verifyRegisterView);
+          context.pushNamed(
+            AppRouteRName.verifyRegisterView,
+            extra: state.email,
+          );
         }
       },
       child: Form(
@@ -88,7 +93,6 @@ class RegisterViewBody extends StatelessWidget {
                   keyboardType: TextInputType.name,
                   onChanged: (value) {
                     context.read<RegisterCubit>().nameChanged(value);
-                    debugPrint("im at name field and val isss $value");
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -106,7 +110,6 @@ class RegisterViewBody extends StatelessWidget {
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (value) {
                     context.read<RegisterCubit>().emailChanged(value);
-                    debugPrint("im at email field and val isss $value");
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -126,14 +129,13 @@ class RegisterViewBody extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     context.read<RegisterCubit>().idNumberChanged(value);
-                    debugPrint("im at idnumberrr field and val isss $value");
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'الرجاء إدخال الرقم الوطني';
                     }
-                    if (value.length < 10) {
-                      return 'الرقم الوطني يجب أن يكون على الأقل 10 أرقام';
+                    if (value.length != 11) {
+                      return 'الرقم الوطني يجب أن يكون 11 رقم';
                     }
                     return null;
                   },

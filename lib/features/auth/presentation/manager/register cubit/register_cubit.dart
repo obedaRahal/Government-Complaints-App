@@ -1,75 +1,122 @@
-
+import 'package:complaints_app/features/auth/domain/use_cases/params/register_params.dart';
+import 'package:complaints_app/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:complaints_app/features/auth/presentation/manager/register%20cubit/register_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
-  RegisterCubit() : super(const RegisterState());
-void nameChanged(String value) {
-  emit(state.copyWith(
-    name: value,
-    isSuccess: false,
-    errorMessage: null,
-  ));
-}
+  final RegisterUseCase registerUseCase;
 
-void emailChanged(String value) {
-  emit(state.copyWith(
-    email: value,
-    isSuccess: false,
-    errorMessage: null,
-  ));
-}
+  RegisterCubit(this.registerUseCase) : super(const RegisterState()) {
+    debugPrint("============ RegisterCubit INIT ============");
+  }
 
-void idNumberChanged(String value) {
-  emit(state.copyWith(
-    idNumber: value,
-    isSuccess: false,
-    errorMessage: null,
-  ));
-}
+  void nameChanged(String value) {
+    debugPrint("RegisterCubit.nameChanged -> $value");
+    emit(state.copyWith(name: value, isSuccess: false, errorMessage: null));
+  }
 
-void passwordChanged(String value) {
-  emit(state.copyWith(
-    password: value,
-    isSuccess: false,
-    errorMessage: null,
-  ));
-}
+  void emailChanged(String value) {
+    debugPrint("RegisterCubit.emailChanged -> $value");
+    emit(state.copyWith(email: value, isSuccess: false, errorMessage: null));
+  }
+
+  void idNumberChanged(String value) {
+    debugPrint("RegisterCubit.idNumberChanged -> $value");
+    emit(
+      state.copyWith(idNumber: value, isSuccess: false, errorMessage: null),
+    );
+  }
+
+  void passwordChanged(String value) {
+    debugPrint("RegisterCubit.passwordChanged -> (length: ${value.length})");
+    emit(
+      state.copyWith(password: value, isSuccess: false, errorMessage: null),
+    );
+  }
 
   void togglePasswordVisibility() {
+    debugPrint(
+      "RegisterCubit.togglePasswordVisibility -> ${!state.isPasswordObscure}",
+    );
     emit(state.copyWith(isPasswordObscure: !state.isPasswordObscure));
   }
 
   Future<void> registerSubmitted() async {
-    debugPrint("im at registerSubmitted ");
-
-    emit(
-      state.copyWith(isSubmitting: true, errorMessage: null, isSuccess: false),
+    debugPrint("============ RegisterCubit.registerSubmitted ============");
+    debugPrint(
+      "current state -> {name: ${state.name}, email: ${state.email}, idNumber: ${state.idNumber}}",
     );
-    debugPrint("im at registerSubmitted after loading");
+    // ملاحظة: لا نطبع الباسورد لأسباب أمنية
 
-    await Future.delayed(const Duration(seconds: 1));
-
+    // (1) Validation بسيط – تقدر تعتمد أكثر على FormValidator في الـ UI
     if (state.name.isEmpty ||
         state.email.isEmpty ||
         state.idNumber.isEmpty ||
         state.password.isEmpty) {
-      debugPrint("im at registerSubmitted emptyyy vallll");
+      debugPrint("registerSubmitted -> validation failed: empty fields");
       emit(
         state.copyWith(
           isSubmitting: false,
           errorMessage: 'الرجاء إدخال كل الحقول',
+          successMessage: null,
           isSuccess: false,
         ),
       );
       return;
     }
 
+    // (2) حالة الـ Loading
+    debugPrint("registerSubmitted -> calling RegisterUseCase...");
     emit(
-      state.copyWith(isSubmitting: false, errorMessage: null, isSuccess: true),
+      state.copyWith(
+        isSubmitting: true,
+        errorMessage: null,
+        successMessage: null,
+        isSuccess: false,
+      ),
     );
-    debugPrint("im at registerSubmitted and successssss");
 
+    // (3) استدعاء UseCase
+    final result = await registerUseCase(
+      RegisterParams(
+        name: state.name,
+        email: state.email,
+        password: state.password,
+        nationalNumber: state.idNumber,
+      ),
+    );
+
+    // (4) التعامل مع النتيجة: Failure أو Success
+    result.fold(
+      (failure) {
+        debugPrint(
+          "registerSubmitted -> FAILURE: ${failure.errMessage}",
+        );
+        emit(
+          state.copyWith(
+            isSubmitting: false,
+            errorMessage: failure.errMessage,
+            successMessage: null,
+            isSuccess: false,
+          ),
+        );
+      },
+      (registerResponse) {
+        debugPrint(
+          "registerSubmitted -> SUCCESS: ${registerResponse.successMessage}",
+        );
+        emit(
+          state.copyWith(
+            isSubmitting: false,
+            isSuccess: true,
+            errorMessage: null,
+            successMessage: registerResponse.successMessage,
+          ),
+        );
+      },
+    );
+
+    debugPrint("============ RegisterCubit.registerSubmitted END ============");
   }
 }

@@ -5,6 +5,7 @@ class RegisterState {
   final String password;
   final bool isSubmitting; //////for loadingggggggggg
   final String? errorMessage;
+  final String? successMessage;
   final bool isSuccess;
   final bool isPasswordObscure;
 
@@ -15,6 +16,7 @@ class RegisterState {
     this.password = '',
     this.isSubmitting = false,
     this.errorMessage,
+    this.successMessage,
     this.isSuccess = false,
     this.isPasswordObscure = true,
   });
@@ -26,6 +28,7 @@ class RegisterState {
     String? password,
     bool? isSubmitting,
     String? errorMessage,
+    String? successMessage,
     bool? isSuccess,
     bool? isPasswordObscure,
   }) {
@@ -36,6 +39,7 @@ class RegisterState {
       password: password ?? this.password,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       errorMessage: errorMessage,
+      successMessage: successMessage,
       isSuccess: isSuccess ?? this.isSuccess,
       isPasswordObscure: isPasswordObscure ?? this.isPasswordObscure,
     );

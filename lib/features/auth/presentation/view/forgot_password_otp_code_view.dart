@@ -44,7 +44,8 @@ class _ForgetPasswordOtpCodeViewBodyState
     return BlocListener<ForgotPasswordCubit, ForgotPasswordState>(
       listenWhen: (prev, curr) =>
           prev.errorMessage != curr.errorMessage ||
-          prev.isSuccess != curr.isSuccess,
+          prev.isSuccess != curr.isSuccess ||
+    prev.successMessage != curr.successMessage,
       listener: (context, state) {
         if (state.errorMessage != null) {
           showTopSnackBar(
@@ -54,7 +55,22 @@ class _ForgetPasswordOtpCodeViewBodyState
           );
         }
 
+        // نجاح لإعادة إرسال الكود فقط (بدون انتقال)
+        if (state.successMessage != null && !state.isSuccess) {
+          showTopSnackBar(
+            context,
+            message: state.successMessage ?? "تم إرسال رمز جديد إلى بريدك",
+            isSuccess: true,
+          );
+        }
+
         if (state.isSuccess) {
+          showTopSnackBar(
+            context,
+            message: state.successMessage ?? "تم تأكيد الرمز بنجاح",
+            isSuccess: true,
+          );
+
           debugPrint(
             "im at ForgetPasswordOtpCodeViewBody BlocListener and success ✅",
           );

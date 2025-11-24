@@ -3,6 +3,7 @@ class VerifyRegisterState {
   final int remainingSeconds;
   final bool isSubmitting;
   final String? errorMessage;
+  final String? successMessage;
   final bool isSuccess;
 
   const VerifyRegisterState({
@@ -10,6 +11,7 @@ class VerifyRegisterState {
     this.remainingSeconds = 300,
     this.isSubmitting = false,
     this.errorMessage,
+    this.successMessage,
     this.isSuccess = false,
   });
 
@@ -20,6 +22,7 @@ class VerifyRegisterState {
     int? remainingSeconds,
     bool? isSubmitting,
     String? errorMessage,
+    String? successMessage,
     bool? isSuccess,
   }) {
     return VerifyRegisterState(
@@ -27,6 +30,7 @@ class VerifyRegisterState {
       remainingSeconds: remainingSeconds ?? this.remainingSeconds,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       errorMessage: errorMessage,
+      successMessage: successMessage,
       isSuccess: isSuccess ?? this.isSuccess,
     );
   }

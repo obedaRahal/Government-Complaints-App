@@ -1,6 +1,7 @@
 import 'package:complaints_app/core/common%20widget/arrow_back.dart';
 import 'package:complaints_app/core/common%20widget/custom_background_with_child.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
+import 'package:complaints_app/core/config/route_name.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
@@ -11,16 +12,16 @@ import 'package:complaints_app/features/auth/presentation/widget/otp_input_secti
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class VerifyRegisterView extends StatelessWidget {
-  const VerifyRegisterView({super.key});
+  final String email;
+
+  const VerifyRegisterView({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => VerifyRegisterCubit(),
-      child: const Scaffold(body: SafeArea(child: VerifyRegisterViewBody())),
-    );
+    return const Scaffold(body: SafeArea(child: VerifyRegisterViewBody()));
   }
 }
 
@@ -31,18 +32,41 @@ class VerifyRegisterViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<VerifyRegisterCubit, VerifyRegisterState>(
       listener: (context, state) {
+        // 1) لو في خطأ
         if (state.errorMessage != null) {
           showTopSnackBar(
             context,
             message: state.errorMessage ?? "حدث خطأ غير متوقع",
             isSuccess: false,
           );
-        } else if (state.isSuccess) {
+        }
+
+        // 2) لو في رسالة نجاح، لكن بدون "اكتمال عملية التأكيد"
+        //    هذه تفيد في إعادة إرسال الكود مثلاً
+        if (state.successMessage != null && !state.isSuccess) {
+          showTopSnackBar(
+            context,
+            message: state.successMessage ?? "تم الأمر بنجاح",
+            isSuccess: true,
+          );
+        }
+
+        // 3) لو الحساب تم تأكيده بنجاح فعلاً
+        if (state.isSuccess) {
+          showTopSnackBar(
+            context,
+            message: state.successMessage ?? "تم تأكيد الحساب بنجاح",
+            isSuccess: true,
+          );
+
           debugPrint(
             "im at VerifyRegisterViewBody view at BlocListener anddd verify reggg success ✅",
           );
+
+          context.goNamed(AppRouteRName.welcomeView);
         }
       },
+
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
@@ -88,11 +112,17 @@ class VerifyRegisterViewBody extends StatelessWidget {
                     onOtpChanged: (value) =>
                         context.read<VerifyRegisterCubit>().otpChanged(value),
                     onSubmit: () {
-                        context.read<VerifyRegisterCubit>().submitOtp();
-                        debugPrint("verifyy confirmmmm");
+                      context.read<VerifyRegisterCubit>().submitOtp();
+                      debugPrint("verifyy confirmmmm");
                     },
-                    onResend: () =>
-                        context.read<VerifyRegisterCubit>().resendCode(),
+                    onResend: () {
+                      debugPrint("resend codeee ");
+                      debugPrint(
+                        "email is ${context.read<VerifyRegisterCubit>().email}",
+                      );
+
+                      context.read<VerifyRegisterCubit>().resendCode();
+                    },
                   );
                 },
               ),
