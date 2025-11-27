@@ -163,10 +163,10 @@ class _TopSnackBarOverlayState extends State<_TopSnackBarOverlay>
             padding: const EdgeInsets.all(12),
             child: Dismissible(
               key: UniqueKey(),
-              direction: DismissDirection.up, // سحب للأعلى فقط
+              direction: DismissDirection.up, 
               onDismissed: (_) async {
                 _dismissedBySwipe = true;
-                _timer?.cancel(); // وقف الإغلاق التلقائي
+                _timer?.cancel();
                 widget.onDismissed();
               },
               child: snackContent,

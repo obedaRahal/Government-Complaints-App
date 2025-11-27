@@ -1,21 +1,21 @@
-class TemplateParams {
-  final String id;
+// class TemplateParams {
+//   final String id;
 
-  const TemplateParams({required this.id});
-}
+//   const TemplateParams({required this.id});
+// }
 
-class UserParams {
-  final String id;
+// class UserParams {
+//   final String id;
 
-  const UserParams({required this.id});
-}
+//   const UserParams({required this.id});
+// }
 
-class PostParams {
-  final String id;
+// class PostParams {
+//   final String id;
 
-  const PostParams({required this.id});
-}
+//   const PostParams({required this.id});
+// }
 
-// لاحقًا ممكن نضيف:
-// class LoginParams { final String email; final String password; ... }
-// ونستخدمها في UseCases الخاصة بالـ Auth
+// // لاحقًا ممكن نضيف:
+// // class LoginParams { final String email; final String password; ... }
+// // ونستخدمها في UseCases الخاصة بالـ Auth

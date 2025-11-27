@@ -1,6 +1,7 @@
 class EndPoints {
   /// عدّل الـ baseUrl حسب الـ API تبعك
   static const String baseUrl = 'http://localhost/api/v1/';
+  static const String refreshToken = 'http://localhost/api/refresh';
 
   static const String registerCitizen = 'citizen/register';
   static const String verifyRegisterCode = 'citizen/verifyAccount';

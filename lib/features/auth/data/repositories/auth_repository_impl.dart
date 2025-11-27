@@ -1,3 +1,4 @@
+import 'package:complaints_app/core/databases/cache/token_storage.dart';
 import 'package:complaints_app/core/errors/expentions.dart';
 import 'package:complaints_app/core/errors/failure.dart';
 import 'package:complaints_app/core/network/network_info.dart';
@@ -316,7 +317,6 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-
   @override
   Future<Either<Failure, ResetPasswordResponse>> resetPassword({
     required String email,
@@ -358,17 +358,11 @@ class AuthRepositoryImpl implements AuthRepository {
       debugPrint("=================================================");
       return Left(CacheFailure(errMessage: e.errorMessage));
     } catch (e) {
-      debugPrint(
-        "✗ AuthRepositoryImpl.resetPassword Unexpected error: $e",
-      );
+      debugPrint("✗ AuthRepositoryImpl.resetPassword Unexpected error: $e");
       debugPrint("=================================================");
       return Left(ServerFailure(errMessage: 'حدث خطأ غير متوقع'));
     }
   }
-
-
-
-
 
   @override
   Future<Either<Failure, LoginResponse>> login({
@@ -394,6 +388,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
       debugPrint("← remoteDataSource.login success, mapped to entity");
       debugPrint("=================================================");
+      await TokenStorage.saveAccessToken(
+        token: model.token,
+        expiresInSeconds: model.expiresIn,
+      );
+      debugPrint("token issssss  : ${TokenStorage.getAccessToken()}");
+      debugPrint("expiry issssss  : ${TokenStorage.getAccessTokenExpiry()}");
 
       return Right(model.toEntity());
     } on ServerException catch (e) {
@@ -409,13 +409,9 @@ class AuthRepositoryImpl implements AuthRepository {
       debugPrint("=================================================");
       return Left(CacheFailure(errMessage: e.errorMessage));
     } catch (e) {
-      debugPrint(
-        "✗ AuthRepositoryImpl.login Unexpected error: $e",
-      );
+      debugPrint("✗ AuthRepositoryImpl.login Unexpected error: $e");
       debugPrint("=================================================");
       return Left(ServerFailure(errMessage: 'حدث خطأ غير متوقع'));
     }
   }
-
-
 }

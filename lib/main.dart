@@ -1,14 +1,46 @@
 import 'package:complaints_app/core/config/app_router.dart';
+import 'package:complaints_app/core/config/route_name.dart';
+import 'package:complaints_app/core/databases/cache/cache_helper.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
+import 'package:complaints_app/core/utils/auth_session.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main()async {
+
+await CacheHelper.init();
+
   runApp(const ComplaitsApp());
 }
 
-class ComplaitsApp extends StatelessWidget {
+class ComplaitsApp extends StatefulWidget {
   const ComplaitsApp({super.key});
 
+  @override
+  State<ComplaitsApp> createState() => _ComplaitsAppState();
+}
+
+class _ComplaitsAppState extends State<ComplaitsApp> {
+   @override
+  void initState() {
+    super.initState();
+
+    AuthSession.instance.isAuthenticated.addListener(_onAuthChanged);
+
+  }
+
+  void _onAuthChanged() {
+    final isAuth = AuthSession.instance.isAuthenticated.value;
+
+    if (!isAuth) {
+      AppRourer.router.goNamed(AppRouteRName.loginView);
+    }
+  }
+
+  @override
+  void dispose() {
+    AuthSession.instance.isAuthenticated.removeListener(_onAuthChanged);
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

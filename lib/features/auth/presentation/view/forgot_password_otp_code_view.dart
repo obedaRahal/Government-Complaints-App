@@ -55,7 +55,6 @@ class _ForgetPasswordOtpCodeViewBodyState
           );
         }
 
-        // نجاح لإعادة إرسال الكود فقط (بدون انتقال)
         if (state.successMessage != null && !state.isSuccess) {
           showTopSnackBar(
             context,

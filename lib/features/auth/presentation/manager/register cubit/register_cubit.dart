@@ -47,9 +47,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     debugPrint(
       "current state -> {name: ${state.name}, email: ${state.email}, idNumber: ${state.idNumber}}",
     );
-    // ملاحظة: لا نطبع الباسورد لأسباب أمنية
 
-    // (1) Validation بسيط – تقدر تعتمد أكثر على FormValidator في الـ UI
     if (state.name.isEmpty ||
         state.email.isEmpty ||
         state.idNumber.isEmpty ||
@@ -66,7 +64,6 @@ class RegisterCubit extends Cubit<RegisterState> {
       return;
     }
 
-    // (2) حالة الـ Loading
     debugPrint("registerSubmitted -> calling RegisterUseCase...");
     emit(
       state.copyWith(
@@ -77,7 +74,6 @@ class RegisterCubit extends Cubit<RegisterState> {
       ),
     );
 
-    // (3) استدعاء UseCase
     final result = await registerUseCase(
       RegisterParams(
         name: state.name,
@@ -87,7 +83,6 @@ class RegisterCubit extends Cubit<RegisterState> {
       ),
     );
 
-    // (4) التعامل مع النتيجة: Failure أو Success
     result.fold(
       (failure) {
         debugPrint(

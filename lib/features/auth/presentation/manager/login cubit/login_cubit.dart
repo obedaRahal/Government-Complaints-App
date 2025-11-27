@@ -52,7 +52,6 @@ class LoginCubit extends Cubit<LoginState> {
       "loginSubmitted -> email: ${state.email}, passwordLength: ${state.password.length}",
     );
 
-    // تحقق بسيط، الفاليديتور في الفورم يغطي، بس زيادة أمان
     if (state.email.isEmpty || state.password.isEmpty) {
       debugPrint("loginSubmitted -> validation failed: empty fields");
       emit(
@@ -101,12 +100,11 @@ class LoginCubit extends Cubit<LoginState> {
           state.copyWith(
             isSubmitting: false,
             errorMessage: null,
-            successMessage: response.name, // أو رسالة عامة
+            successMessage: response.name, 
             isSuccess: true,
           ),
         );
 
-        // 📌 لاحقًا هنا نقدر نطلق event لتخزين token وغيره
       },
     );
 

@@ -3,7 +3,7 @@ class RegisterState {
   final String email;
   final String idNumber;
   final String password;
-  final bool isSubmitting; //////for loadingggggggggg
+  final bool isSubmitting; 
   final String? errorMessage;
   final String? successMessage;
   final bool isSuccess;

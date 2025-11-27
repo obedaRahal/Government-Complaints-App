@@ -144,7 +144,6 @@ class VerifyRegisterCubit extends Cubit<VerifyRegisterState> {
         debugPrint(
           "resendCode -> SUCCESS: ${response.successMessage}, restarting timer",
         );
-        // نعيد تشغيل المؤقت
         _startTimer();
         emit(
           state.copyWith(

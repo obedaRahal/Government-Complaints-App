@@ -45,62 +45,60 @@ abstract class AppRourer {
         builder: (context, state) => const WelcomeView(),
       ),
 
-
       GoRoute(
-  path: '/loginView',
-  name: AppRouteRName.loginView,
-  pageBuilder: (context, state) {
-    // 1) Dio + ApiConsumer
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: EndPoints.baseUrl,
-        receiveDataWhenStatusError: true,
+        path: '/loginView',
+        name: AppRouteRName.loginView,
+        pageBuilder: (context, state) {
+          // 1) Dio + ApiConsumer
+          final dio = Dio(
+            BaseOptions(
+              baseUrl: EndPoints.baseUrl,
+              receiveDataWhenStatusError: true,
+            ),
+          );
+          final apiConsumer = DioConsumer(dio: dio);
+
+          // 2) NetworkInfo
+          final connectionChecker = InternetConnectionChecker.createInstance();
+          final networkInfo = NetworkInfoImpl(connectionChecker);
+
+          // 3) RemoteDataSource
+          final authRemoteDataSource = AuthRemoteDataSourceImpl(
+            apiConsumer: apiConsumer,
+          );
+
+          // 4) Repository
+          final authRepository = AuthRepositoryImpl(
+            remoteDataSource: authRemoteDataSource,
+            networkInfo: networkInfo,
+          );
+
+          // 5) UseCase
+          final loginUseCase = LoginUseCase(repository: authRepository);
+
+          // 6) BlocProvider + نفس الـ transition الجميل اللي عندك
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (_) => LoginCubit(loginUseCase: loginUseCase),
+              child: const LoginView(),
+            ),
+            transitionDuration: const Duration(milliseconds: 350),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  final tween = Tween<Offset>(
+                    begin: const Offset(0, 1),
+                    end: Offset.zero,
+                  ).chain(CurveTween(curve: Curves.easeOutCubic));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+          );
+        },
       ),
-    );
-    final apiConsumer = DioConsumer(dio: dio);
-
-    // 2) NetworkInfo
-    final connectionChecker = InternetConnectionChecker.createInstance();
-    final networkInfo = NetworkInfoImpl(connectionChecker);
-
-    // 3) RemoteDataSource
-    final authRemoteDataSource =
-        AuthRemoteDataSourceImpl(apiConsumer: apiConsumer);
-
-    // 4) Repository
-    final authRepository = AuthRepositoryImpl(
-      remoteDataSource: authRemoteDataSource,
-      networkInfo: networkInfo,
-    );
-
-    // 5) UseCase
-    final loginUseCase = LoginUseCase(repository:  authRepository);
-
-    // 6) BlocProvider + نفس الـ transition الجميل اللي عندك
-    return CustomTransitionPage(
-      key: state.pageKey,
-      child: BlocProvider(
-        create: (_) => LoginCubit(loginUseCase: loginUseCase),
-        child: const LoginView(),
-      ),
-      transitionDuration: const Duration(milliseconds: 350),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        final tween = Tween<Offset>(
-          begin: const Offset(0, 1),
-          end: Offset.zero,
-        ).chain(
-          CurveTween(curve: Curves.easeOutCubic),
-        );
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  },
-),
-
 
       // GoRoute(
       //   path: '/loginView',
@@ -125,15 +123,10 @@ abstract class AppRourer {
       //     );
       //   },
       // ),
-
-      // 👇 هنا نعدل Route تبع registerView
       GoRoute(
         path: '/registerView',
         name: AppRouteRName.registerView,
         builder: (context, state) {
-          // 1) بناء الطبقات من تحت لفوق
-
-          // Dio + ApiConsumer
           final dio = Dio(
             BaseOptions(
               baseUrl: EndPoints.baseUrl,
@@ -142,25 +135,20 @@ abstract class AppRourer {
           );
           final apiConsumer = DioConsumer(dio: dio);
 
-          // NetworkInfo
           final connectionChecker = InternetConnectionChecker.createInstance();
           final networkInfo = NetworkInfoImpl(connectionChecker);
 
-          // RemoteDataSource
           final authRemoteDataSource = AuthRemoteDataSourceImpl(
             apiConsumer: apiConsumer,
           );
 
-          // Repository
           final authRepository = AuthRepositoryImpl(
             remoteDataSource: authRemoteDataSource,
             networkInfo: networkInfo,
           );
 
-          // UseCase
           final registerUseCase = RegisterUseCase(authRepository);
 
-          // 2) نرجع RegisterView داخل BlocProvider
           return BlocProvider(
             create: (_) => RegisterCubit(registerUseCase),
             child: const RegisterView(),
@@ -168,26 +156,12 @@ abstract class AppRourer {
         },
       ),
 
-      // GoRoute(
-      //   path: '/registerView',
-      //   name: AppRouteRName.registerView,
-      //   builder: (context, state) => const RegisterView(),
-      // ),
-      // GoRoute(
-      //   path: '/verifyRegisterView',
-      //   name: AppRouteRName.verifyRegisterView,
-      //   builder: (context, state) {
-      //     final email = state.extra as String;
-      //     return VerifyRegisterView(email: email);
-      //   },
-      // ),
       GoRoute(
         path: '/verifyRegisterView',
         name: AppRouteRName.verifyRegisterView,
         builder: (context, state) {
           final email = state.extra as String;
 
-          // Dio + ApiConsumer + NetworkInfo نفس اللي استخدمته في register
           final dio = Dio(
             BaseOptions(
               baseUrl: EndPoints.baseUrl,
@@ -216,9 +190,7 @@ abstract class AppRourer {
               verifyRegisterUseCase: verifyUseCase,
               resendCodeUseCase: resendUseCase,
             ),
-            child: VerifyRegisterView(
-              email: email,
-            ), // أو VerifyRegisterView لو عدلته
+            child: VerifyRegisterView(email: email),
           );
         },
       ),
@@ -244,27 +216,28 @@ abstract class AppRourer {
             networkInfo: networkInfo,
           );
 
-          final forgetPasswordEmailUseCase = FogretPasswordEmailUseCase(repository: 
-            authRepository,
-          ); // اسمك انت
+          final forgetPasswordEmailUseCase = FogretPasswordEmailUseCase(
+            repository: authRepository,
+          );
 
-          final verifyForgotPasswordOtpUseCase = VerifyForgetPasswordUseCase(repository: 
-            authRepository,
+          final verifyForgotPasswordOtpUseCase = VerifyForgetPasswordUseCase(
+            repository: authRepository,
           );
 
           final resendPasswordResetOtpUseCase = ResendPasswordResetOtpUseCase(
             authRepository,
           );
 
-          final resetPasswordUseCase = ResetPasswordUseCase(repository:  authRepository);
-
+          final resetPasswordUseCase = ResetPasswordUseCase(
+            repository: authRepository,
+          );
 
           return BlocProvider(
             create: (_) => ForgotPasswordCubit(
               forgetPasswordEmailUseCase: forgetPasswordEmailUseCase,
               verifyForgotPasswordOtpUseCase: verifyForgotPasswordOtpUseCase,
               resendPasswordResetOtpUseCase: resendPasswordResetOtpUseCase,
-               resetPasswordUseCase: resetPasswordUseCase,
+              resetPasswordUseCase: resetPasswordUseCase,
             ),
             child: child,
           );
@@ -287,33 +260,6 @@ abstract class AppRourer {
           ),
         ],
       ),
-
-      // ShellRoute(
-      //   builder: (context, state, child) {
-      //     return BlocProvider(
-      //       create: (_) => ForgotPasswordCubit(),
-      //       child: child, // هذا يحتوي كل صفحات الفلّو
-      //     );
-      //   },
-      //   routes: [
-      //     GoRoute(
-      //       path: '/forgotPasswordEmailView',
-      //       name: AppRouteRName.forgotPasswordEmailView,
-      //       builder: (context, state) => const ForgotPasswordEmailView(),
-      //     ),
-      //     GoRoute(
-      //       path: '/forgotPasswordOtpCodeView',
-      //       name: AppRouteRName.forgotPasswordOtpCodeView,
-      //       builder: (context, state) => const ForgetPasswordOtpCodeView(),
-      //     ),
-      //     GoRoute(
-      //       path: '/forgetPasswordNewPasswordView',
-      //       name: AppRouteRName.forgotPasswordNewPasswordView,
-      //       builder: (context, state) => const ForgotPasswordNewPasswordView(),
-      //     ),
-      //   ],
-
-      // ),
     ],
   );
 }

@@ -1,64 +1,14 @@
 import 'package:complaints_app/core/config/route_name.dart';
+import 'package:complaints_app/core/databases/cache/token_storage.dart';
 import 'package:complaints_app/core/theme/assets/fonts.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
+import 'package:complaints_app/core/utils/auth_session.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-// class SplashViewBody extends StatefulWidget {
-//   const SplashViewBody({super.key});
-
-//   @override
-//   State<SplashViewBody> createState() => _SplashViewBodyState();
-// }
-
-// class _SplashViewBodyState extends State<SplashViewBody> {
-//   @override
-//   void initState() {
-//     super.initState();
-
-//     navigateToHome();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     SizeConfig.init(context);
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       crossAxisAlignment: CrossAxisAlignment.stretch,
-//       children: [
-//         SvgPicture.asset(
-//           AppImage.splashLogo,
-//           height: SizeConfig.height * 0.5,
-//           width: 400,
-//         ),
-//         Text(
-//           //"Government Complaints App ",
-//           "تطبيق الشكاوي الحكومية",
-//           textAlign: TextAlign.center,
-//           style: TextStyle(
-//             fontSize: SizeConfig.height * 0.04,
-//             //fontFamily: AppFonts.amiri,
-//             //fontFamily: AppFonts.notoKufi,
-//             fontFamily: AppFonts.reemKufi,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-
-//   void navigateToHome() {
-//     Future.delayed(const Duration(seconds: 2), () {
-//       Get.to(
-//         WelcomeView(),
-//         transition: Transition.fade,
-//         duration: valueOfTranitionBetweenPages,
-//       );
-//     });
-//   }
-// }
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
@@ -76,15 +26,13 @@ class _SplashViewbodyState extends State<SplashViewBody>
   void initState() {
     super.initState();
     initSlidingAnimation();
-
     navigateToHome();
   }
 
   @override
   void dispose() {
-    super.dispose();
-
     animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -120,7 +68,6 @@ class _SplashViewbodyState extends State<SplashViewBody>
   }
 
   void initSlidingAnimation() {
-    Future.delayed(const Duration(seconds: 2));
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -129,19 +76,44 @@ class _SplashViewbodyState extends State<SplashViewBody>
     slidingAnimation = Tween<Offset>(
       begin: const Offset(0, 5),
       end: Offset.zero,
-    ).animate(animationController);
+    ).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.easeOut,
+      ),
+    );
 
-    animationController.forward();
-  }
-
-  void navigateToHome() {
-    Future.delayed(const Duration(seconds: 4), () {
-      context.pushNamed(AppRouteRName.welcomeView);
-
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!mounted) return;
+      animationController.forward();
     });
   }
-}
 
+
+void navigateToHome() {
+  Future.delayed(const Duration(seconds: 4), () async {
+    if (!mounted) return;
+
+    final token = TokenStorage.getAccessToken();
+    final expiry = TokenStorage.getAccessTokenExpiry();
+
+    final hasValidToken =
+        token != null &&
+        token.isNotEmpty &&
+        expiry != null &&
+        DateTime.now().isBefore(expiry);
+
+    if (hasValidToken) {
+      AuthSession.instance.markAuthenticated();
+
+      context.goNamed(AppRouteRName.forgotPasswordEmailView); 
+    } else {
+      AuthSession.instance.markUnauthenticated();
+      context.goNamed(AppRouteRName.welcomeView);
+    }
+  });
+}
+}
 
 class SlidingText extends StatelessWidget {
   const SlidingText({super.key, required this.slidingAnimation});
@@ -161,7 +133,7 @@ class SlidingText extends StatelessWidget {
             style: TextStyle(
               fontSize: SizeConfig.height * 0.035,
               fontFamily: AppFonts.reemKufi,
-              color: AppColor.primary
+              color: AppColor.primary,
             ),
           ),
         );

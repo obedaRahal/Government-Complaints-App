@@ -32,7 +32,6 @@ class VerifyRegisterViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<VerifyRegisterCubit, VerifyRegisterState>(
       listener: (context, state) {
-        // 1) لو في خطأ
         if (state.errorMessage != null) {
           showTopSnackBar(
             context,
@@ -40,9 +39,6 @@ class VerifyRegisterViewBody extends StatelessWidget {
             isSuccess: false,
           );
         }
-
-        // 2) لو في رسالة نجاح، لكن بدون "اكتمال عملية التأكيد"
-        //    هذه تفيد في إعادة إرسال الكود مثلاً
         if (state.successMessage != null && !state.isSuccess) {
           showTopSnackBar(
             context,
@@ -51,7 +47,6 @@ class VerifyRegisterViewBody extends StatelessWidget {
           );
         }
 
-        // 3) لو الحساب تم تأكيده بنجاح فعلاً
         if (state.isSuccess) {
           showTopSnackBar(
             context,

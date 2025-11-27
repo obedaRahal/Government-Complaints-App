@@ -93,7 +93,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
             isSubmitting: false,
             errorMessage: null,
             successMessage: response.successMessage,
-            isSuccess: true, // هذا اللي ينقلك للـ OTP
+            isSuccess: true, 
           ),
         );
       },
@@ -152,7 +152,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         debugPrint(
           "resendCode -> SUCCESS: ${response.successMessage}, restart timer",
         );
-        startTimer(); // 👈 نعيد تشغيل التايمر
+        startTimer(); 
 
         emit(
           state.copyWith(
@@ -223,7 +223,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
             errorMessage: null,
             successMessage: response.successMessage,
             isSuccess:
-                true, // 👈 هذا هو النجاح اللي ينقلك لصفحة الباسورد الجديدة
+                true,
           ),
         );
         _timer?.cancel();
