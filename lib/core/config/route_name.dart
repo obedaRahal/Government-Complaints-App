@@ -8,4 +8,7 @@ abstract class AppRouteRName {
   static final forgotPasswordEmailView = "forgotPasswordEmailView";
   static final forgotPasswordOtpCodeView = "forgotPasswordOtpCodeView";
   static final forgotPasswordNewPasswordView = "forgotPasswordNewPasswordView";
+
+
+  static final homeView = "homeView";
 }

@@ -12,4 +12,9 @@ class EndPoints {
   static const String resendPasswordResetOtp = 'citizen/resendPasswordResetOtp';
   static const String resetPassword = 'citizen/resetPassword';
   static const String loginCitizen = 'citizen/login';
+
+
+  // home
+    static const String showComplaints = 'citizen/home/showComplaints';
+
 }

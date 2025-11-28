@@ -50,6 +50,7 @@ class LogInViewBody extends StatelessWidget {
         isSuccess: true,
       );
           debugPrint("im at login view at BlocListener anddd Login success ✅");
+          context.goNamed(AppRouteRName.homeView);
         }
       },
       child: Form(

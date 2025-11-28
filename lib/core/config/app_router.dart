@@ -21,6 +21,11 @@ import 'package:complaints_app/features/auth/presentation/view/forgot_password_o
 import 'package:complaints_app/features/auth/presentation/view/login_view.dart';
 import 'package:complaints_app/features/auth/presentation/view/register_view.dart';
 import 'package:complaints_app/features/auth/presentation/view/verify_register_view.dart';
+import 'package:complaints_app/features/home/data/models/home_remote_data_source.dart';
+import 'package:complaints_app/features/home/data/repository_impl/home_repositories_impl.dart';
+import 'package:complaints_app/features/home/domain/use_cases/get_complaints_use_case.dart';
+import 'package:complaints_app/features/home/presentation/manager/home_cubit/home_cubit.dart';
+import 'package:complaints_app/features/home/presentation/screens/home_view.dart';
 import 'package:complaints_app/features/splash%20and%20welcome/presentation/views/splash_view.dart';
 import 'package:complaints_app/features/splash%20and%20welcome/presentation/views/welcome_view.dart';
 import 'package:dio/dio.dart';
@@ -34,6 +39,7 @@ import '../../features/auth/presentation/manager/verify register/verify_register
 abstract class AppRourer {
   static final router = GoRouter(
     routes: [
+      ////////////////////// auth////////////////////////////////////
       GoRoute(
         path: '/',
         name: 'splash',
@@ -259,6 +265,39 @@ abstract class AppRourer {
             builder: (context, state) => const ForgotPasswordNewPasswordView(),
           ),
         ],
+      ),
+
+      // GoRoute(
+      //       path: '/homeView',
+      //       name: AppRouteRName.homeView,
+      //       builder: (context, state) => const HomeView(),
+      //     ),
+      GoRoute(
+        path: '/homeView',
+        name: AppRouteRName.homeView,
+        builder: (context, state) {
+          final dio = Dio(
+            BaseOptions(
+              baseUrl: EndPoints.baseUrl,
+              receiveDataWhenStatusError: true,
+            ),
+          );
+          final apiConsumer = DioConsumer(dio: dio);
+
+          final connectionChecker = InternetConnectionChecker.createInstance();
+          final networkInfo = NetworkInfoImpl(connectionChecker);
+
+          final homeRemoteDataSource = HomeRemoteDataSourceImpl(apiConsumer);
+
+          final homeRepository = HomeRepositoryImpl(homeRemoteDataSource);
+
+          final getComplaintsUseCase = GetComplaintsUseCase(homeRepository);
+
+          return BlocProvider(
+            create: (_) => HomeCubit(getComplaintsUseCase),
+            child: const HomeView(),
+          );
+        },
       ),
     ],
   );

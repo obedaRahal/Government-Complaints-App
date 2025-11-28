@@ -106,7 +106,7 @@ void navigateToHome() {
     if (hasValidToken) {
       AuthSession.instance.markAuthenticated();
 
-      context.goNamed(AppRouteRName.forgotPasswordEmailView); 
+      context.goNamed(AppRouteRName.homeView); 
     } else {
       AuthSession.instance.markUnauthenticated();
       context.goNamed(AppRouteRName.welcomeView);
