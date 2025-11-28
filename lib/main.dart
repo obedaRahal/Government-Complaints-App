@@ -5,9 +5,9 @@ import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/auth_session.dart';
 import 'package:flutter/material.dart';
 
-void main()async {
-
-await CacheHelper.init();
+void main() async {
+  await CacheHelper.init();
+  //await CacheHelper.clearData();
 
   runApp(const ComplaitsApp());
 }
@@ -20,38 +20,31 @@ class ComplaitsApp extends StatefulWidget {
 }
 
 class _ComplaitsAppState extends State<ComplaitsApp> {
-   @override
+  @override
   void initState() {
     super.initState();
-
     AuthSession.instance.isAuthenticated.addListener(_onAuthChanged);
-
   }
-
   void _onAuthChanged() {
     final isAuth = AuthSession.instance.isAuthenticated.value;
-
     if (!isAuth) {
       AppRourer.router.goNamed(AppRouteRName.loginView);
     }
   }
-
   @override
   void dispose() {
     AuthSession.instance.isAuthenticated.removeListener(_onAuthChanged);
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+    debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(scaffoldBackgroundColor: AppColor.white),
       routerConfig: AppRourer.router,
       builder: (context, child) {
-        return Directionality(
-          textDirection:
-              TextDirection.rtl,
-          child: child!,
-        );
+        return Directionality(textDirection: TextDirection.rtl, child: child!);
       },
     );
   }
