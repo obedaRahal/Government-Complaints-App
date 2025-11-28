@@ -4,6 +4,7 @@ import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:complaints_app/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:complaints_app/features/home/presentation/widgets/complaint_Card_widget.dart';
+import 'package:complaints_app/features/home/presentation/widgets/complaint_card_shimmer_widget.dart';
 import 'package:complaints_app/features/home/presentation/widgets/top_part_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,7 +38,6 @@ class HomeViewBody extends StatelessWidget {
         ),
         SizedBox(height: SizeConfig.height * .02),
 
-        // العنوان + زر إضافة شكوى
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
@@ -75,31 +75,12 @@ class HomeViewBody extends StatelessWidget {
 
         SizedBox(height: SizeConfig.height * .01),
 
-        // قائمة الشكاوى (مع سكرول)
-        // Expanded(
-        //   child: ListView.separated(
-        //     padding: const EdgeInsets.symmetric(horizontal: 16),
-        //     itemCount: 4, // لاحقاً تربطها بالبيانات الحقيقية
-        //     separatorBuilder: (_, __) =>
-        //         SizedBox(height: SizeConfig.height * .005),
-        //     itemBuilder: (context, index) {
-        //       return const ComplaintCard(
-        //         title: "انقطاع رسمي",
-        //         statusText: "معلقة",
-        //         statusColor: Colors.grey,
-        //         number: "123123123123",
-        //         description:
-        //             "نص الوصف التجريبي للشكوىdf fdfdfdf dfdgff gfg  sgfghgh ويكون قابل للزيادة...",
-        //       );
-        //     },
-        //   ),
-        // ),
         Expanded(
           child: BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               if (state.status == HomeStatusEnum.loading &&
                   state.complaints.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(child: ComplaintsShimmerList());
               }
 
               if (state.status == HomeStatusEnum.error &&
@@ -126,11 +107,10 @@ class HomeViewBody extends StatelessWidget {
               return ListView.separated(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: complaints.length + (state.canLoadMore ? 1 : 0),
-                separatorBuilder: (_, __) =>
+                separatorBuilder: (_, _) =>
                     SizedBox(height: SizeConfig.height * .005),
                 itemBuilder: (context, index) {
                   if (state.canLoadMore && index == complaints.length) {
-                    // زر "عرض المزيد"
                     return Center(
                       child: CustomButtonWidget(
                         onTap: () {
@@ -159,7 +139,7 @@ class HomeViewBody extends StatelessWidget {
 
                   final complaint = complaints[index];
 
-                  final statusText = _mapStatusText(complaint.currentStatus);
+                  final statusText = complaint.currentStatus;
                   final statusColor = _mapStatusColor(complaint.currentStatus);
 
                   return ComplaintCard(
@@ -178,8 +158,6 @@ class HomeViewBody extends StatelessWidget {
     );
   }
 }
-
-
 
 class LabelColumnTitleValue extends StatelessWidget {
   const LabelColumnTitleValue({
@@ -216,30 +194,15 @@ class LabelColumnTitleValue extends StatelessWidget {
   }
 }
 
-String _mapStatusText(String status) {
-  switch (status) {
-    case 'new':
-      return 'معلقة';
-    case 'in_progress':
-      return 'قيد المعالجة';
-    case 'done':
-      return 'تمت المعالجة';
-    case 'rejected':
-      return 'مرفوضة';
-    default:
-      return status;
-  }
-}
-
 Color _mapStatusColor(String status) {
   switch (status) {
-    case 'new':
+    case 'معلقة':
       return AppColor.middleGrey;
-    case 'in_progress':
-      return AppColor.blue; // عرّفها في AppColor
-    case 'done':
+    case 'قيد المعالجة':
+      return AppColor.blue;
+    case 'تم معالجتها':
       return AppColor.green;
-    case 'rejected':
+    case 'تم رفضها':
       return AppColor.red;
     default:
       return AppColor.middleGrey;

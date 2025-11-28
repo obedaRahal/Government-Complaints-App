@@ -17,7 +17,7 @@ class HomeRepositoryImpl implements HomeRepository {
     required int page,
     required int perPage,
   }) async {
-    debugPrint("============ AuthRepositoryImpl.getComplaints ============");
+    debugPrint("============ HomeRepositoryImpl.getComplaints ============");
     debugPrint("→ params: {page: $page, perPage: $perPage }");
     try {
       debugPrint("→ calling remoteDataSource.getComplaints");

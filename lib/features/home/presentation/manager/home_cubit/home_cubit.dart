@@ -9,7 +9,7 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this._getComplaintsUseCase) : super(const HomeState()) {
     debugPrint("============ HomeCubit INIT ============");
-     loadComplaints();
+    loadComplaints();
   }
 
   final GetComplaintsUseCase _getComplaintsUseCase;
@@ -17,7 +17,7 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> loadComplaints({int page = 1, int perPage = 10}) async {
     debugPrint("============ HomeCubit.loadComplaints ============");
     debugPrint(
-      "loadComplaints -> last page: ${state.lastPage}, per page: ${state.perPage}",
+      "loadComplaints -> , current Page: ${state.currentPage} , last page: ${state.lastPage}, per page: ${state.perPage}",
     );
     emit(state.copyWith(status: HomeStatusEnum.loading));
 
@@ -52,6 +52,10 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> loadMoreComplaints() async {
+    debugPrint(
+      "============ HomeCubit.loadMoreComplaintssssssssssssss ============",
+    );
+
     if (!state.canLoadMore || state.isLoadingMore) return;
 
     emit(state.copyWith(isLoadingMore: true));
