@@ -1,5 +1,5 @@
 class ForgetPasswordEmailParams {
-  final String email ;
+  final String email;
 
-  ForgetPasswordEmailParams({required this.email}); 
+  ForgetPasswordEmailParams({required this.email});
 }

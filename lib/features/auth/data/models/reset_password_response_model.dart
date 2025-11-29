@@ -1,8 +1,6 @@
-
 import 'package:complaints_app/features/auth/domain/entities/reset_password_response.dart';
 
-class ResetPasswordResponseModel
- {
+class ResetPasswordResponseModel {
   final String successMessage;
   final int statusCode;
 
@@ -20,7 +18,7 @@ class ResetPasswordResponseModel
     );
   }
 
- ResetPasswordResponse toEntity() {
+  ResetPasswordResponse toEntity() {
     return ResetPasswordResponse(
       successMessage: successMessage,
       statusCode: statusCode,

@@ -1,17 +1,15 @@
-
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ArrowBack extends StatelessWidget {
-  const ArrowBack({super.key, });
-
+  const ArrowBack({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         GoRouter.of(context).pop();
         debugPrint("backkkk ");
       },

@@ -1,6 +1,9 @@
 class ResendVerifyCodeResponse {
-  final String successMessage ;
-  final String statusCode ;
+  final String successMessage;
+  final String statusCode;
 
-  ResendVerifyCodeResponse({required this.successMessage, required this.statusCode});
+  ResendVerifyCodeResponse({
+    required this.successMessage,
+    required this.statusCode,
+  });
 }

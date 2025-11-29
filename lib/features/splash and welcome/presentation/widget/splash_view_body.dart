@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
 
@@ -73,15 +72,10 @@ class _SplashViewbodyState extends State<SplashViewBody>
       duration: const Duration(seconds: 1),
     );
 
-    slidingAnimation = Tween<Offset>(
-      begin: const Offset(0, 5),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: animationController,
-        curve: Curves.easeOut,
-      ),
-    );
+    slidingAnimation =
+        Tween<Offset>(begin: const Offset(0, 5), end: Offset.zero).animate(
+          CurvedAnimation(parent: animationController, curve: Curves.easeOut),
+        );
 
     Future.delayed(const Duration(seconds: 2), () {
       if (!mounted) return;
@@ -89,30 +83,29 @@ class _SplashViewbodyState extends State<SplashViewBody>
     });
   }
 
+  void navigateToHome() {
+    Future.delayed(const Duration(seconds: 4), () async {
+      if (!mounted) return;
 
-void navigateToHome() {
-  Future.delayed(const Duration(seconds: 4), () async {
-    if (!mounted) return;
+      final token = TokenStorage.getAccessToken();
+      final expiry = TokenStorage.getAccessTokenExpiry();
 
-    final token = TokenStorage.getAccessToken();
-    final expiry = TokenStorage.getAccessTokenExpiry();
+      final hasValidToken =
+          token != null &&
+          token.isNotEmpty &&
+          expiry != null &&
+          DateTime.now().isBefore(expiry);
 
-    final hasValidToken =
-        token != null &&
-        token.isNotEmpty &&
-        expiry != null &&
-        DateTime.now().isBefore(expiry);
+      if (hasValidToken) {
+        AuthSession.instance.markAuthenticated();
 
-    if (hasValidToken) {
-      AuthSession.instance.markAuthenticated();
-
-      context.goNamed(AppRouteRName.homeView); 
-    } else {
-      AuthSession.instance.markUnauthenticated();
-      context.goNamed(AppRouteRName.welcomeView);
-    }
-  });
-}
+        context.goNamed(AppRouteRName.homeView);
+      } else {
+        AuthSession.instance.markUnauthenticated();
+        context.goNamed(AppRouteRName.welcomeView);
+      }
+    });
+  }
 }
 
 class SlidingText extends StatelessWidget {

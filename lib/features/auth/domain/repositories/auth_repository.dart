@@ -42,6 +42,8 @@ abstract class AuthRepository {
     required String passwordConfirmation,
   });
 
-    Future<Either<Failure, LoginResponse>>
-  login({required String email ,required String password});
+  Future<Either<Failure, LoginResponse>> login({
+    required String email,
+    required String password,
+  });
 }

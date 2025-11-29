@@ -1,7 +1,6 @@
 import 'package:complaints_app/features/auth/domain/entities/register_response.dart';
 
-class RegisterResponseModel
- {
+class RegisterResponseModel {
   final String successMessage;
   final int statusCode;
 

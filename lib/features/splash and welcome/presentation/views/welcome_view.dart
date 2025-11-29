@@ -84,7 +84,7 @@ class WelcomeViewBody extends StatelessWidget {
               right: SizeConfig.width * 0.26,
               top: SizeConfig.height * .1,
               child: CustomBackgroundWithChild(
-                height: SizeConfig.height*.09,
+                height: SizeConfig.height * .09,
                 //width: 100,
                 backgroundColor: AppColor.lightPurple,
                 borderRadius: BorderRadius.circular(15),

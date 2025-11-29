@@ -13,8 +13,12 @@ class EndPoints {
   static const String resetPassword = 'citizen/resetPassword';
   static const String loginCitizen = 'citizen/login';
 
-
   // home
-    static const String showComplaints = 'citizen/home/showComplaints';
+  static const String showComplaints = 'citizen/home/showComplaints';
+
+  // submit a complaint
+  static const String agency = 'citizen/home/agencyByName';
+  static const String complaintType = 'citizen/home/ComplaintTypeByName';
+  static const String createComplaint = 'citizen/home/createComplain';
 
 }

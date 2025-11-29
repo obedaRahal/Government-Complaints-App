@@ -28,6 +28,13 @@ import 'package:complaints_app/features/home/presentation/manager/home_cubit/hom
 import 'package:complaints_app/features/home/presentation/screens/home_view.dart';
 import 'package:complaints_app/features/splash%20and%20welcome/presentation/views/splash_view.dart';
 import 'package:complaints_app/features/splash%20and%20welcome/presentation/views/welcome_view.dart';
+import 'package:complaints_app/features/submit_a_complaint/data/datasources/submit_complaint_remote_data_source.dart';
+import 'package:complaints_app/features/submit_a_complaint/data/repositories/submit_complaint_repository_impl.dart';
+import 'package:complaints_app/features/submit_a_complaint/domain/use%20case/get_agency_use_case.dart';
+import 'package:complaints_app/features/submit_a_complaint/domain/use%20case/get_complaint_type_use_case.dart';
+import 'package:complaints_app/features/submit_a_complaint/domain/use%20case/submit_complaint_use_case.dart';
+import 'package:complaints_app/features/submit_a_complaint/presentation/manager/submit_complaint_cubit.dart';
+import 'package:complaints_app/features/submit_a_complaint/presentation/view/submit_complaint_view.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -296,6 +303,43 @@ abstract class AppRourer {
           return BlocProvider(
             create: (_) => HomeCubit(getComplaintsUseCase),
             child: const HomeView(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: '/SubmitComplaintView',
+        name: AppRouteRName.submitComplaintView,
+        builder: (context, state) {
+          final dio = Dio(
+            BaseOptions(
+              baseUrl: EndPoints.baseUrl,
+              receiveDataWhenStatusError: true,
+            ),
+          );
+          // ✳️ هنا بس مثال، ركّبي الإنشاء بنفس الأسلوب اللي استخدمتوه في auth
+          final api = DioConsumer(dio: dio); // أو اللي عندكم جاهز
+          final remoteDataSource = SubmitComplaintDataSourceImpl(api);
+          final connectionChecker = InternetConnectionChecker.createInstance();
+          final networkInfo = NetworkInfoImpl(connectionChecker);
+          final repository = SubmitComplaintRepositoryImpl(
+            remoteDataSource: remoteDataSource,
+            networkInfo: networkInfo,
+          );
+          final getAgenciesUseCase = GetAgenciesUseCase(repository);
+          final getComplaintTypeUseCase = GetComplaintTypeUseCase(repository);
+          final submitComplaintUseCase = SubmitComplaintUseCase(repository);
+
+          return BlocProvider(
+            create: (_) =>
+                SubmitComplaintCubit(
+                    getAgenciesUseCase,
+                    getComplaintTypeUseCase,
+                    submitComplaintUseCase,
+                  )
+                  ..loadAgencies()
+                  ..loadComplaintType(),
+            child: const SubmitComplaintView(),
           );
         },
       ),

@@ -26,7 +26,7 @@ class HomeRepositoryImpl implements HomeRepository {
         page: page,
         perPage: perPage,
       );
-            debugPrint("← remoteDataSource.getComplaints success, mapped to entity");
+      debugPrint("← remoteDataSource.getComplaints success, mapped to entity");
       debugPrint("=================================================");
 
       return Right(result);

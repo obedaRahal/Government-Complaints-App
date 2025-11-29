@@ -1,8 +1,6 @@
-
 import 'package:complaints_app/features/auth/domain/entities/forget_password_email_response.dart';
 
-class ForgetPasswordEmailResponseModel
- {
+class ForgetPasswordEmailResponseModel {
   final String successMessage;
   final int statusCode;
 
@@ -20,7 +18,7 @@ class ForgetPasswordEmailResponseModel
     );
   }
 
- ForgetPasswordEmailResponse toEntity() {
+  ForgetPasswordEmailResponse toEntity() {
     return ForgetPasswordEmailResponse(
       successMessage: successMessage,
       statusCode: statusCode.toString(),

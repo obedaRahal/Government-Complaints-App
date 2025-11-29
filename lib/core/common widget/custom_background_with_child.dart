@@ -16,7 +16,7 @@ class CustomBackgroundWithChild extends StatelessWidget {
     this.width,
     required this.backgroundColor,
     this.alignment = Alignment.center,
-    this.borderRadius ,
+    this.borderRadius,
     this.childHorizontalPad = 0,
     this.childVerticalPad = 0,
     required this.child,

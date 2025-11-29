@@ -1,6 +1,7 @@
 import 'package:complaints_app/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:complaints_app/features/auth/domain/use_cases/params/login_params.dart';
-import 'package:complaints_app/features/auth/presentation/manager/login%20cubit/login_state.dart' show LoginState;
+import 'package:complaints_app/features/auth/presentation/manager/login%20cubit/login_state.dart'
+    show LoginState;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,37 +14,19 @@ class LoginCubit extends Cubit<LoginState> {
 
   void emailChanged(String value) {
     debugPrint("LoginCubit.emailChanged -> $value");
-    emit(
-      state.copyWith(
-        email: value,
-        errorMessage: null,
-        isSuccess: false,
-      ),
-    );
+    emit(state.copyWith(email: value, errorMessage: null, isSuccess: false));
   }
 
   void passwordChanged(String value) {
-    debugPrint(
-      "LoginCubit.passwordChanged -> (length: ${value.length})",
-    );
-    emit(
-      state.copyWith(
-        password: value,
-        errorMessage: null,
-        isSuccess: false,
-      ),
-    );
+    debugPrint("LoginCubit.passwordChanged -> (length: ${value.length})");
+    emit(state.copyWith(password: value, errorMessage: null, isSuccess: false));
   }
 
   void togglePasswordVisibility() {
     debugPrint(
       "LoginCubit.togglePasswordVisibility -> ${!state.isPasswordObscure}",
     );
-    emit(
-      state.copyWith(
-        isPasswordObscure: !state.isPasswordObscure,
-      ),
-    );
+    emit(state.copyWith(isPasswordObscure: !state.isPasswordObscure));
   }
 
   Future<void> loginSubmitted() async {
@@ -73,10 +56,7 @@ class LoginCubit extends Cubit<LoginState> {
     );
 
     final result = await loginUseCase(
-      LoginParams(
-        email: state.email,
-        password: state.password,
-      ),
+      LoginParams(email: state.email, password: state.password),
     );
 
     result.fold(
@@ -100,15 +80,13 @@ class LoginCubit extends Cubit<LoginState> {
           state.copyWith(
             isSubmitting: false,
             errorMessage: null,
-            successMessage: response.name, 
+            successMessage: response.name,
             isSuccess: true,
           ),
         );
-
       },
     );
 
     debugPrint("============ LoginCubit.loginSubmitted END ============");
   }
 }
-

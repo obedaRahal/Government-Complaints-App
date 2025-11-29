@@ -11,8 +11,7 @@ class ForgotPasswordState {
 
   final int remainingSeconds;
 
-    final bool isPasswordObscure;
-
+  final bool isPasswordObscure;
 
   const ForgotPasswordState({
     this.email = '',
@@ -24,7 +23,7 @@ class ForgotPasswordState {
     this.successMessage,
     this.isSuccess = false,
     this.remainingSeconds = 300,
-    this.isPasswordObscure = true
+    this.isPasswordObscure = true,
   });
 
   bool get isTimerFinished => remainingSeconds <= 0;
@@ -39,7 +38,7 @@ class ForgotPasswordState {
     String? successMessage,
     bool? isSuccess,
     int? remainingSeconds,
-    bool? isPasswordObscure
+    bool? isPasswordObscure,
   }) {
     return ForgotPasswordState(
       email: email ?? this.email,

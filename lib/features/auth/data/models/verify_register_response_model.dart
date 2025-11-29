@@ -1,4 +1,3 @@
-
 import 'package:complaints_app/features/auth/domain/entities/verify_register_response.dart';
 
 class VerifyRegisterResponseModel {

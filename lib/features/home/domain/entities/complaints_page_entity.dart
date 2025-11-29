@@ -5,8 +5,5 @@ class ComplaintsPageEntity {
   final List<ComplaintEntity> complaints;
   final PaginationMetaEntity meta;
 
-  const ComplaintsPageEntity({
-    required this.complaints,
-    required this.meta,
-  });
+  const ComplaintsPageEntity({required this.complaints, required this.meta});
 }

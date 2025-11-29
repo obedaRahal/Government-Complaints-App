@@ -9,7 +9,7 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this._getComplaintsUseCase) : super(const HomeState()) {
     debugPrint("============ HomeCubit INIT ============");
-     loadComplaints();
+    loadComplaints();
   }
 
   final GetComplaintsUseCase _getComplaintsUseCase;

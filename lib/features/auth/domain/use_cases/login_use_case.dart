@@ -11,7 +11,7 @@ class LoginUseCase {
   LoginUseCase({required this.repository});
 
   Future<Either<Failure, LoginResponse>> call(LoginParams params) {
-        debugPrint("============ LoginUseCase.call ============");
+    debugPrint("============ LoginUseCase.call ============");
     return repository.login(email: params.email, password: params.password);
   }
 }

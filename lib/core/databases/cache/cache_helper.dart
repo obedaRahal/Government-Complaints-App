@@ -8,7 +8,6 @@ class CacheHelper {
     _sharedPreferences = await SharedPreferences.getInstance();
   }
 
-
   static Future<bool> saveData({
     required String key,
     required dynamic value,
@@ -27,30 +26,22 @@ class CacheHelper {
   }
 
   //! get typed string
-  static String? getDataString({
-    required String key,
-  }) {
+  static String? getDataString({required String key}) {
     return _sharedPreferences.getString(key);
   }
 
   //! get any type
-  static dynamic getData({
-    required String key,
-  }) {
+  static dynamic getData({required String key}) {
     return _sharedPreferences.get(key);
   }
 
   //! remove specific key
-  static Future<bool> removeData({
-    required String key,
-  }) async {
+  static Future<bool> removeData({required String key}) async {
     return await _sharedPreferences.remove(key);
   }
 
   //! contains key
-  static bool containsKey({
-    required String key,
-  }) {
+  static bool containsKey({required String key}) {
     return _sharedPreferences.containsKey(key);
   }
 

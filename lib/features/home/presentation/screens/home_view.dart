@@ -1,5 +1,6 @@
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
+import 'package:complaints_app/core/config/route_name.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:complaints_app/features/home/presentation/manager/home_cubit/home_cubit.dart';
@@ -7,6 +8,7 @@ import 'package:complaints_app/features/home/presentation/widgets/complaint_Card
 import 'package:complaints_app/features/home/presentation/widgets/top_part_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -53,7 +55,9 @@ class HomeViewBody extends StatelessWidget {
                 childHorizontalPad: 6,
                 childVerticalPad: 4,
                 backgroundColor: AppColor.lightPurple,
-                onTap: () {},
+                onTap: () {
+                  context.pushNamed(AppRouteRName.submitComplaintView);
+                },
                 child: Row(
                   children: [
                     Icon(
@@ -178,8 +182,6 @@ class HomeViewBody extends StatelessWidget {
     );
   }
 }
-
-
 
 class LabelColumnTitleValue extends StatelessWidget {
   const LabelColumnTitleValue({

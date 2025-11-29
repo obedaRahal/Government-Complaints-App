@@ -47,7 +47,6 @@ class DownPartWelcome extends StatelessWidget {
                 onTap: () {
                   debugPrint(" registerrrr");
                   context.pushNamed(AppRouteRName.registerView);
-
                 },
                 child: CustomTextWidget(
                   "حساب جديد",

@@ -1,4 +1,3 @@
-
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';

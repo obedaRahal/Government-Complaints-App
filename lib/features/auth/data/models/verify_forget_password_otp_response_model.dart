@@ -1,4 +1,3 @@
-
 import 'package:complaints_app/features/auth/domain/entities/verify_forget_password_response.dart';
 
 class VerifyForgetPasswordOtpResponseModel {

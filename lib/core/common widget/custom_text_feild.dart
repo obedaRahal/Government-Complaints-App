@@ -1,7 +1,7 @@
-
 import 'package:complaints_app/core/theme/assets/fonts.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
@@ -14,11 +14,12 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     this.enabled = true,
     this.maxLines = 1,
+    this.maxLength,
     this.borderRadius = 10,
     this.hintFontSize = 16,
     this.onChanged,
     this.validator,
-    this.onSuffixTap
+    this.onSuffixTap,
   });
 
   final TextEditingController? controller;
@@ -29,11 +30,12 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final bool enabled;
   final int maxLines;
+  final int? maxLength;
   final double borderRadius;
   final double hintFontSize;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
-  final VoidCallback? onSuffixTap ;
+  final VoidCallback? onSuffixTap;
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +52,26 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           //labelText: label,
           hintText: hint,
+          counterText: "",
           hintStyle: TextStyle(
             color: AppColor.middleGrey,
             fontFamily: AppFonts.tasees,
-            fontSize: hintFontSize
+            fontSize: hintFontSize,
           ),
 
-          suffixIcon: suffixIcon == null ? null : IconButton( onPressed: onSuffixTap ,icon: Icon(suffixIcon ,size: 20,)),
-          prefix: prefixIcon == null ? null : IconButton( onPressed: onSuffixTap ,icon: Icon(prefixIcon ,size: 20,)),
+          suffixIcon: suffixIcon == null
+              ? null
+              : IconButton(
+                  onPressed: onSuffixTap,
+                  icon: Icon(suffixIcon, size: 20),
+                ),
+
+          prefix: prefixIcon == null
+              ? null
+              : IconButton(
+                  onPressed: onSuffixTap,
+                  icon: Icon(prefixIcon, size: 20),
+                ),
           suffixIconColor: Color(0xffACACAC),
           filled: true,
           fillColor: AppColor.grey,

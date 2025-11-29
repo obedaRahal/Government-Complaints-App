@@ -45,7 +45,7 @@ class _ForgetPasswordOtpCodeViewBodyState
       listenWhen: (prev, curr) =>
           prev.errorMessage != curr.errorMessage ||
           prev.isSuccess != curr.isSuccess ||
-    prev.successMessage != curr.successMessage,
+          prev.successMessage != curr.successMessage,
       listener: (context, state) {
         if (state.errorMessage != null) {
           showTopSnackBar(

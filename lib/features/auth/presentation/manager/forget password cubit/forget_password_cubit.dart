@@ -14,7 +14,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final FogretPasswordEmailUseCase forgetPasswordEmailUseCase;
   final VerifyForgetPasswordUseCase verifyForgotPasswordOtpUseCase;
   final ResendPasswordResetOtpUseCase resendPasswordResetOtpUseCase;
-  final ResetPasswordUseCase resetPasswordUseCase ;
+  final ResetPasswordUseCase resetPasswordUseCase;
   Timer? _timer;
 
   ForgotPasswordCubit({
@@ -93,7 +93,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
             isSubmitting: false,
             errorMessage: null,
             successMessage: response.successMessage,
-            isSuccess: true, 
+            isSuccess: true,
           ),
         );
       },
@@ -152,7 +152,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         debugPrint(
           "resendCode -> SUCCESS: ${response.successMessage}, restart timer",
         );
-        startTimer(); 
+        startTimer();
 
         emit(
           state.copyWith(
@@ -222,8 +222,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
             isSubmitting: false,
             errorMessage: null,
             successMessage: response.successMessage,
-            isSuccess:
-                true,
+            isSuccess: true,
           ),
         );
         _timer?.cancel();
@@ -238,8 +237,6 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     _timer?.cancel();
     return super.close();
   }
-
-
 
   // ---------------------------
   //  Step 3: New Password
@@ -333,9 +330,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
         );
       },
       (response) {
-        debugPrint(
-          "submitNewPassword -> SUCCESS: ${response.successMessage}",
-        );
+        debugPrint("submitNewPassword -> SUCCESS: ${response.successMessage}");
         emit(
           state.copyWith(
             isSubmitting: false,
@@ -351,5 +346,4 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       "============ ForgotPasswordCubit.submitNewPassword END ============",
     );
   }
-
 }

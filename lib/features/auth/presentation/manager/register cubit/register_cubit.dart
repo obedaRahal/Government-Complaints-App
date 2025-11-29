@@ -23,16 +23,12 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   void idNumberChanged(String value) {
     debugPrint("RegisterCubit.idNumberChanged -> $value");
-    emit(
-      state.copyWith(idNumber: value, isSuccess: false, errorMessage: null),
-    );
+    emit(state.copyWith(idNumber: value, isSuccess: false, errorMessage: null));
   }
 
   void passwordChanged(String value) {
     debugPrint("RegisterCubit.passwordChanged -> (length: ${value.length})");
-    emit(
-      state.copyWith(password: value, isSuccess: false, errorMessage: null),
-    );
+    emit(state.copyWith(password: value, isSuccess: false, errorMessage: null));
   }
 
   void togglePasswordVisibility() {
@@ -85,9 +81,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
     result.fold(
       (failure) {
-        debugPrint(
-          "registerSubmitted -> FAILURE: ${failure.errMessage}",
-        );
+        debugPrint("registerSubmitted -> FAILURE: ${failure.errMessage}");
         emit(
           state.copyWith(
             isSubmitting: false,

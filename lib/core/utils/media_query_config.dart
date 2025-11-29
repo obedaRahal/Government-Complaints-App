@@ -12,7 +12,6 @@ import 'package:flutter/widgets.dart';
 //   }
 // }
 
-
 import 'dart:math';
 
 class SizeConfig {

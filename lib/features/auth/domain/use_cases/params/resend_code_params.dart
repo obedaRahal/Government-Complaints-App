@@ -1,5 +1,5 @@
 class ResendCodeParams {
-  final String email ;
+  final String email;
 
   ResendCodeParams({required this.email});
 }

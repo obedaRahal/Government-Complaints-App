@@ -11,6 +11,7 @@ void main() async {
 
   runApp(const ComplaitsApp());
 }
+
 //======================= Hi 👀 ============================
 class ComplaitsApp extends StatefulWidget {
   const ComplaitsApp({super.key});
@@ -25,12 +26,14 @@ class _ComplaitsAppState extends State<ComplaitsApp> {
     super.initState();
     AuthSession.instance.isAuthenticated.addListener(_onAuthChanged);
   }
+
   void _onAuthChanged() {
     final isAuth = AuthSession.instance.isAuthenticated.value;
     if (!isAuth) {
       AppRourer.router.goNamed(AppRouteRName.loginView);
     }
   }
+
   @override
   void dispose() {
     AuthSession.instance.isAuthenticated.removeListener(_onAuthChanged);
@@ -40,7 +43,7 @@ class _ComplaitsAppState extends State<ComplaitsApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-    debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(scaffoldBackgroundColor: AppColor.white),
       routerConfig: AppRourer.router,
       builder: (context, child) {

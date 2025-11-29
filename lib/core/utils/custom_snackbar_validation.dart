@@ -111,7 +111,7 @@ class _TopSnackBarOverlayState extends State<_TopSnackBarOverlay>
 
     Widget snackContent = Material(
       color: backgroundColor,
-      elevation: 8, 
+      elevation: 8,
       shadowColor: Colors.black54,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
@@ -129,9 +129,9 @@ class _TopSnackBarOverlayState extends State<_TopSnackBarOverlay>
                 Expanded(
                   child: Text(
                     widget.message,
-                    style:  TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: SizeConfig.diagonal*.025,
+                      fontSize: SizeConfig.diagonal * .025,
                       fontFamily: AppFonts.amiri,
                     ),
                   ),
@@ -163,7 +163,7 @@ class _TopSnackBarOverlayState extends State<_TopSnackBarOverlay>
             padding: const EdgeInsets.all(12),
             child: Dismissible(
               key: UniqueKey(),
-              direction: DismissDirection.up, 
+              direction: DismissDirection.up,
               onDismissed: (_) async {
                 _dismissedBySwipe = true;
                 _timer?.cancel();

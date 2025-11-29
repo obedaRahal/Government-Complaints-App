@@ -20,8 +20,7 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(body: SafeArea(child: LogInViewBody()));
-    
+    return Scaffold(body: SafeArea(child: LogInViewBody()));
   }
 }
 
@@ -44,11 +43,12 @@ class LogInViewBody extends StatelessWidget {
 
         if (state.isSuccess) {
           showTopSnackBar(
-        context,
-        message: state.successMessage ??
-            "تم تسجيل الدخول بنجاح، أهلاً بك مجدداً",
-        isSuccess: true,
-      );
+            context,
+            message:
+                state.successMessage ??
+                "تم تسجيل الدخول بنجاح، أهلاً بك مجدداً",
+            isSuccess: true,
+          );
           debugPrint("im at login view at BlocListener anddd Login success ✅");
           context.goNamed(AppRouteRName.homeView);
         }

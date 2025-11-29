@@ -6,6 +6,7 @@ import 'package:complaints_app/features/auth/domain/use_cases/verify_register_us
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'verify_register_state.dart';
+
 class VerifyRegisterCubit extends Cubit<VerifyRegisterState> {
   final VerifyRegisterUseCase verifyRegisterUseCase;
   final ResendCodeUseCase resendCodeUseCase;

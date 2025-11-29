@@ -30,9 +30,8 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       data: {'page': page, 'per_page': perPage},
     );
 
-        debugPrint("← response (getComplaints): $response");
+    debugPrint("← response (getComplaints): $response");
     debugPrint("=================================================");
-
 
     return ComplaintsPageModel.fromJson(response.data);
   }

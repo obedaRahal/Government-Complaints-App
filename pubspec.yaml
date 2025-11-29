@@ -37,6 +37,8 @@ dependencies:
   flutter_svg: ^2.2.2
   go_router: ^17.0.0
   internet_connection_checker: ^3.0.1
+  multi_image_picker_view: ^3.0.0
+  image_picker: ^1.0.7
   pin_code_fields: ^8.0.1
   shared_preferences: ^2.5.3
 
