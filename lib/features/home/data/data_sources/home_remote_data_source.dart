@@ -40,12 +40,35 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     debugPrint("=================================================");
 
 
-    return ComplaintsPageModel.fromJson(response.data);
+    return ComplaintsPageModel.fromJson(response);
   }
   
   @override
-  Future<SearchComplaintModel?> searchComplaint({required String search}) {
-    // TODO: implement searchComplaint
-    throw UnimplementedError();
+  Future<SearchComplaintModel?> searchComplaint({
+    required String search,
+  }) async {
+    debugPrint("============ HomeRemoteDataSourceImpl.searchComplaint ============");
+
+    final response = await apiConsumer.post(
+      EndPoints.searchComplaint,
+      data: {'search': search},
+    );
+
+    debugPrint("← response (searchComplaint): $response");
+    debugPrint("=================================================");
+
+    final data = response['data'];
+
+    // لا يوجد شكوى بهذا الرقم → API يرجّع data: []
+    if (data is List && data.isEmpty) {
+      return null;
+    }
+
+    // يوجد شكوى واحدة → data: {complaint_number, title, description, status}
+    if (data is Map<String, dynamic>) {
+      return SearchComplaintModel.fromJson(data);
+    }
+
+    return null;
   }
 }
