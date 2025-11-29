@@ -1,4 +1,3 @@
-
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_feild.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
@@ -15,15 +14,22 @@ class TopPartHome extends StatelessWidget {
     required this.onChangedSearch,
     required this.onTapProfile,
     required this.onTapNotification,
+    required this.onSearchTap,
+    required this.onTapCancel,
+    required this.searchText,
   });
 
   final void Function(String) onChangedSearch;
   final void Function() onTapProfile;
   final void Function() onTapNotification;
+  final void Function() onSearchTap;
+  final void Function() onTapCancel;
+
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
-String welcomeMessage = CacheHelper.getData(key: "welcomeMessage") ?? "";
+    String welcomeMessage = CacheHelper.getData(key: "welcomeMessage") ?? "";
     return CustomBackgroundWithChild(
       width: double.infinity,
       backgroundColor: AppColor.primary,
@@ -36,11 +42,44 @@ String welcomeMessage = CacheHelper.getData(key: "welcomeMessage") ?? "";
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomTextWidget(
-              welcomeMessage ,
-              //"مرحبا صديقي المواطن عبيده الرحال",
-              color: AppColor.white,
-              fontSize: SizeConfig.diagonal * .025,
+            Row(
+              children: [
+                CustomTextWidget(
+                  welcomeMessage,
+                  //"مرحبا صديقي المواطن عبيده الرحال",
+                  color: AppColor.white,
+                  fontSize: SizeConfig.diagonal * .025,
+                ),
+
+                Spacer(),
+                CustomButtonWidget(
+                  borderRadius: 30,
+                  childHorizontalPad: 3,
+                  childVerticalPad: 3,
+                  backgroundColor: AppColor.white,
+                  onTap: onTapProfile,
+                  child: Icon(
+                    Icons.group_outlined,
+                    color: AppColor.middleGrey,
+                    size: SizeConfig.height * .04,
+                  ),
+                ),
+
+                SizedBox(width: SizeConfig.width * .02),
+
+                CustomButtonWidget(
+                  borderRadius: 30,
+                  childHorizontalPad: 3,
+                  childVerticalPad: 3,
+                  backgroundColor: AppColor.white,
+                  onTap: onTapNotification,
+                  child: Icon(
+                    Icons.notification_important_outlined,
+                    color: AppColor.middleGrey,
+                    size: SizeConfig.height * .04,
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: SizeConfig.height * .01),
             Row(
@@ -56,32 +95,22 @@ String welcomeMessage = CacheHelper.getData(key: "welcomeMessage") ?? "";
                     hintFontSize: SizeConfig.diagonal * .022,
                     borderRadius: 30,
                     onChanged: onChangedSearch,
+                    keyboardType: TextInputType.number,
+                    onSuffixTap: onSearchTap,
+                    initialText: searchText,
                   ),
                 ),
 
                 CustomButtonWidget(
                   borderRadius: 30,
-                  childHorizontalPad: 3,
-                  childVerticalPad: 3,
+                  childHorizontalPad: SizeConfig.width * .06,
+                  //childVerticalPad: 3,
                   backgroundColor: AppColor.white,
-                  onTap: onTapProfile,
-                  child: Icon(
-                    Icons.group_outlined,
-                    color: AppColor.middleGrey,
-                    size: SizeConfig.height * .04,
-                  ),
-                ),
-
-                CustomButtonWidget(
-                  borderRadius: 30,
-                  childHorizontalPad: 3,
-                  childVerticalPad: 3,
-                  backgroundColor: AppColor.white,
-                  onTap: onTapNotification,
-                  child: Icon(
-                    Icons.notification_important_outlined,
-                    color: AppColor.middleGrey,
-                    size: SizeConfig.height * .04,
+                  onTap: onTapCancel,
+                  child: CustomTextWidget(
+                    "إالغاء",
+                    color: AppColor.red,
+                    fontSize: SizeConfig.diagonal * .032,
                   ),
                 ),
               ],

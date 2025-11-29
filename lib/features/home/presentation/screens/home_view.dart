@@ -21,21 +21,35 @@ class HomeView extends StatelessWidget {
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TopPartHome(
-          onChangedSearch: (value) {
-            debugPrint("im at search field and val isss $value");
-          },
-          onTapProfile: () {
-            debugPrint("go to profile");
-          },
-          onTapNotification: () {
-            debugPrint("go to notification");
+          BlocBuilder<HomeCubit, HomeState>(
+          buildWhen: (prev, curr) => prev.searchText != curr.searchText,
+          builder: (context, state) {
+            return TopPartHome(
+              searchText: state.searchText,
+              onChangedSearch: (value) {
+                context.read<HomeCubit>().searchTextChanged(value);
+              },
+              onTapProfile: () {
+                debugPrint("go to profile");
+              },
+              onTapNotification: () {
+                debugPrint("go to notification");
+              },
+              onSearchTap: () {
+                context.read<HomeCubit>().searchComplaint(state.searchText);
+              },
+              onTapCancel: () {
+                context.read<HomeCubit>().cancelSearch();
+              },
+            );
           },
         ),
+        
         SizedBox(height: SizeConfig.height * .02),
 
         Padding(
@@ -96,7 +110,9 @@ class HomeViewBody extends StatelessWidget {
               if (state.complaints.isEmpty) {
                 return Center(
                   child: CustomTextWidget(
-                    'لا توجد شكاوى حالياً',
+                    state.isSearchMode
+                        ? 'لا يوجد شكوى بهذا الرقم'
+                        : 'لا توجد شكاوى حالياً',
                     color: AppColor.middleGrey,
                   ),
                 );

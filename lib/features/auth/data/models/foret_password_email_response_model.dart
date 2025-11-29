@@ -20,6 +20,7 @@ class ForgetPasswordEmailResponseModel
     );
   }
 
+
  ForgetPasswordEmailResponse toEntity() {
     return ForgetPasswordEmailResponse(
       successMessage: successMessage,
