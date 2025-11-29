@@ -2,6 +2,7 @@
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_feild.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
+import 'package:complaints_app/core/databases/cache/cache_helper.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class TopPartHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+String welcomeMessage = CacheHelper.getData(key: "welcomeMessage") ?? "";
     return CustomBackgroundWithChild(
       width: double.infinity,
       backgroundColor: AppColor.primary,
@@ -35,7 +37,8 @@ class TopPartHome extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomTextWidget(
-              "مرحبا صديقي المواطن عبيده الرحال",
+              welcomeMessage ,
+              //"مرحبا صديقي المواطن عبيده الرحال",
               color: AppColor.white,
               fontSize: SizeConfig.diagonal * .025,
             ),

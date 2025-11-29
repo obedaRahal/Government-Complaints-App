@@ -3,6 +3,8 @@ import 'package:complaints_app/features/auth/domain/use_cases/params/login_param
 import 'package:complaints_app/features/auth/presentation/manager/login%20cubit/login_state.dart' show LoginState;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:complaints_app/core/databases/cache/cache_helper.dart';
+
 
 class LoginCubit extends Cubit<LoginState> {
   final LoginUseCase loginUseCase;
@@ -92,6 +94,7 @@ class LoginCubit extends Cubit<LoginState> {
         );
       },
       (response) {
+        CacheHelper.saveData(key: "welcomeMessage" , value: response.name);
         debugPrint(
           "loginSubmitted -> SUCCESS, name: ${response.name}, statusCode: ${response.statusCode}",
         );
