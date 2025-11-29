@@ -14,7 +14,7 @@ class EndPoints {
   static const String loginCitizen = 'citizen/login';
 
   // home
-  static const String showComplaints = 'citizen/home/showComplaints';
+    static const String showComplaints = 'citizen/home/showComplaints';
 
   // submit a complaint
   static const String agency = 'citizen/home/agencyByName';

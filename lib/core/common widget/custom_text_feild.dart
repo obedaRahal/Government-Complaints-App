@@ -19,7 +19,7 @@ class CustomTextField extends StatelessWidget {
     this.hintFontSize = 16,
     this.onChanged,
     this.validator,
-    this.onSuffixTap,
+    this.onSuffixTap
   });
 
   final TextEditingController? controller;
@@ -35,10 +35,12 @@ class CustomTextField extends StatelessWidget {
   final double hintFontSize;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
-  final VoidCallback? onSuffixTap;
+  final VoidCallback? onSuffixTap ;
 
   @override
   Widget build(BuildContext context) {
+        final controller = TextEditingController(text: initialText);
+
     return SizedBox(
       //height: 50,
       child: TextFormField(

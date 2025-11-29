@@ -11,6 +11,9 @@ class HomeState {
   final int perPage;
   final bool isLoadingMore;
 
+  final bool isSearchMode;
+  final String searchText;
+
   bool get canLoadMore => currentPage < lastPage;
 
   const HomeState({
@@ -21,6 +24,8 @@ class HomeState {
     this.lastPage = 1,
     this.perPage = 10,
     this.isLoadingMore = false,
+    this.isSearchMode = false,
+    this.searchText= ''
   });
 
   HomeState copyWith({
@@ -31,6 +36,8 @@ class HomeState {
     int? lastPage,
     int? perPage,
     bool? isLoadingMore,
+    bool? isSearchMode,
+    String? searchText,
   }) {
     return HomeState(
       status: status ?? this.status,
@@ -40,6 +47,9 @@ class HomeState {
       lastPage: lastPage ?? this.lastPage,
       perPage: perPage ?? this.perPage,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      isSearchMode: isSearchMode ?? this.isSearchMode,
+      searchText: searchText ?? this.searchText,
+
     );
   }
 }

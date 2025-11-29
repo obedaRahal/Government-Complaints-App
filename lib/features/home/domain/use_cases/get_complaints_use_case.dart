@@ -8,7 +8,8 @@ import '../repositories/home_repository.dart';
 class GetComplaintsUseCase {
   final HomeRepository repository;
 
-  GetComplaintsUseCase(this.repository);
+  GetComplaintsUseCase({required this.repository});
+
 
   Future<Either<Failure, ComplaintsPageEntity>> call(
     GetComplaintsParams params,

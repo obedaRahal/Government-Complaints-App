@@ -21,9 +21,10 @@ import 'package:complaints_app/features/auth/presentation/view/forgot_password_o
 import 'package:complaints_app/features/auth/presentation/view/login_view.dart';
 import 'package:complaints_app/features/auth/presentation/view/register_view.dart';
 import 'package:complaints_app/features/auth/presentation/view/verify_register_view.dart';
-import 'package:complaints_app/features/home/data/models/home_remote_data_source.dart';
-import 'package:complaints_app/features/home/data/repository_impl/home_repositories_impl.dart';
+import 'package:complaints_app/features/home/data/data_sources/home_remote_data_source.dart';
+import 'package:complaints_app/features/home/data/repository_impl/home_repository_impl.dart';
 import 'package:complaints_app/features/home/domain/use_cases/get_complaints_use_case.dart';
+import 'package:complaints_app/features/home/domain/use_cases/search_complaint_use_case.dart';
 import 'package:complaints_app/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:complaints_app/features/home/presentation/screens/home_view.dart';
 import 'package:complaints_app/features/splash%20and%20welcome/presentation/views/splash_view.dart';
@@ -298,10 +299,14 @@ abstract class AppRourer {
 
           final homeRepository = HomeRepositoryImpl(homeRemoteDataSource);
 
-          final getComplaintsUseCase = GetComplaintsUseCase(homeRepository);
+          final getComplaintsUseCase = GetComplaintsUseCase(repository:  homeRepository);
+
+
+          final searchComplaintUseCase = SearchComplaintUseCase(repository: homeRepository);
+
 
           return BlocProvider(
-            create: (_) => HomeCubit(getComplaintsUseCase),
+            create: (_) => HomeCubit(getComplaintsUseCase ,searchComplaintUseCase),
             child: const HomeView(),
           );
         },

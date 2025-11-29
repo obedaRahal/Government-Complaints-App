@@ -18,7 +18,7 @@ class ForgetPasswordEmailResponseModel {
     );
   }
 
-  ForgetPasswordEmailResponse toEntity() {
+ ForgetPasswordEmailResponse toEntity() {
     return ForgetPasswordEmailResponse(
       successMessage: successMessage,
       statusCode: statusCode.toString(),
