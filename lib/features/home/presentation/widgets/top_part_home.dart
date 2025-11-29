@@ -97,7 +97,7 @@ class TopPartHome extends StatelessWidget {
                     onChanged: onChangedSearch,
                     keyboardType: TextInputType.number,
                     onSuffixTap: onSearchTap,
-                    initialText: searchText,
+                    //initialText: searchText,
                   ),
                 ),
 

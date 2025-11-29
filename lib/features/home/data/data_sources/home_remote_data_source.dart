@@ -42,4 +42,10 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
     return ComplaintsPageModel.fromJson(response.data);
   }
+  
+  @override
+  Future<SearchComplaintModel?> searchComplaint({required String search}) {
+    // TODO: implement searchComplaint
+    throw UnimplementedError();
+  }
 }
