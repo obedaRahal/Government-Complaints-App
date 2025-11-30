@@ -90,6 +90,7 @@ class TopPartHome extends StatelessWidget {
                   height: 30,
 
                   child: CustomTextField(
+                    initialText: searchText, 
                     hint: 'البحث في سجل الشكاوي...',
                     suffixIcon: Icons.search,
                     hintFontSize: SizeConfig.diagonal * .022,

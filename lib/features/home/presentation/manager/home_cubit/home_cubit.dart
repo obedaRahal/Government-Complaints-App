@@ -1,4 +1,3 @@
-import 'package:complaints_app/features/home/data/models/search_complaint_model.dart';
 import 'package:complaints_app/features/home/domain/use_cases/get_complaints_use_case.dart';
 import 'package:complaints_app/features/home/domain/use_cases/search_complaint_use_case.dart';
 import 'package:flutter/material.dart';
