@@ -2,6 +2,7 @@ import 'package:complaints_app/core/databases/api/api_consumer.dart';
 import 'package:complaints_app/core/databases/api/end_points.dart';
 import 'package:complaints_app/features/auth/data/models/foret_password_email_response_model.dart';
 import 'package:complaints_app/features/auth/data/models/login_response_model.dart';
+import 'package:complaints_app/features/auth/data/models/logout_model.dart';
 import 'package:complaints_app/features/auth/data/models/register_response_model.dart';
 import 'package:complaints_app/features/auth/data/models/resend_password_reset_otp_response_model.dart';
 import 'package:complaints_app/features/auth/data/models/resend_verify_code_response_model.dart';
@@ -50,6 +51,9 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String password,
   });
+
+
+  Future<LogoutREsponseModel> logout();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -246,7 +250,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String password,
   }) async {
     debugPrint(
-      "============ AuthRemoteDataSourceImpl.resendPasswordResetOtp ============",
+      "============ AuthRemoteDataSourceImpl.login ============",
     );
     debugPrint(
       "→ endpoint: ${EndPoints.resendPasswordResetOtp} | data: {email: $email}",
@@ -257,9 +261,33 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       data: {"email": email, "password": password},
     );
 
-    debugPrint("← response (resendPasswordResetOtp): $response");
+    debugPrint("← response (login): $response");
     debugPrint("=================================================");
 
     return LoginResponseModel.fromJson(response as Map<String, dynamic>);
   }
+
+
+  @override
+  Future<LogoutREsponseModel> logout() async {
+    debugPrint(
+      "============ AuthRemoteDataSourceImpl.logout ============",
+    );
+    debugPrint(
+      "→ endpoint: ${EndPoints.logout} ",
+    );
+
+    final response = await apiConsumer.get(
+      EndPoints.logout,
+    );
+
+    debugPrint("← response (logout): $response");
+    debugPrint("=================================================");
+
+    return LogoutREsponseModel.fromJson(response as Map<String, dynamic>);
+  }
+
+
+
+
 }

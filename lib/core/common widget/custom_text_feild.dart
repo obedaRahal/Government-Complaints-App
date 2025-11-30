@@ -1,7 +1,6 @@
 import 'package:complaints_app/core/theme/assets/fonts.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
@@ -41,11 +40,12 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final controller = TextEditingController(text: initialText);
+    
 
     return SizedBox(
       //height: 50,
       child: TextFormField(
+        key: initialText != null ? ValueKey(initialText) : null,
         controller: controller,
         keyboardType: keyboardType,
         obscureText: obscureText,

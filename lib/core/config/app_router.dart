@@ -6,6 +6,7 @@ import 'package:complaints_app/features/auth/data/datasources/auth_remote_data_s
 import 'package:complaints_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:complaints_app/features/auth/domain/use_cases/foget_password_email_use_case.dart';
 import 'package:complaints_app/features/auth/domain/use_cases/login_use_case.dart';
+import 'package:complaints_app/features/auth/domain/use_cases/logout_use_case.dart';
 import 'package:complaints_app/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:complaints_app/features/auth/domain/use_cases/resend_code_use_case.dart';
 import 'package:complaints_app/features/auth/domain/use_cases/resend_password_reset_otp_use_case.dart';
@@ -14,6 +15,7 @@ import 'package:complaints_app/features/auth/domain/use_cases/verify_forget_pass
 import 'package:complaints_app/features/auth/domain/use_cases/verify_register_use_case.dart';
 import 'package:complaints_app/features/auth/presentation/manager/forget%20password%20cubit/forget_password_cubit.dart';
 import 'package:complaints_app/features/auth/presentation/manager/login%20cubit/login_cubit.dart';
+import 'package:complaints_app/features/auth/presentation/manager/logout_cubit/logout_cubit.dart';
 import 'package:complaints_app/features/auth/presentation/manager/register%20cubit/register_cubit.dart';
 import 'package:complaints_app/features/auth/presentation/view/forgot_password_email_view.dart';
 import 'package:complaints_app/features/auth/presentation/view/forgot_password_new_password_view.dart';
@@ -294,9 +296,7 @@ abstract class AppRourer {
 
           final connectionChecker = InternetConnectionChecker.createInstance();
           final networkInfo = NetworkInfoImpl(connectionChecker);
-
           final homeRemoteDataSource = HomeRemoteDataSourceImpl(apiConsumer);
-
           final homeRepository = HomeRepositoryImpl(homeRemoteDataSource);
 
           final getComplaintsUseCase = GetComplaintsUseCase(repository:  homeRepository);
@@ -304,11 +304,21 @@ abstract class AppRourer {
 
           final searchComplaintUseCase = SearchComplaintUseCase(repository: homeRepository);
 
+          final authRemoreDataSourcev = AuthRemoteDataSourceImpl(apiConsumer: apiConsumer);
+          final authRepository = AuthRepositoryImpl(remoteDataSource: authRemoreDataSourcev , networkInfo: networkInfo);
+          final logoutUseCase = LogoutUseCase(repository: authRepository);
 
-          return BlocProvider(
+
+          return MultiBlocProvider(providers: [
+            BlocProvider(
             create: (_) => HomeCubit(getComplaintsUseCase ,searchComplaintUseCase),
-            child: const HomeView(),
-          );
+          ),
+
+          BlocProvider(
+            create: (_) => LogoutCubit(logoutUseCase:  logoutUseCase),
+          )
+
+          ], child: const HomeView());
         },
       ),
 

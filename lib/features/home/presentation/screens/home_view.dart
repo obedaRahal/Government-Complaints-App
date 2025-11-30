@@ -2,7 +2,9 @@ import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/config/route_name.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
+import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
+import 'package:complaints_app/features/auth/presentation/manager/logout_cubit/logout_cubit.dart';
 import 'package:complaints_app/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:complaints_app/features/home/presentation/widgets/complaint_Card_widget.dart';
 import 'package:complaints_app/features/home/presentation/widgets/complaint_card_shimmer_widget.dart';
@@ -16,42 +18,59 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(child: HomeViewBody()));
+    return Scaffold(
+      body: SafeArea(
+        child: BlocListener<LogoutCubit, LogoutState>(
+          listenWhen: (prev, curr) => prev.status != curr.status,
+          listener: (context, state) {
+            if (state.status == LogoutStatusEnum.success) {
+              // مسح الـ stack والذهاب للّوج إن
+              context.goNamed(AppRouteRName.welcomeView);
+            }
+
+            if (state.status == LogoutStatusEnum.error) {
+              showTopSnackBar(
+                context,
+                message: state.message ?? 'حدث خطأ أثناء تسجيل الخروج',
+                isSuccess: false,
+              );
+            }
+          },
+          child: HomeViewBody(),
+        ),
+      ),
+    );
   }
 }
 
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-          BlocBuilder<HomeCubit, HomeState>(
-          buildWhen: (prev, curr) => prev.searchText != curr.searchText,
-          builder: (context, state) {
-            return TopPartHome(
-              searchText: state.searchText,
-              onChangedSearch: (value) {
-                context.read<HomeCubit>().searchTextChanged(value);
-              },
-              onTapProfile: () {
-                debugPrint("go to profile");
-              },
-              onTapNotification: () {
-                debugPrint("go to notification");
-              },
-              onSearchTap: () {
-                context.read<HomeCubit>().searchComplaint(state.searchText);
-              },
-              onTapCancel: () {
-                context.read<HomeCubit>().cancelSearch();
-              },
-            );
-          },
-        ),
-        
+        TopPartHome(
+  onChangedSearch: (value) {
+    context.read<HomeCubit>().searchTextChanged(value);
+  },
+  onTapLogout: () {
+    debugPrint("loggg outtttt");
+    context.read<LogoutCubit>().logOutSubmitted();
+  },
+  onTapNotification: () {
+    debugPrint("go to notification");
+  },
+  onSearchTap: (query) {
+    // نرسل النص مباشرة من الـ HomeSearchField
+    context.read<HomeCubit>().searchComplaint(query);
+  },
+  onTapCancel: () {
+    context.read<HomeCubit>().cancelSearch();
+  },
+),
+
+
         SizedBox(height: SizeConfig.height * .02),
 
         Padding(
