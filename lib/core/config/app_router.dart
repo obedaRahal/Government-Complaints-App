@@ -21,6 +21,7 @@ import 'package:complaints_app/features/auth/presentation/view/forgot_password_o
 import 'package:complaints_app/features/auth/presentation/view/login_view.dart';
 import 'package:complaints_app/features/auth/presentation/view/register_view.dart';
 import 'package:complaints_app/features/auth/presentation/view/verify_register_view.dart';
+import 'package:complaints_app/features/complaint_details/presentation/view/complaint_details_view.dart';
 import 'package:complaints_app/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:complaints_app/features/home/data/repository_impl/home_repository_impl.dart';
 import 'package:complaints_app/features/home/domain/use_cases/get_complaints_use_case.dart';
@@ -348,6 +349,13 @@ abstract class AppRourer {
           );
         },
       ),
+      GoRoute(
+        path: '/complaintDetailsView',
+        name: AppRouteRName.complaintDetailsView,
+        builder: (context, state) => const ComplaintDetailsView(),
+      ),
     ],
+    
   );
+  
 }

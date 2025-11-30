@@ -9,11 +9,12 @@ class CustomTextWidget extends StatelessWidget {
   final TextAlign textAlign;
   final int? maxLines;
   final TextOverflow? overflow;
-
+  final FontWeight? fontWeight;
   const CustomTextWidget(
-    this.text, {
+    this.text,  {
     super.key,
     this.fontSize = 20,
+    this.fontWeight,
     this.color,
     this.textAlign = TextAlign.center,
     this.maxLines,
@@ -29,6 +30,7 @@ class CustomTextWidget extends StatelessWidget {
       overflow: overflow,
       style: TextStyle(
         fontFamily: AppFonts.tasees,
+        fontWeight: fontWeight,
         fontSize: fontSize,
         color: color ?? AppColor.primary,
       ),

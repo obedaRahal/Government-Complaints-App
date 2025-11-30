@@ -12,4 +12,10 @@ class AppImage {
   static String get forgetPass1 => '$_baseImage/forgetPassword1.svg';
   static String get forgetPass2 => '$_baseImage/forgetPassword2.svg';
   static String get forgetPass3 => '$_baseImage/forgetPassword3.svg';
+  ///////// Complaint Details
+  static String get layers => '$_baseImage/layers.svg';
+  static String get houreGlass => '$_baseImage/hourglass-start-svgrepo-com.svg';
+  static String get group1 => '$_baseImage/group-1-svgrepo-com.svg';
+  static String get grid => '$_baseImage/grid-list.svg';
+  static String get complaintPhoto=> '$_baseImage/doctor.jpg';
 }

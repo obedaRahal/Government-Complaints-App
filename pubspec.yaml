@@ -34,7 +34,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
-  flutter_svg: ^2.2.2
+  flutter_svg: ^2.2.3
   go_router: ^17.0.0
   internet_connection_checker: ^3.0.1
   multi_image_picker_view: ^3.0.0
@@ -63,6 +63,7 @@ flutter:
     - assets/icons/
     - assets/lottie/
     - assets/gif/
+    - assets/images/doctor.jpg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

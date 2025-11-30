@@ -70,7 +70,8 @@ class HomeViewBody extends StatelessWidget {
                 childVerticalPad: 4,
                 backgroundColor: AppColor.lightPurple,
                 onTap: () {
-                  context.pushNamed(AppRouteRName.submitComplaintView);
+                  // context.pushNamed(AppRouteRName.submitComplaintView); 
+                   context.pushNamed(AppRouteRName.complaintDetailsView);
                 },
                 child: Row(
                   children: [
