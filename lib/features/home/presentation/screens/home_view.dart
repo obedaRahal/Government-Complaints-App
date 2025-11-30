@@ -51,25 +51,24 @@ class HomeViewBody extends StatelessWidget {
     return Column(
       children: [
         TopPartHome(
-  onChangedSearch: (value) {
-    context.read<HomeCubit>().searchTextChanged(value);
-  },
-  onTapLogout: () {
-    debugPrint("loggg outtttt");
-    context.read<LogoutCubit>().logOutSubmitted();
-  },
-  onTapNotification: () {
-    debugPrint("go to notification");
-  },
-  onSearchTap: (query) {
-    // نرسل النص مباشرة من الـ HomeSearchField
-    context.read<HomeCubit>().searchComplaint(query);
-  },
-  onTapCancel: () {
-    context.read<HomeCubit>().cancelSearch();
-  },
-),
-
+          onChangedSearch: (value) {
+            context.read<HomeCubit>().searchTextChanged(value);
+          },
+          onTapLogout: () {
+            debugPrint("loggg outtttt");
+            context.read<LogoutCubit>().logOutSubmitted();
+          },
+          onTapNotification: () {
+            debugPrint("go to notification");
+          },
+          onSearchTap: (query) {
+            // نرسل النص مباشرة من الـ HomeSearchField
+            context.read<HomeCubit>().searchComplaint(query);
+          },
+          onTapCancel: () {
+            context.read<HomeCubit>().cancelSearch();
+          },
+        ),
 
         SizedBox(height: SizeConfig.height * .02),
 
@@ -77,18 +76,20 @@ class HomeViewBody extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               CustomTextWidget(
                 "سجل الشكاوي",
-                fontSize: SizeConfig.diagonal * .04,
+                fontSize: SizeConfig.diagonal * .038,
                 color: AppColor.black,
               ),
               CustomButtonWidget(
                 borderRadius: 10,
-                childHorizontalPad: 6,
-                childVerticalPad: 4,
+                childHorizontalPad: SizeConfig.width*.005,
+                childVerticalPad: SizeConfig.height*.002,
                 backgroundColor: AppColor.lightPurple,
                 onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   context.pushNamed(AppRouteRName.submitComplaintView);
                 },
                 child: Row(
@@ -151,27 +152,30 @@ class HomeViewBody extends StatelessWidget {
                 itemBuilder: (context, index) {
                   if (state.canLoadMore && index == complaints.length) {
                     return Center(
-                      child: CustomButtonWidget(
-                        onTap: () {
-                          context.read<HomeCubit>().loadMoreComplaints();
-                        },
-                        backgroundColor: AppColor.primary,
-                        borderRadius: 10,
-                        childVerticalPad: 4,
-                        childHorizontalPad: 12,
-                        child: state.isLoadingMore
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CustomButtonWidget(
+                          onTap: () {
+                            context.read<HomeCubit>().loadMoreComplaints();
+                          },
+                          backgroundColor: AppColor.primary,
+                          borderRadius: 10,
+                          childVerticalPad: 4,
+                          childHorizontalPad: 12,
+                          child: state.isLoadingMore
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : CustomTextWidget(
+                                  'عرض المزيد',
+                                  color: AppColor.white,
+                                  fontSize: SizeConfig.diagonal * .025,
                                 ),
-                              )
-                            : CustomTextWidget(
-                                'عرض المزيد',
-                                color: AppColor.white,
-                                fontSize: SizeConfig.diagonal * .025,
-                              ),
+                        ),
                       ),
                     );
                   }

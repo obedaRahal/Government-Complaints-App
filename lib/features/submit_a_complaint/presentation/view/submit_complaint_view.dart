@@ -1,3 +1,4 @@
+import 'package:complaints_app/core/common%20widget/arrow_back.dart';
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
@@ -6,12 +7,12 @@ import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:complaints_app/features/auth/presentation/widget/auth_field_label.dart';
 import 'package:complaints_app/features/submit_a_complaint/presentation/manager/submit_complaint_state.dart';
 import 'package:complaints_app/features/submit_a_complaint/presentation/manager/submit_complaint_cubit.dart';
-import 'package:complaints_app/core/common%20widget/custom_submit_complaint_field.dart';
 import 'package:complaints_app/features/submit_a_complaint/presentation/widgets/complaint_attachment_field.dart';
 import 'package:complaints_app/features/submit_a_complaint/presentation/widgets/custom_description_text_fiels.dart';
 import 'package:complaints_app/features/submit_a_complaint/presentation/widgets/submit_complaint_fild_lable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class SubmitComplaintView extends StatelessWidget {
   const SubmitComplaintView({super.key});
@@ -36,12 +37,11 @@ class SubmitComplaintView extends StatelessWidget {
             context,
             message: state.submitSuccessMessage ?? "تم إرسال الشكوى بنجاح",
             isSuccess: true,
-            
           );
           // ولو حابة ترجعي المستخدم لصفحة ثانية بعد الإرسال:
           // context.pop();
-         Navigator.pop(context);
-        
+          //Navigator.pop(context);
+         //GoRouter.of(context).pop();
         }
       },
       builder: (context, state) {
@@ -78,20 +78,22 @@ class SubmitComplaintView extends StatelessWidget {
                             color: AppColor.textColor,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12, bottom: 12),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 28,
-                              fontWeight: FontWeight.w500,
-                              color: AppColor.textColor,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
+
+                        // Padding(
+                        //   padding: const EdgeInsets.only(left: 12, bottom: 12),
+                        //   child: IconButton(
+                        //     icon: Icon(
+                        //       Icons.arrow_forward_ios,
+                        //       size: 28,
+                        //       fontWeight: FontWeight.w500,
+                        //       color: AppColor.textColor,
+                        //     ),
+                        //     onPressed: () {
+                        //       Navigator.pop(context);
+                        //     },
+                        //   ),
+                        // ),
+                        ArrowBack(),
                       ],
                     ),
                   ),

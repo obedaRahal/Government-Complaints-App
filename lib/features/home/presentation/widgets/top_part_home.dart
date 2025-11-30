@@ -24,7 +24,6 @@ class TopPartHome extends StatelessWidget {
   final void Function(String) onSearchTap;
   final void Function() onTapCancel;
 
-
   @override
   Widget build(BuildContext context) {
     String welcomeMessage = CacheHelper.getData(key: "welcomeMessage") ?? "";
@@ -59,7 +58,7 @@ class TopPartHome extends StatelessWidget {
                   child: Icon(
                     Icons.login_outlined,
                     color: AppColor.middleGrey,
-                    size: SizeConfig.height * .04,
+                    size: SizeConfig.height * .038,
                   ),
                 ),
 
@@ -74,27 +73,23 @@ class TopPartHome extends StatelessWidget {
                   child: Icon(
                     Icons.notification_important_outlined,
                     color: AppColor.middleGrey,
-                    size: SizeConfig.height * .04,
+                    size: SizeConfig.height * .038,
                   ),
                 ),
               ],
             ),
             SizedBox(height: SizeConfig.height * .01),
-          HomeSearchField(
-  onChangedSearch: onChangedSearch,
-  onSearchTap: onSearchTap,   // يرسل النص
-  onCancelTap: onTapCancel,
-),
-
+            HomeSearchField(
+              onChangedSearch: onChangedSearch,
+              onSearchTap: onSearchTap, // يرسل النص
+              onCancelTap: onTapCancel,
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-
-
 
 class HomeSearchField extends StatefulWidget {
   const HomeSearchField({
@@ -105,7 +100,7 @@ class HomeSearchField extends StatefulWidget {
   });
 
   final ValueChanged<String> onChangedSearch;
-  final ValueChanged<String> onSearchTap; 
+  final ValueChanged<String> onSearchTap;
   final VoidCallback onCancelTap;
 
   @override
@@ -118,7 +113,7 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(); 
+    _controller = TextEditingController();
   }
 
   @override
@@ -128,13 +123,16 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
   }
 
   void _onSearchPressed() {
+    FocusScope.of(context).unfocus();
+
     final text = _controller.text.trim();
     widget.onSearchTap(text);
   }
 
   void _onCancelPressed() {
-    _controller.clear();       
-    widget.onCancelTap();      //
+    _controller.clear(); // يمسح النص من الحقل
+    FocusScope.of(context).unfocus(); // ✅ فكّ الفوكس أيضاً هنا
+    widget.onCancelTap(); // ينادي الكيوبت (cancelSearch)
   }
 
   @override
@@ -144,7 +142,7 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
       children: [
         SizedBox(
           width: SizeConfig.width * .65,
-          height: 30,
+          height: SizeConfig.height * .06,
           child: CustomTextField(
             controller: _controller,
             hint: 'البحث في سجل الشكاوي...',
@@ -156,16 +154,16 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
             onSuffixTap: _onSearchPressed,
           ),
         ),
-
         CustomButtonWidget(
           borderRadius: 30,
           childHorizontalPad: SizeConfig.width * .06,
+          childVerticalPad: SizeConfig.height * .002,
           backgroundColor: AppColor.white,
           onTap: _onCancelPressed,
           child: CustomTextWidget(
             "إالغاء",
             color: AppColor.red,
-            fontSize: SizeConfig.diagonal * .032,
+            fontSize: SizeConfig.diagonal * .028,
           ),
         ),
       ],
