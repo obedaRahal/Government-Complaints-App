@@ -12,20 +12,17 @@ class TopPartHome extends StatelessWidget {
   const TopPartHome({
     super.key,
     required this.onChangedSearch,
-    required this.onTapProfile,
+    required this.onTapLogout,
     required this.onTapNotification,
     required this.onSearchTap,
     required this.onTapCancel,
-    required this.searchText,
   });
 
   final void Function(String) onChangedSearch;
-  final void Function() onTapProfile;
+  final void Function() onTapLogout;
   final void Function() onTapNotification;
-  final void Function() onSearchTap;
+  final void Function(String) onSearchTap;
   final void Function() onTapCancel;
-
-  final String searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +54,11 @@ class TopPartHome extends StatelessWidget {
                   childHorizontalPad: 3,
                   childVerticalPad: 3,
                   backgroundColor: AppColor.white,
-                  onTap: onTapProfile,
+                  onTap: onTapLogout,
                   child: Icon(
-                    Icons.group_outlined,
+                    Icons.login_outlined,
                     color: AppColor.middleGrey,
-                    size: SizeConfig.height * .04,
+                    size: SizeConfig.height * .038,
                   ),
                 ),
 
@@ -76,49 +73,100 @@ class TopPartHome extends StatelessWidget {
                   child: Icon(
                     Icons.notification_important_outlined,
                     color: AppColor.middleGrey,
-                    size: SizeConfig.height * .04,
+                    size: SizeConfig.height * .038,
                   ),
                 ),
               ],
             ),
             SizedBox(height: SizeConfig.height * .01),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: SizeConfig.width * .65,
-                  height: 30,
-
-                  child: CustomTextField(
-                    initialText: searchText, 
-                    hint: 'البحث في سجل الشكاوي...',
-                    suffixIcon: Icons.search,
-                    hintFontSize: SizeConfig.diagonal * .022,
-                    borderRadius: 30,
-                    onChanged: onChangedSearch,
-                    keyboardType: TextInputType.number,
-                    onSuffixTap: onSearchTap,
-                    //initialText: searchText,
-                  ),
-                ),
-
-                CustomButtonWidget(
-                  borderRadius: 30,
-                  childHorizontalPad: SizeConfig.width * .06,
-                  //childVerticalPad: 3,
-                  backgroundColor: AppColor.white,
-                  onTap: onTapCancel,
-                  child: CustomTextWidget(
-                    "إالغاء",
-                    color: AppColor.red,
-                    fontSize: SizeConfig.diagonal * .032,
-                  ),
-                ),
-              ],
+            HomeSearchField(
+              onChangedSearch: onChangedSearch,
+              onSearchTap: onSearchTap, // يرسل النص
+              onCancelTap: onTapCancel,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class HomeSearchField extends StatefulWidget {
+  const HomeSearchField({
+    super.key,
+    required this.onChangedSearch,
+    required this.onSearchTap,
+    required this.onCancelTap,
+  });
+
+  final ValueChanged<String> onChangedSearch;
+  final ValueChanged<String> onSearchTap;
+  final VoidCallback onCancelTap;
+
+  @override
+  State<HomeSearchField> createState() => _HomeSearchFieldState();
+}
+
+class _HomeSearchFieldState extends State<HomeSearchField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onSearchPressed() {
+    FocusScope.of(context).unfocus();
+
+    final text = _controller.text.trim();
+    widget.onSearchTap(text);
+  }
+
+  void _onCancelPressed() {
+    _controller.clear(); // يمسح النص من الحقل
+    FocusScope.of(context).unfocus(); // ✅ فكّ الفوكس أيضاً هنا
+    widget.onCancelTap(); // ينادي الكيوبت (cancelSearch)
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(
+          width: SizeConfig.width * .65,
+          height: SizeConfig.height * .06,
+          child: CustomTextField(
+            controller: _controller,
+            hint: 'البحث في سجل الشكاوي...',
+            suffixIcon: Icons.search,
+            hintFontSize: SizeConfig.diagonal * .022,
+            borderRadius: 30,
+            keyboardType: TextInputType.number,
+            onChanged: widget.onChangedSearch,
+            onSuffixTap: _onSearchPressed,
+          ),
+        ),
+        CustomButtonWidget(
+          borderRadius: 30,
+          childHorizontalPad: SizeConfig.width * .06,
+          childVerticalPad: SizeConfig.height * .002,
+          backgroundColor: AppColor.white,
+          onTap: _onCancelPressed,
+          child: CustomTextWidget(
+            "إالغاء",
+            color: AppColor.red,
+            fontSize: SizeConfig.diagonal * .028,
+          ),
+        ),
+      ],
     );
   }
 }

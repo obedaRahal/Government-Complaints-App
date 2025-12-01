@@ -22,6 +22,7 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
     this.submitComplaintUseCase,
   ) : super(const SubmitComplaintState(complaintTypes: [], agencies: []));
   Future<void> loadComplaintType() async {
+    if (isClosed) return;
     emit(
       state.copyWith(
         isLoadingComplaintTypes: true,
@@ -29,6 +30,7 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
       ),
     );
     final resultComplaintTypes = await getComplaintTypeUseCase();
+    if (isClosed) return;
     resultComplaintTypes.fold(
       (failure) {
         emit(
@@ -51,10 +53,11 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
 
   // 1) تحميل الجهات الحكومية من الـ API
   Future<void> loadAgencies() async {
+    if (isClosed) return;
     emit(state.copyWith(isLoadingAgencies: true, agenciesErrorMessage: null));
 
     final resultAgencies = await getAgenciesUseCase();
-
+    if (isClosed) return;
     resultAgencies.fold(
       (failure) {
         emit(
@@ -69,7 +72,8 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
       },
     );
   }
-    Future<void> submitComplaint() async {
+
+  Future<void> submitComplaint() async {
     debugPrint("===== SubmitComplaintCubit.submitComplaint START =====");
 
     // 1) تحقق بسيط من الحقول المطلوبة
@@ -111,7 +115,9 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
         .whereType<String>()
         .toList();
 
-    debugPrint("submitComplaint -> attachments count: ${attachmentPaths.length}");
+    debugPrint(
+      "submitComplaint -> attachments count: ${attachmentPaths.length}",
+    );
 
     // 3) حالة الـ loading
     emit(
@@ -148,9 +154,7 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
         );
       },
       (response) {
-        debugPrint(
-          "submitComplaint SUCCESS: ${response.successMessage}",
-        );
+        debugPrint("submitComplaint SUCCESS: ${response.successMessage}");
         emit(
           state.copyWith(
             isSubmitting: false,
@@ -164,7 +168,11 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
 
     debugPrint("===== SubmitComplaintCubit.submitComplaint END =====");
   }
-
+  @override
+  Future<void> close() {
+    descriptionController.dispose();
+    return super.close();
+  }
 
   // 2) اختيار نوع الشكوى
   void selectComplaintTypeEntity(String? name) {
@@ -247,7 +255,8 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
       ),
     );
   }
-    void resetForm() {
+
+  void resetForm() {
     emit(
       state.copyWith(
         // اختيار نوع الشكوى
@@ -274,5 +283,4 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
       ),
     );
   }
-
 }

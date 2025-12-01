@@ -3,8 +3,10 @@ import 'package:complaints_app/core/errors/expentions.dart';
 import 'package:complaints_app/core/errors/failure.dart';
 import 'package:complaints_app/core/network/network_info.dart';
 import 'package:complaints_app/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:complaints_app/features/auth/data/models/logout_model.dart';
 import 'package:complaints_app/features/auth/domain/entities/forget_password_email_response.dart';
 import 'package:complaints_app/features/auth/domain/entities/login_response.dart';
+import 'package:complaints_app/features/auth/domain/entities/logout_response.dart';
 import 'package:complaints_app/features/auth/domain/entities/register_response.dart';
 import 'package:complaints_app/features/auth/domain/entities/resend_password_reset_otp_response.dart';
 import 'package:complaints_app/features/auth/domain/entities/resend_verify_code_response.dart';
@@ -414,4 +416,49 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(ServerFailure(errMessage: 'حدث خطأ غير متوقع'));
     }
   }
+
+
+
+    @override
+  Future<Either<Failure, LogoutResponse>> logout() async {
+    debugPrint("============ AuthRepositoryImpl.logout ============");
+
+    // if (!await networkInfo.isConnected) {
+    //   debugPrint("✗ AuthRepositoryImpl.resendPasswordResetOtp -> no internet");
+    //   return Left(
+    //     ConnectionFailure(errMessage: 'تحقق من اتصالك بالإنترنت'),
+    //   );
+    // }
+
+    try {
+      debugPrint("→ calling remoteDataSource.logout");
+      final model = await remoteDataSource.logout();
+
+      debugPrint("← remoteDataSource.logout success, mapped to entity");
+      debugPrint("=================================================");
+      await TokenStorage.clear();
+      debugPrint("token issssss  : ${TokenStorage.getAccessToken()}");
+      debugPrint("expiry issssss  : ${TokenStorage.getAccessTokenExpiry()}");
+
+      return Right(model.toEntity());
+    } on ServerException catch (e) {
+      debugPrint(
+        "✗ AuthRepositoryImpl.logout ServerException: ${e.errorModel.errorMessage}",
+      );
+      debugPrint("=================================================");
+      return Left(ServerFailure(errMessage: e.errorModel.errorMessage));
+    } on CacheException catch (e) {
+      debugPrint(
+        "✗ AuthRepositoryImpl.logout CacheException: ${e.errorMessage}",
+      );
+      debugPrint("=================================================");
+      return Left(CacheFailure(errMessage: e.errorMessage));
+    } catch (e) {
+      debugPrint("✗ AuthRepositoryImpl.logout Unexpected error: $e");
+      debugPrint("=================================================");
+      return Left(ServerFailure(errMessage: 'حدث خطأ غير متوقع'));
+    }
+  }
+
+
 }

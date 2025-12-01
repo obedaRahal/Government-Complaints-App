@@ -1,6 +1,7 @@
 import 'package:complaints_app/core/errors/failure.dart';
 import 'package:complaints_app/features/auth/domain/entities/forget_password_email_response.dart';
 import 'package:complaints_app/features/auth/domain/entities/login_response.dart';
+import 'package:complaints_app/features/auth/domain/entities/logout_response.dart';
 import 'package:complaints_app/features/auth/domain/entities/register_response.dart';
 import 'package:complaints_app/features/auth/domain/entities/resend_password_reset_otp_response.dart';
 import 'package:complaints_app/features/auth/domain/entities/resend_verify_code_response.dart';
@@ -46,4 +47,6 @@ abstract class AuthRepository {
     required String email,
     required String password,
   });
+
+  Future<Either<Failure, LogoutResponse>> logout();
 }

@@ -3,10 +3,14 @@ import 'package:complaints_app/core/config/route_name.dart';
 import 'package:complaints_app/core/databases/cache/cache_helper.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/auth_session.dart';
+import 'package:complaints_app/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   //await CacheHelper.clearData();
 
   runApp(const ComplaitsApp());
