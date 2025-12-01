@@ -10,9 +10,15 @@ class AppColor {
   static const darkGrey = Color(0xff484848);
   static const middleGrey = Color(0xff8D8D8D);
   static const greyText = Color(0xff828282);
+  static const greyTextInCard = Color(0xff939393);
   static const lightGray = Color(0xffD5D5D5);
   static const borderGrey = Color(0xffB4B4B4);
   static const dividerColor = Color(0xffF6F6F6);
+  static const borderContainer = Color(0xffD9D9D9);
+  static const textInCard = Color(0xff222222);
+  static const statusProcessing = Color(0xff9E9E9E);
+
+
 
   static const blue = Color(0xff3F8CE3);
   static const green = Color(0xff3DD548);

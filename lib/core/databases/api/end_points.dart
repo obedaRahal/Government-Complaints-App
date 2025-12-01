@@ -1,6 +1,6 @@
 class EndPoints {
   /// عدّل الـ baseUrl حسب الـ API تبعك
-  static const String baseUrl = 'http://192.168.1.113/api/v1/';
+  static const String baseUrl = 'http://192.168.130.187/api/v1/';
   static const String refreshToken = 'http://localhost/api/refresh';
 
 
@@ -24,5 +24,6 @@ class EndPoints {
   static const String agency = 'citizen/home/agencyByName';
   static const String complaintType = 'citizen/home/ComplaintTypeByName';
   static const String createComplaint = 'citizen/home/createComplain';
-
+  // complaint details
+  static const String complaintDetails = "citizen/complaint/getDetails/"; 
 }

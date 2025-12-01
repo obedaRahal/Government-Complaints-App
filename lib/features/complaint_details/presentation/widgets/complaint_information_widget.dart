@@ -31,7 +31,7 @@ class ComplaintInformationWidget extends StatelessWidget {
               color: titleColor,
               fontWeight: FontWeight.bold,
               fontFamily: AppFonts.tasees,
-              fontSize: 20,
+              fontSize: 18,
             ),
           ),
           Padding(
@@ -41,7 +41,7 @@ class ComplaintInformationWidget extends StatelessWidget {
               style: TextStyle(
                 color: hintColor,
                 fontFamily: AppFonts.tasees,
-                fontSize: 14,
+                fontSize: 13,
               ),
             ),
           ),
