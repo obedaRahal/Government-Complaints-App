@@ -3,6 +3,7 @@ import 'package:complaints_app/core/errors/failure.dart';
 import 'package:complaints_app/core/network/network_info.dart';
 import 'package:complaints_app/features/complaint_details/data/data_sources/complaint_details_remote_data_source.dart';
 import 'package:complaints_app/features/complaint_details/domain/entities/complaint_details_entity.dart';
+import 'package:complaints_app/features/complaint_details/domain/entities/delete_complaint_response.dart';
 import 'package:complaints_app/features/complaint_details/domain/repositories/complaint_details_repositry.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
@@ -47,6 +48,21 @@ class ComplaintDetailsRepositoryImpl implements ComplaintDetailsRepository {
       return Left(
          ServerFailure(errMessage: 'حدث خطأ غير متوقع'),
       );
+    }
+  }
+  @override
+  Future<Either<Failure, DeleteComplaintResponseEntity>> deleteComplaint(
+    int id,
+  ) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final model = await remoteDataSource.deleteComplaint(id);
+        return Right(model.toEntity());
+      } on ServerException catch (e) {
+        return Left(ServerFailure(errMessage: e.errorModel.errorMessage));
+      }
+    } else {
+      return Left(const  ServerFailure(errMessage: 'حدث خطأ غير متوقع'),);
     }
   }
 }

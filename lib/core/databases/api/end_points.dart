@@ -26,4 +26,5 @@ class EndPoints {
   static const String createComplaint = 'citizen/home/createComplain';
   // complaint details
   static const String complaintDetails = "citizen/complaint/getDetails/"; 
+  static const String deleteComplaint = 'citizen/complaint/delete/';
 }

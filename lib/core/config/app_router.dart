@@ -23,6 +23,11 @@ import 'package:complaints_app/features/auth/presentation/view/forgot_password_o
 import 'package:complaints_app/features/auth/presentation/view/login_view.dart';
 import 'package:complaints_app/features/auth/presentation/view/register_view.dart';
 import 'package:complaints_app/features/auth/presentation/view/verify_register_view.dart';
+import 'package:complaints_app/features/complaint_details/data/data_sources/complaint_details_remote_data_source.dart';
+import 'package:complaints_app/features/complaint_details/data/repository_impl/complaint_details_repository_impl.dart';
+import 'package:complaints_app/features/complaint_details/domain/use_case/delete_complaint_use_case.dart';
+import 'package:complaints_app/features/complaint_details/domain/use_case/get_complaint_details_use_case.dart';
+import 'package:complaints_app/features/complaint_details/presentation/manager/complaint_details_cubit.dart';
 import 'package:complaints_app/features/complaint_details/presentation/view/complaint_details_view.dart';
 import 'package:complaints_app/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:complaints_app/features/home/data/repository_impl/home_repository_impl.dart';
@@ -300,26 +305,36 @@ abstract class AppRourer {
           final homeRemoteDataSource = HomeRemoteDataSourceImpl(apiConsumer);
           final homeRepository = HomeRepositoryImpl(homeRemoteDataSource);
 
-          final getComplaintsUseCase = GetComplaintsUseCase(repository:  homeRepository);
+          final getComplaintsUseCase = GetComplaintsUseCase(
+            repository: homeRepository,
+          );
 
+          final searchComplaintUseCase = SearchComplaintUseCase(
+            repository: homeRepository,
+          );
 
-          final searchComplaintUseCase = SearchComplaintUseCase(repository: homeRepository);
-
-          final authRemoreDataSourcev = AuthRemoteDataSourceImpl(apiConsumer: apiConsumer);
-          final authRepository = AuthRepositoryImpl(remoteDataSource: authRemoreDataSourcev , networkInfo: networkInfo);
+          final authRemoreDataSourcev = AuthRemoteDataSourceImpl(
+            apiConsumer: apiConsumer,
+          );
+          final authRepository = AuthRepositoryImpl(
+            remoteDataSource: authRemoreDataSourcev,
+            networkInfo: networkInfo,
+          );
           final logoutUseCase = LogoutUseCase(repository: authRepository);
 
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) =>
+                    HomeCubit(getComplaintsUseCase, searchComplaintUseCase),
+              ),
 
-          return MultiBlocProvider(providers: [
-            BlocProvider(
-            create: (_) => HomeCubit(getComplaintsUseCase ,searchComplaintUseCase),
-          ),
-
-          BlocProvider(
-            create: (_) => LogoutCubit(logoutUseCase:  logoutUseCase),
-          )
-
-          ], child: const HomeView());
+              BlocProvider(
+                create: (_) => LogoutCubit(logoutUseCase: logoutUseCase),
+              ),
+            ],
+            child: const HomeView(),
+          );
         },
       ),
 
@@ -360,12 +375,46 @@ abstract class AppRourer {
         },
       ),
       GoRoute(
-        path: '/complaintDetailsView',
+        path: '/complaintDetailsView/:id',
         name: AppRouteRName.complaintDetailsView,
-        builder: (context, state) => const ComplaintDetailsView(),
+        builder: (context, state) {
+          // 1) نقرأ الـ id من الـ path
+          final idString = state.pathParameters['id']!;
+          final complaintId = int.tryParse(idString) ?? 0;
+
+          // 2) نجهز الـ Dio + ApiConsumer + RemoteDataSource + Repository + UseCase
+          final dio = Dio(
+            BaseOptions(
+              baseUrl: EndPoints.baseUrl,
+              receiveDataWhenStatusError: true,
+            ),
+          );
+
+          final api = DioConsumer(dio: dio);
+
+          final remoteDataSource = ComplaintDetailsRemoteDataSourceImpl(api);
+          final connectionChecker = InternetConnectionChecker.createInstance();
+          final networkInfo = NetworkInfoImpl(connectionChecker);
+          final repository = ComplaintDetailsRepositoryImpl(
+            remoteDataSource: remoteDataSource,
+            networkInfo: networkInfo,
+          );
+          final getComplaintDetailsUseCase = GetComplaintDetailsUseCase(
+            repository,
+          );
+          final deleteComplaintUseCase = DeleteComplaintUseCase(repository);
+
+          // 3) نحقن الـ Cubit ونطلق تحميل التفاصيل مباشرة
+          return BlocProvider(
+            create: (_) => ComplaintDetailsCubit(
+              getComplaintDetailsUseCase,
+              deleteComplaintUseCase,
+            )..loadComplaintDetails(complaintId),
+
+            child: ComplaintDetailsView(complaintId: complaintId),
+          );
+        },
       ),
     ],
-    
   );
-  
 }

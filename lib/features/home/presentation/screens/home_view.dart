@@ -186,8 +186,12 @@ class HomeViewBody extends StatelessWidget {
                   final statusColor = _mapStatusColor(complaint.currentStatus);
 
                   return GestureDetector(
-                    onTap: (){
-                      context.pushNamed(AppRouteRName.complaintDetailsView);
+                    onTap: () {
+                      context.pushNamed(
+                        AppRouteRName.complaintDetailsView,
+                        pathParameters: {'id': complaint.id.toString()},
+                      );
+                      debugPrint("complaint id is : ${complaint.id}");
                     },
                     child: ComplaintCard(
                       title: complaint.title,

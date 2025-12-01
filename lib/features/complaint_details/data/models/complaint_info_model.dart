@@ -8,6 +8,7 @@ class ComplaintInfoModel {
   final String description;
   final String status;
   final String locationText;
+  final String createdAt;
 
   ComplaintInfoModel({
     required this.complaintType,
@@ -16,7 +17,7 @@ class ComplaintInfoModel {
     required this.title,
     required this.description,
     required this.status,
-    required this.locationText,
+    required this.locationText, required this.createdAt,
   });
 
   factory ComplaintInfoModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +29,8 @@ class ComplaintInfoModel {
       description: json['description'] as String,
       status: json['status'] as String,
       locationText: json['location_text'] as String,
+      createdAt: json['created_at'] as String? ??
+          '', 
     );
   }
 
@@ -40,6 +43,7 @@ class ComplaintInfoModel {
       description: description,
       status: status,
       locationText: locationText,
+      createdAt: createdAt,
     );
   }
 }
