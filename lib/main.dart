@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
+    //await CacheHelper.clearData();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  //await CacheHelper.clearData();
+
 
   runApp(const ComplaitsApp());
 }

@@ -85,10 +85,11 @@ class HomeViewBody extends StatelessWidget {
               ),
               CustomButtonWidget(
                 borderRadius: 10,
-                childHorizontalPad: SizeConfig.width*.005,
-                childVerticalPad: SizeConfig.height*.002,
+                childHorizontalPad: SizeConfig.width * .005,
+                childVerticalPad: SizeConfig.height * .002,
                 backgroundColor: AppColor.lightPurple,
                 onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   context.pushNamed(AppRouteRName.submitComplaintView);
                 },
                 child: Row(
