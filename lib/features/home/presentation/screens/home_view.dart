@@ -164,10 +164,15 @@ class HomeViewBody extends StatelessWidget {
                           childHorizontalPad: 12,
                           child: state.isLoadingMore
                               ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
+                                  // height: 20,
+                                  // width: 20,
                                   child: CircularProgressIndicator(
+                                    padding: EdgeInsets.symmetric(
+                                      //vertical: 10,
+                                      horizontal: 20
+                                    ),
                                     strokeWidth: 2,
+                                    color:AppColor.white,
                                   ),
                                 )
                               : CustomTextWidget(
@@ -191,6 +196,7 @@ class HomeViewBody extends StatelessWidget {
                         AppRouteRName.complaintDetailsView,
                         pathParameters: {'id': complaint.id.toString()},
                       );
+                      context.pushNamed(AppRouteRName.complaintDetailsView);
                       debugPrint("complaint id is : ${complaint.id}");
                     },
                     child: ComplaintCard(
