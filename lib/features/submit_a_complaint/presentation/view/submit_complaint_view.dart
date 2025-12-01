@@ -37,10 +37,9 @@ class SubmitComplaintView extends StatelessWidget {
             isSuccess: true,
           );
           //context.read<SubmitComplaintCubit>().resetForm();
-          // ولو حابة ترجعي المستخدم لصفحة ثانية بعد الإرسال:
+
           // context.pop();
-        //  Navigator.pop(context);
-        
+          Navigator.pop(context);
         }
       },
       builder: (context, state) {

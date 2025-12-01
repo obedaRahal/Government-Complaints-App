@@ -184,12 +184,17 @@ class HomeViewBody extends StatelessWidget {
                   final statusText = complaint.currentStatus;
                   final statusColor = _mapStatusColor(complaint.currentStatus);
 
-                  return ComplaintCard(
-                    title: complaint.title,
-                    statusText: statusText,
-                    statusColor: statusColor,
-                    number: complaint.number.toString(),
-                    description: complaint.description,
+                  return GestureDetector(
+                    onTap: (){
+                      context.pushNamed(AppRouteRName.complaintDetailsView);
+                    },
+                    child: ComplaintCard(
+                      title: complaint.title,
+                      statusText: statusText,
+                      statusColor: statusColor,
+                      number: complaint.number.toString(),
+                      description: complaint.description,
+                    ),
                   );
                 },
               );
