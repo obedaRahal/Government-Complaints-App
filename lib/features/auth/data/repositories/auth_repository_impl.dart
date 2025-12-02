@@ -3,7 +3,6 @@ import 'package:complaints_app/core/errors/expentions.dart';
 import 'package:complaints_app/core/errors/failure.dart';
 import 'package:complaints_app/core/network/network_info.dart';
 import 'package:complaints_app/features/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:complaints_app/features/auth/data/models/logout_model.dart';
 import 'package:complaints_app/features/auth/domain/entities/forget_password_email_response.dart';
 import 'package:complaints_app/features/auth/domain/entities/login_response.dart';
 import 'package:complaints_app/features/auth/domain/entities/logout_response.dart';

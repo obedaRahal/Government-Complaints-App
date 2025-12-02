@@ -60,7 +60,7 @@ class HomeRepositoryImpl implements HomeRepository {
       debugPrint("→ calling remoteDataSource.searchComplaint");
       final model = await remoteDataSource.searchComplaint(search: search);
 
-      final entity = model?.toEntity(); // ممكن تكون null
+      final entity = model?.toEntity();
       debugPrint("← remoteDataSource.searchComplaint success, mapped to entity");
       debugPrint("=================================================");
 

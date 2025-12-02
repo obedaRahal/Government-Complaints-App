@@ -21,11 +21,11 @@ class ComplaintDetailsRepositoryImpl implements ComplaintDetailsRepository {
   Future<Either<Failure, ComplaintDetailsEntity>> getComplaintDetails(
     int complaintId,
   ) async {
-    if (!await networkInfo.isConnected) {
-      return Left(
-       ConnectionFailure(errMessage: 'تحقق من اتصالك بالإنترنت'),
-      );
-    }
+    // if (!await networkInfo.isConnected) {
+    //   return Left(
+    //    ConnectionFailure(errMessage: 'تحقق من اتصالك بالإنترنت'),
+    //   );
+    // }
 
     try {
       debugPrint(

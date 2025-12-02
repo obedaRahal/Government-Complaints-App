@@ -15,10 +15,9 @@ class LocalNotificationService {
     streamController.add(notificationResponse);
   }
 
-  // 👈 نعرّف قناة ثابتة
   static const AndroidNotificationChannel _channel = AndroidNotificationChannel(
-    'high_importance_channel', // id ثابت
-    'High Importance Notifications', // الاسم الظاهر للمستخدم
+    'high_importance_channel', 
+    'High Importance Notifications', 
     description: 'Channel for important notifications',
     importance: Importance.high,
     playSound: true,
@@ -36,14 +35,12 @@ class LocalNotificationService {
       iOS: iosSettings,
     );
 
-    // 🔹 إنشاء القناة على أندرويد
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
         >()
         ?.createNotificationChannel(_channel);
 
-    // 🔹 تهيئة البلجن
     await flutterLocalNotificationsPlugin.initialize(
       settings,
       onDidReceiveNotificationResponse: onTap,
@@ -53,7 +50,7 @@ class LocalNotificationService {
 
   static Future<void> showBasicNotification(RemoteMessage message) async {
     final android = AndroidNotificationDetails(
-      _channel.id, // 👈 نربط بالإيد تبع القناة
+      _channel.id,
       _channel.name,
       channelDescription: _channel.description,
       importance: Importance.high,

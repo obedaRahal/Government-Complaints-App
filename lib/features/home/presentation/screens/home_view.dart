@@ -24,7 +24,6 @@ class HomeView extends StatelessWidget {
           listenWhen: (prev, curr) => prev.status != curr.status,
           listener: (context, state) {
             if (state.status == LogoutStatusEnum.success) {
-              // مسح الـ stack والذهاب للّوج إن
               context.goNamed(AppRouteRName.welcomeView);
             }
 
@@ -62,7 +61,6 @@ class HomeViewBody extends StatelessWidget {
             debugPrint("go to notification");
           },
           onSearchTap: (query) {
-            // نرسل النص مباشرة من الـ HomeSearchField
             context.read<HomeCubit>().searchComplaint(query);
           },
           onTapCancel: () {
@@ -88,9 +86,16 @@ class HomeViewBody extends StatelessWidget {
                 childHorizontalPad: SizeConfig.width * .005,
                 childVerticalPad: SizeConfig.height * .002,
                 backgroundColor: AppColor.lightPurple,
-                onTap: () {
+                onTap: () async {
                   FocusManager.instance.primaryFocus?.unfocus();
-                  context.pushNamed(AppRouteRName.submitComplaintView);
+
+                  final result = await context.pushNamed<bool>(
+                    AppRouteRName.submitComplaintView,
+                  );
+
+                  if (result == true) {
+                    context.read<HomeCubit>().loadComplaints();
+                  }
                 },
                 child: Row(
                   children: [
@@ -169,10 +174,10 @@ class HomeViewBody extends StatelessWidget {
                                   child: CircularProgressIndicator(
                                     padding: EdgeInsets.symmetric(
                                       //vertical: 10,
-                                      horizontal: 20
+                                      horizontal: 20,
                                     ),
                                     strokeWidth: 2,
-                                    color:AppColor.white,
+                                    color: AppColor.white,
                                   ),
                                 )
                               : CustomTextWidget(
@@ -191,14 +196,19 @@ class HomeViewBody extends StatelessWidget {
                   final statusColor = _mapStatusColor(complaint.currentStatus);
 
                   return GestureDetector(
-                    onTap: () {
-                      context.pushNamed(
+                    onTap: () async {
+                      final complaintId = complaint.id;
+
+                      final result = await context.pushNamed<bool>(
                         AppRouteRName.complaintDetailsView,
-                        pathParameters: {'id': complaint.id.toString()},
+                        pathParameters: {'id': complaintId.toString()},
                       );
-                      context.pushNamed(AppRouteRName.complaintDetailsView);
-                      debugPrint("complaint id is : ${complaint.id}");
+
+                      if (result == true) {
+                        context.read<HomeCubit>().loadComplaints();
+                      }
                     },
+
                     child: ComplaintCard(
                       title: complaint.title,
                       statusText: statusText,

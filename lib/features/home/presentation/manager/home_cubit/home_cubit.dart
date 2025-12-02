@@ -12,7 +12,7 @@ class HomeCubit extends Cubit<HomeState> {
     : super(const HomeState()) {
     debugPrint("============ HomeCubit INIT ============");
     loadComplaints();
-  }
+  } 
 
   final GetComplaintsUseCase _getComplaintsUseCase;
   final SearchComplaintUseCase _searchComplaintUseCase;
@@ -26,7 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
       state.copyWith(
         status: HomeStatusEnum.loading,
         complaints: [],
-        isSearchMode: false, // ✅ مهم
+        isSearchMode: false,
         message: null,
         currentPage: page,
       ),
