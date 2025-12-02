@@ -1,4 +1,6 @@
+import 'package:complaints_app/features/home/domain/entities/notification_entity.dart';
 import 'package:complaints_app/features/home/domain/use_cases/get_complaints_use_case.dart';
+import 'package:complaints_app/features/home/domain/use_cases/get_notifications_use_case.dart';
 import 'package:complaints_app/features/home/domain/use_cases/search_complaint_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,14 +10,18 @@ import '../../../domain/entities/complaint_entity.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(this._getComplaintsUseCase, this._searchComplaintUseCase)
-    : super(const HomeState()) {
+  HomeCubit(
+    this._getComplaintsUseCase,
+    this._searchComplaintUseCase,
+    this._getNotificationsUseCase,
+  ) : super(const HomeState()) {
     debugPrint("============ HomeCubit INIT ============");
     loadComplaints();
-  } 
+  }
 
   final GetComplaintsUseCase _getComplaintsUseCase;
   final SearchComplaintUseCase _searchComplaintUseCase;
+  final GetNotificationsUseCase _getNotificationsUseCase;
 
   Future<void> loadComplaints({int page = 1, int perPage = 10}) async {
     debugPrint("============ HomeCubit.loadComplaints ============");
@@ -101,17 +107,11 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(searchText: value));
   }
 
-    Future<void> cancelSearch() async {
+  Future<void> cancelSearch() async {
     debugPrint("HomeCubit.cancelSearch");
-    emit(
-      state.copyWith(
-        searchText: '',
-        isSearchMode: false,
-      ),
-    );
+    emit(state.copyWith(searchText: '', isSearchMode: false));
     await loadComplaints(page: 1, perPage: state.perPage);
   }
-
 
   Future<void> searchComplaint(String search) async {
     final trimmed = search.trim();
@@ -161,6 +161,37 @@ class HomeCubit extends Cubit<HomeState> {
             ),
           );
         }
+      },
+    );
+  }
+
+  Future<void> loadNotifications() async {
+    debugPrint("============ HomeCubit.loadNotifications ============");
+
+    emit(
+      state.copyWith(
+        isNotificationsLoading: true,
+        notificationsErrorMessage: null,
+      ),
+    );
+
+    final result = await _getNotificationsUseCase();
+
+    result.fold(
+      (failure) {
+        debugPrint("loadNotifications -> FAILURE: ${failure.errMessage}");
+        emit(
+          state.copyWith(
+            isNotificationsLoading: false,
+            notificationsErrorMessage: failure.errMessage,
+          ),
+        );
+      },
+      (list) {
+        debugPrint("loadNotifications -> SUCCESS, count: ${list.length}");
+        emit(
+          state.copyWith(isNotificationsLoading: false, notifications: list),
+        );
       },
     );
   }

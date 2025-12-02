@@ -19,6 +19,7 @@ class EndPoints {
   // home
     static const String showComplaints = 'citizen/home/showComplaints';
     static const String searchComplaint = 'citizen/home/searchComplaint';
+    static const String getNotifications = '/citizen/notification';
 
   // submit a complaint
   static const String agency = 'citizen/home/agencyByName';

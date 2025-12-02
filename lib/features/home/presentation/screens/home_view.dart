@@ -8,6 +8,7 @@ import 'package:complaints_app/features/auth/presentation/manager/logout_cubit/l
 import 'package:complaints_app/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:complaints_app/features/home/presentation/widgets/complaint_Card_widget.dart';
 import 'package:complaints_app/features/home/presentation/widgets/complaint_card_shimmer_widget.dart';
+import 'package:complaints_app/features/home/presentation/widgets/show_notification_bottom_sheet.dart';
 import 'package:complaints_app/features/home/presentation/widgets/top_part_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,9 +58,30 @@ class HomeViewBody extends StatelessWidget {
             debugPrint("loggg outtttt");
             context.read<LogoutCubit>().logOutSubmitted();
           },
+
           onTapNotification: () {
-            debugPrint("go to notification");
+            // final dummyNotifications = <NotificationItem>[
+            //   const NotificationItem(
+            //     title: 'تم تسجيل شكوى جديدة',
+            //     body:
+            //         'تم استلام شكواك وسيتم تحويلها إلى الجهة المختصة للمعالجة.',
+            //     date: 'منذ دقيقة',
+            //   ),
+            //   const NotificationItem(
+            //     title: 'تحديث حالة الشكوى رقم 11',
+            //     body: 'تم تغيير حالة الشكوى إلى: قيد المعالجة.',
+            //     date: 'قبل 10 دقائق',
+            //   ),
+            //   const NotificationItem(
+            //     title: 'تم إغلاق الشكوى رقم 8',
+            //     body: 'تمت معالجة الشكوى وإغلاقها. شكراً لتعاونك.',
+            //     date: 'اليوم - 10:30 ص',
+            //   ),
+            // ];
+
+            showNotificationsBottomSheet(parentContext: context);
           },
+
           onSearchTap: (query) {
             context.read<HomeCubit>().searchComplaint(query);
           },

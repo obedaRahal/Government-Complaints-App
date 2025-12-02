@@ -14,6 +14,10 @@ class HomeState {
   final bool isSearchMode;
   final String searchText;
 
+  final List<NotificationEntity> notifications;
+  final bool isNotificationsLoading;
+  final String? notificationsErrorMessage;
+
   bool get canLoadMore => currentPage < lastPage;
 
   const HomeState({
@@ -25,7 +29,11 @@ class HomeState {
     this.perPage = 10,
     this.isLoadingMore = false,
     this.isSearchMode = false,
-    this.searchText= ''
+    this.searchText = '',
+
+    this.notifications = const [],
+    this.isNotificationsLoading = false,
+    this.notificationsErrorMessage,
   });
 
   HomeState copyWith({
@@ -38,6 +46,10 @@ class HomeState {
     bool? isLoadingMore,
     bool? isSearchMode,
     String? searchText,
+
+    List<NotificationEntity>? notifications,
+    bool? isNotificationsLoading,
+    String? notificationsErrorMessage,
   }) {
     return HomeState(
       status: status ?? this.status,
@@ -50,6 +62,11 @@ class HomeState {
       isSearchMode: isSearchMode ?? this.isSearchMode,
       searchText: searchText ?? this.searchText,
 
+      notifications: notifications ?? this.notifications,
+      isNotificationsLoading:
+          isNotificationsLoading ?? this.isNotificationsLoading,
+      notificationsErrorMessage:
+          notificationsErrorMessage ?? this.notificationsErrorMessage,
     );
   }
 }

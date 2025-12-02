@@ -32,6 +32,7 @@ import 'package:complaints_app/features/complaint_details/presentation/view/comp
 import 'package:complaints_app/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:complaints_app/features/home/data/repository_impl/home_repository_impl.dart';
 import 'package:complaints_app/features/home/domain/use_cases/get_complaints_use_case.dart';
+import 'package:complaints_app/features/home/domain/use_cases/get_notifications_use_case.dart';
 import 'package:complaints_app/features/home/domain/use_cases/search_complaint_use_case.dart';
 import 'package:complaints_app/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:complaints_app/features/home/presentation/screens/home_view.dart';
@@ -322,11 +323,18 @@ abstract class AppRourer {
           );
           final logoutUseCase = LogoutUseCase(repository: authRepository);
 
+          final notificationUseCase = GetNotificationsUseCase(
+            repository: homeRepository,
+          );
+
           return MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (_) =>
-                    HomeCubit(getComplaintsUseCase, searchComplaintUseCase),
+                create: (_) => HomeCubit(
+                  getComplaintsUseCase,
+                  searchComplaintUseCase,
+                  notificationUseCase,
+                ),
               ),
 
               BlocProvider(
