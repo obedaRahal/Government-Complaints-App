@@ -24,7 +24,9 @@ class ComplaintDetailsRepositoryImpl implements ComplaintDetailsRepository {
     int complaintId,
   ) async {
     if (!await networkInfo.isConnected) {
-      return Left(ConnectionFailure(errMessage: 'تحقق من اتصالك بالإنترنت'));
+      return Left(
+       ConnectionFailure(errMessage: 'تحقق من اتصالك بالإنترنت'),
+      );
     }
 
     try {

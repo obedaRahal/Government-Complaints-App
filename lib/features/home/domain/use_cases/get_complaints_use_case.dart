@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 import '../entities/complaints_page_entity.dart';
-import '../repositories/home_repository.dart';
+import '../repository/home_repository.dart';
 
 class GetComplaintsUseCase {
   final HomeRepository repository;

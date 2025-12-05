@@ -11,6 +11,7 @@ import 'package:complaints_app/features/submit_a_complaint/presentation/widgets/
 import 'package:complaints_app/features/submit_a_complaint/presentation/widgets/submit_complaint_fild_lable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class SubmitComplaintView extends StatelessWidget {
   const SubmitComplaintView({super.key});
@@ -36,7 +37,9 @@ class SubmitComplaintView extends StatelessWidget {
             message: state.submitSuccessMessage ?? "تم إرسال الشكوى بنجاح",
             isSuccess: true,
           );
-          
+          //context.read<SubmitComplaintCubit>().resetForm();
+
+          // context.pop();
           Navigator.pop(context);
         }
       },

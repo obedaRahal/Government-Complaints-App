@@ -1,18 +1,38 @@
 import 'package:complaints_app/core/config/app_router.dart';
 import 'package:complaints_app/core/config/route_name.dart';
 import 'package:complaints_app/core/databases/cache/cache_helper.dart';
+import 'package:complaints_app/core/services/notification/local_votification_service.dart';
+import 'package:complaints_app/core/services/notification/push_notification_service.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/auth_session.dart';
 import 'package:complaints_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  debugPrint('📩 BG title: ${message.notification?.title}');
+}
+
+
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
-   // await CacheHelper.clearData();
+    await CacheHelper.clearData();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  await Future.wait([
+    PushNotificationService.init(),
+    LocalNotificationService.init(),
+  ]);
 
   runApp(const ComplaitsApp());
 }

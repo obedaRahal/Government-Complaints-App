@@ -130,9 +130,9 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
   }
 
   void _onCancelPressed() {
-    _controller.clear(); // يمسح النص من الحقل
-    FocusScope.of(context).unfocus(); // ✅ فكّ الفوكس أيضاً هنا
-    widget.onCancelTap(); // ينادي الكيوبت (cancelSearch)
+    _controller.clear(); 
+    FocusScope.of(context).unfocus(); 
+    widget.onCancelTap(); 
   }
 
   @override

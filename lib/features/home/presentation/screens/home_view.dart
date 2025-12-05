@@ -8,6 +8,7 @@ import 'package:complaints_app/features/auth/presentation/manager/logout_cubit/l
 import 'package:complaints_app/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:complaints_app/features/home/presentation/widgets/complaint_Card_widget.dart';
 import 'package:complaints_app/features/home/presentation/widgets/complaint_card_shimmer_widget.dart';
+import 'package:complaints_app/features/home/presentation/widgets/show_notification_bottom_sheet.dart';
 import 'package:complaints_app/features/home/presentation/widgets/top_part_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,6 @@ class HomeView extends StatelessWidget {
           listenWhen: (prev, curr) => prev.status != curr.status,
           listener: (context, state) {
             if (state.status == LogoutStatusEnum.success) {
-              // مسح الـ stack والذهاب للّوج إن
               context.goNamed(AppRouteRName.welcomeView);
             }
 
@@ -58,11 +58,31 @@ class HomeViewBody extends StatelessWidget {
             debugPrint("loggg outtttt");
             context.read<LogoutCubit>().logOutSubmitted();
           },
+
           onTapNotification: () {
-            debugPrint("go to notification");
+            // final dummyNotifications = <NotificationItem>[
+            //   const NotificationItem(
+            //     title: 'تم تسجيل شكوى جديدة',
+            //     body:
+            //         'تم استلام شكواك وسيتم تحويلها إلى الجهة المختصة للمعالجة.',
+            //     date: 'منذ دقيقة',
+            //   ),
+            //   const NotificationItem(
+            //     title: 'تحديث حالة الشكوى رقم 11',
+            //     body: 'تم تغيير حالة الشكوى إلى: قيد المعالجة.',
+            //     date: 'قبل 10 دقائق',
+            //   ),
+            //   const NotificationItem(
+            //     title: 'تم إغلاق الشكوى رقم 8',
+            //     body: 'تمت معالجة الشكوى وإغلاقها. شكراً لتعاونك.',
+            //     date: 'اليوم - 10:30 ص',
+            //   ),
+            // ];
+
+            showNotificationsBottomSheet(parentContext: context);
           },
+
           onSearchTap: (query) {
-            // نرسل النص مباشرة من الـ HomeSearchField
             context.read<HomeCubit>().searchComplaint(query);
           },
           onTapCancel: () {
@@ -88,9 +108,16 @@ class HomeViewBody extends StatelessWidget {
                 childHorizontalPad: SizeConfig.width * .005,
                 childVerticalPad: SizeConfig.height * .002,
                 backgroundColor: AppColor.lightPurple,
-                onTap: () {
+                onTap: () async {
                   FocusManager.instance.primaryFocus?.unfocus();
-                  context.pushNamed(AppRouteRName.submitComplaintView);
+
+                  final result = await context.pushNamed<bool>(
+                    AppRouteRName.submitComplaintView,
+                  );
+
+                  if (result == true) {
+                    context.read<HomeCubit>().loadComplaints();
+                  }
                 },
                 child: Row(
                   children: [
@@ -164,10 +191,15 @@ class HomeViewBody extends StatelessWidget {
                           childHorizontalPad: 12,
                           child: state.isLoadingMore
                               ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
+                                  // height: 20,
+                                  // width: 20,
                                   child: CircularProgressIndicator(
+                                    padding: EdgeInsets.symmetric(
+                                      //vertical: 10,
+                                      horizontal: 20,
+                                    ),
                                     strokeWidth: 2,
+                                    color: AppColor.white,
                                   ),
                                 )
                               : CustomTextWidget(
@@ -186,13 +218,19 @@ class HomeViewBody extends StatelessWidget {
                   final statusColor = _mapStatusColor(complaint.currentStatus);
 
                   return GestureDetector(
-                    onTap: () {
-                      context.pushNamed(
+                    onTap: () async {
+                      final complaintId = complaint.id;
+
+                      final result = await context.pushNamed<bool>(
                         AppRouteRName.complaintDetailsView,
-                        pathParameters: {'id': complaint.id.toString()},
+                        pathParameters: {'id': complaintId.toString()},
                       );
-                      debugPrint("complaint id is : ${complaint.id}");
+
+                      if (result == true) {
+                        context.read<HomeCubit>().loadComplaints();
+                      }
                     },
+
                     child: ComplaintCard(
                       title: complaint.title,
                       statusText: statusText,
