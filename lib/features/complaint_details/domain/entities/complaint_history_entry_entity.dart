@@ -1,8 +1,8 @@
 class ComplaintHistoryEntryEntity {
-  final String day;    // مثال: "الخميس"
-  final String date;   // مثال: "2025-11-27" (ممكن لاحقاً نعمله DateTime)
-  final String status; // مثال: "معلقة"
-  final String? note;  // ممكن تكون null
+  final String day;   
+  final String date;  
+  final String status;
+  final String? note; 
 
   ComplaintHistoryEntryEntity({
     required this.day,

@@ -25,8 +25,10 @@ import 'package:complaints_app/features/auth/presentation/view/register_view.dar
 import 'package:complaints_app/features/auth/presentation/view/verify_register_view.dart';
 import 'package:complaints_app/features/complaint_details/data/data_sources/complaint_details_remote_data_source.dart';
 import 'package:complaints_app/features/complaint_details/data/repository_impl/complaint_details_repository_impl.dart';
+import 'package:complaints_app/features/complaint_details/domain/use_case/add_complaint_details_use_case.dart';
 import 'package:complaints_app/features/complaint_details/domain/use_case/delete_complaint_use_case.dart';
 import 'package:complaints_app/features/complaint_details/domain/use_case/get_complaint_details_use_case.dart';
+import 'package:complaints_app/features/complaint_details/presentation/manager/add_details_cubit.dart';
 import 'package:complaints_app/features/complaint_details/presentation/manager/complaint_details_cubit.dart';
 import 'package:complaints_app/features/complaint_details/presentation/view/complaint_details_view.dart';
 import 'package:complaints_app/features/home/data/data_sources/home_remote_data_source.dart';
@@ -378,11 +380,9 @@ abstract class AppRourer {
         path: '/complaintDetailsView/:id',
         name: AppRouteRName.complaintDetailsView,
         builder: (context, state) {
-          // 1) نقرأ الـ id من الـ path
           final idString = state.pathParameters['id']!;
           final complaintId = int.tryParse(idString) ?? 0;
 
-          // 2) نجهز الـ Dio + ApiConsumer + RemoteDataSource + Repository + UseCase
           final dio = Dio(
             BaseOptions(
               baseUrl: EndPoints.baseUrl,
@@ -399,18 +399,29 @@ abstract class AppRourer {
             remoteDataSource: remoteDataSource,
             networkInfo: networkInfo,
           );
+
           final getComplaintDetailsUseCase = GetComplaintDetailsUseCase(
             repository,
           );
           final deleteComplaintUseCase = DeleteComplaintUseCase(repository);
 
-          // 3) نحقن الـ Cubit ونطلق تحميل التفاصيل مباشرة
-          return BlocProvider(
-            create: (_) => ComplaintDetailsCubit(
-              getComplaintDetailsUseCase,
-              deleteComplaintUseCase,
-            )..loadComplaintDetails(complaintId),
+          final addComplaintDetailsUseCase = AddComplaintDetailsUseCase(
+            repository,
+          );
 
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider<ComplaintDetailsCubit>(
+                create: (_) => ComplaintDetailsCubit(
+                  getComplaintDetailsUseCase,
+                  deleteComplaintUseCase,
+                )..loadComplaintDetails(complaintId),
+              ),
+
+              BlocProvider<AddDetailsCubit>(
+                create: (_) => AddDetailsCubit(addComplaintDetailsUseCase),
+              ),
+            ],
             child: ComplaintDetailsView(complaintId: complaintId),
           );
         },

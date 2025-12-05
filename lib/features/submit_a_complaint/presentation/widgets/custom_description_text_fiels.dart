@@ -9,6 +9,7 @@ class CustomDescriptionTextFiels extends StatefulWidget {
   const CustomDescriptionTextFiels({
     super.key,
     this.controller,
+    this.label,
     this.hint,
     this.suffixIcon,
     this.prefixIcon,
@@ -23,7 +24,9 @@ class CustomDescriptionTextFiels extends StatefulWidget {
     this.validator,
     this.onSuffixTap,
   });
+
   final TextEditingController? controller;
+  final String? label;
   final String? hint;
   final IconData? suffixIcon;
   final IconData? prefixIcon;
@@ -37,6 +40,7 @@ class CustomDescriptionTextFiels extends StatefulWidget {
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
   final VoidCallback? onSuffixTap;
+
   @override
   State<CustomDescriptionTextFiels> createState() =>
       _CustomDescriptionTextFielsState();
@@ -46,31 +50,32 @@ class _CustomDescriptionTextFielsState
     extends State<CustomDescriptionTextFiels> {
   @override
   Widget build(BuildContext context) {
+    final currentLength = widget.controller?.text.length ?? 0;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CustomTextWidget(
-              "وصف المشكلة",
-              fontSize: SizeConfig.diagonal * .032,
-              color: AppColor.textColor,
-            ),
-            if (widget.maxLength != null)
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  "${widget.maxLength}/${widget.controller?.text.length ?? 0}",
+        if (widget.label != null || widget.maxLength != null)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (widget.label != null)
+                CustomTextWidget(
+                  widget.label!,
+                  fontSize: SizeConfig.diagonal * .032,
+                  color: AppColor.textColor,
+                ),
+              if (widget.maxLength != null)
+                Text(
+                  "${widget.maxLength}/$currentLength",
                   style: TextStyle(
                     fontFamily: AppFonts.tasees,
                     fontSize: 16,
                     color: AppColor.middleGrey,
                   ),
                 ),
-              ),
-          ],
-        ),
+            ],
+          ),
         TextFormField(
           controller: widget.controller,
           keyboardType: widget.keyboardType,
@@ -79,12 +84,10 @@ class _CustomDescriptionTextFielsState
           maxLines: widget.obscureText ? 1 : widget.maxLines,
           maxLength: widget.maxLength,
           maxLengthEnforcement: MaxLengthEnforcement.enforced,
-
           onChanged: (value) {
-            setState(() {}); // 👈 يجبر العداد على التحديث
-            if (widget.onChanged != null) widget.onChanged!(value);
+            setState(() {});
+            widget.onChanged?.call(value);
           },
-
           validator: widget.validator,
           decoration: InputDecoration(
             hintText: widget.hint,
@@ -98,7 +101,11 @@ class _CustomDescriptionTextFielsState
                 ? null
                 : IconButton(
                     onPressed: widget.onSuffixTap,
-                    icon: Icon(widget.suffixIcon, size: 20),
+                    icon: Icon(
+                      widget.suffixIcon,
+                      size: 20,
+                      color: AppColor.middleGrey,
+                    ),
                   ),
             prefix: widget.prefixIcon == null
                 ? null
@@ -111,8 +118,8 @@ class _CustomDescriptionTextFielsState
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(widget.borderRadius),
-              borderSide: BorderSide(
-                color: const Color.fromARGB(255, 229, 229, 229),
+              borderSide: const BorderSide(
+                color: Color.fromARGB(255, 229, 229, 229),
               ),
             ),
             focusedBorder: OutlineInputBorder(

@@ -26,8 +26,8 @@ class CustomDateInfo extends StatelessWidget {
           BoxShadow(
             color: const Color(0x17000000),
             blurRadius: 6,
-            spreadRadius: 0, // 👈 حل مشكلة الشادو اللي لفوق
-            offset: Offset(0, 6), // 👈 للأسفل فقط
+            spreadRadius: 0,
+            offset: Offset(0, 6),
           ),
         ],
       ),

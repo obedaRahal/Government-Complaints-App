@@ -1,10 +1,10 @@
 class SubmitComplaintParams {
-  final int agencyId;          // agency_id
-  final int complaintTypeId;   // complaint_type_id
-  final String title;          // title
-  final String description;    // description
-  final String locationText;   // location_text
-  final List<String> attachmentPaths; // attachments[]
+  final int agencyId;          
+  final int complaintTypeId;   
+  final String title;          
+  final String description;    
+  final String locationText;   
+  final List<String> attachmentPaths;
 
   const SubmitComplaintParams({
     required this.agencyId,

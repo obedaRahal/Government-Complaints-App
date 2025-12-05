@@ -56,7 +56,7 @@ class SubmitComplaintDataSourceImpl implements SubmitComplaintRemoteDataSource {
     required String locationText,
     required List<String> attachmentPaths,
   }) async {
-    // نجهّز الـ body
+  
     final Map<String, dynamic> data = {
       'agency_id': agencyId,
       'complaint_type_id': complaintTypeId,
@@ -65,7 +65,6 @@ class SubmitComplaintDataSourceImpl implements SubmitComplaintRemoteDataSource {
       'location_text': locationText,
     };
 
-    // تجهيز الصور كمرفقات لو فيه
     if (attachmentPaths.isNotEmpty) {
       final files = <MultipartFile>[];
 
@@ -78,14 +77,13 @@ class SubmitComplaintDataSourceImpl implements SubmitComplaintRemoteDataSource {
         );
       }
 
-      // backend يستخدم attachments[]
       data['attachments[]'] = files;
     }
 
     final response = await api.post(
-      EndPoints.createComplaint, // نضيفه بعد شوي في EndPoints
+      EndPoints.createComplaint,
       data: data,
-      isFormData: true, // مهم عشان يتحوّل لـ multipart/form-data
+      isFormData: true,
     );
 
     return SubmitComplaintModel.fromJson(

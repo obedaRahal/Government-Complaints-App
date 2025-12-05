@@ -17,12 +17,12 @@ class SubmitComplaintState extends Equatable {
   final String? agenciesErrorMessage;
   final String? complaintTypesErrorMessage;
 
-  // 📌 حقول الشكوى نفسها
+  
   final String title;
   final String description;
   final String locationText;
 
-  // حالة إرسال الشكوى
+ 
   final bool isSubmitting;
   final String? submitErrorMessage;
   final String? submitSuccessMessage;
@@ -49,24 +49,7 @@ class SubmitComplaintState extends Equatable {
     this.submitSuccessMessage,
     this.isSubmitSuccess = false,
     this.attachments = const [],
-    // this.title,
-    // this.description,
-    // this.locationText,
-    // this.isSubmitting,
-    // this.submitErrorMessage,
-    // this.submitSuccessMessage,
-    // this.isSubmitSuccess, {
-    // this.selectedAgencyId,
-    // this.selectedAgencyName,
-    // this.selectedComplaintTypeId,
-    // this.selectedComplaintTypeName,
-    // this.agencies = const [],
-    // this.complaintTypes = const [],
-    // this.isLoadingAgencies = false,
-    // this.isLoadingComplaintTypes = false,
-    // this.agenciesErrorMessage,
-    // this.complaintTypesErrorMessage,
-    // this.attachments = const [],
+    
   });
 
   SubmitComplaintState copyWith({

@@ -16,28 +16,23 @@ class ComplaintDetailsCubit extends Cubit<ComplaintDetailsState> {
   ) : super(const ComplaintDetailsState());
 
   Future<void> loadComplaintDetails(int complaintId) async {
+    if (isClosed) return;
     debugPrint(
       "ComplaintDetailsCubit.loadComplaintDetails -> id: $complaintId",
     );
 
-    // 1) حالة الـ loading
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
-    // 2) استدعاء الـ UseCase
     final result = await getComplaintDetailsUseCase(
       GetComplaintDetailsParams(complaintId: complaintId),
     );
+    if (isClosed) return;
 
-    // 3) التعامل مع النتيجة
     result.fold(
       (Failure failure) {
         debugPrint("ComplaintDetailsCubit FAILURE: ${failure.errMessage}");
         emit(
-          state.copyWith(
-            isLoading: false,
-            errorMessage: failure.errMessage,
-            // ما منغير الـ details هون، بتضل كما هي لو كانت موجودة
-          ),
+          state.copyWith(isLoading: false, errorMessage: failure.errMessage),
         );
       },
       (detailsEntity) {
@@ -53,12 +48,12 @@ class ComplaintDetailsCubit extends Cubit<ComplaintDetailsState> {
     );
   }
 
-  /// لو حابة تعملي إعادة تحميل (مثلاً عند Pull-to-Refresh)
   Future<void> refresh(int complaintId) async {
     await loadComplaintDetails(complaintId);
   }
 
   Future<void> deleteComplaint(int complaintId) async {
+    if (isClosed) return;
     emit(
       state.copyWith(
         isDeleting: true,
@@ -69,7 +64,7 @@ class ComplaintDetailsCubit extends Cubit<ComplaintDetailsState> {
     );
 
     final result = await deleteComplaintUseCase(complaintId);
-
+    if (isClosed) return;
     result.fold(
       (failure) {
         emit(

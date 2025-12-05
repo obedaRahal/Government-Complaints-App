@@ -9,9 +9,26 @@ import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:flutter/foundation.dart';
 
 class ComplaintAttachmentField extends StatefulWidget {
+  const ComplaintAttachmentField({
+    super.key,
+    required this.onImagesSelected,
+
+    
+    this.label,
+    this.hint,
+    this.maxImages = 3,
+    this.initialImages = const [],
+  });
+
   final void Function(List<ImageFile>) onImagesSelected;
 
-  const ComplaintAttachmentField({super.key, required this.onImagesSelected});
+  final String? label;
+
+  final String? hint;
+
+  final int maxImages;
+
+  final List<ImageFile> initialImages;
 
   @override
   State<ComplaintAttachmentField> createState() =>
@@ -31,29 +48,26 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
     focusNode.addListener(() {
       if (!focusNode.hasFocus) {
         setState(() {
-          isSlected = false; // ← فقد التركيز
+          isSlected = false;
         });
       }
     });
 
     controller = MultiImagePickerController(
-      maxImages: 3,
-      images: const [],
+      maxImages: widget.maxImages,
+      images: widget.initialImages,
       picker: (int pickCount, Object? params) async {
         final List<XFile>? picked = await _picker.pickMultiImage();
 
         if (picked == null || picked.isEmpty) return [];
 
-        // تحديد العدد
         final limited = picked.take(pickCount).toList();
 
-        // تحويل XFile → ImageFile
         return limited.map((xfile) {
           final path = xfile.path;
           final name = kIsWeb
-              ? (xfile.name)
+              ? xfile.name
               : path.split(Platform.pathSeparator).last;
-
           final ext = name.split('.').last;
 
           return ImageFile(
@@ -71,22 +85,17 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
   void dispose() {
     controller.dispose();
     focusNode.dispose();
-
     super.dispose();
   }
 
-  /// 🔥 هذه الدالة الجديدة (المطلوبة)
   Future<void> resetAndPickImages() async {
-    // 1) حذف الصور القديمة
     controller.clearImages();
     focusNode.requestFocus();
-    // 2) فتح المعرض من جديد
+
     await controller.pickImages();
 
-    // 3) إرسال الصور للخارج
     widget.onImagesSelected(controller.images.toList());
 
-    // 4) تحديث الواجهة
     setState(() {
       isSlected = true;
     });
@@ -97,6 +106,9 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
     final imagesList = controller.images.toList();
     final count = imagesList.length;
 
+    final labelText = widget.label ?? "مرفقات الشكوى";
+    final hintText = widget.hint ?? "أدخل مرفقات الشكوى(اختياري)...";
+
     return Column(
       children: [
         Padding(
@@ -105,12 +117,12 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomTextWidget(
-                "مرفقات الشكوى",
+                labelText,
                 fontSize: SizeConfig.diagonal * .032,
                 color: AppColor.textColor,
               ),
               Text(
-                count == 0 ? "3/0" : "3/$count",
+                "${widget.maxImages}/$count",
                 style: TextStyle(
                   fontFamily: AppFonts.tasees,
                   fontSize: 16,
@@ -125,7 +137,7 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
           child: GestureDetector(
             onTap: resetAndPickImages,
             child: Container(
-              height: 50,
+              height: 58,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
               decoration: BoxDecoration(
                 color: AppColor.grey,
@@ -137,15 +149,11 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // const Icon(Icons.attach_file),
-                  // const SizedBox(width: 0),
                   Row(
                     children: [
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Text(
-                        count == 0
-                            ? 'أدخل مرفقات الشكوى(اختياري)...'
-                            : "تم اختيار $count ",
+                        count == 0 ? hintText : "تم اختيار $count",
                         style: TextStyle(
                           fontFamily: AppFonts.tasees,
                           fontSize: 16,
@@ -157,7 +165,7 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
                   if (count > 0)
                     IconButton(
                       padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(),
+                      constraints: const BoxConstraints(),
                       icon: const Icon(
                         Icons.photo_library_outlined,
                         color: Color(0xffACACAC),

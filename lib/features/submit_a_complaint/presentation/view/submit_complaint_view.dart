@@ -36,9 +36,7 @@ class SubmitComplaintView extends StatelessWidget {
             message: state.submitSuccessMessage ?? "تم إرسال الشكوى بنجاح",
             isSuccess: true,
           );
-          //context.read<SubmitComplaintCubit>().resetForm();
-
-          // context.pop();
+          
           Navigator.pop(context);
         }
       },
@@ -195,16 +193,14 @@ class SubmitComplaintView extends StatelessWidget {
                     vertical: 4,
                   ),
                   child: CustomDescriptionTextFiels(
+                    label: "وصف المشكلة",
                     controller: cubit.descriptionController,
                     maxLines: 3,
                     maxLength: 512,
                     suffixIcon: Icons.layers_outlined,
                     keyboardType: TextInputType.multiline,
-                    onChanged: (value) {
-                      context.read<SubmitComplaintCubit>().descriptionChanged(
-                        value,
-                      );
-                    },
+                    onChanged:
+                        cubit.descriptionChanged,
                     hint: "ادخل وصفا للمشكلة التي تواجهها...",
                   ),
                 ),
@@ -231,6 +227,9 @@ class SubmitComplaintView extends StatelessWidget {
                     vertical: 4,
                   ),
                   child: ComplaintAttachmentField(
+                    label: "مرفقات الشكوى",
+                    hint: "أدخل مرفقات الشكوى(اختياري)...",
+                    maxImages: 3,
                     onImagesSelected: (images) {
                       context.read<SubmitComplaintCubit>().setAttachments(
                         images,

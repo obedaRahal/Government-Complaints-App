@@ -1,5 +1,4 @@
 import 'package:complaints_app/core/theme/assets/fonts.dart';
-import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

@@ -12,12 +12,14 @@ import 'package:complaints_app/features/complaint_details/presentation/widgets/c
 import 'package:complaints_app/features/complaint_details/presentation/widgets/complaint_history_item.dart';
 import 'package:complaints_app/features/complaint_details/presentation/widgets/complaint_information_widget.dart';
 import 'package:complaints_app/features/complaint_details/presentation/widgets/divider_widget.dart';
+import 'package:complaints_app/features/complaint_details/presentation/widgets/status_color_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ComplaintDetailsView extends StatelessWidget {
   const ComplaintDetailsView({super.key, required this.complaintId});
   final int complaintId;
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ComplaintDetailsCubit, ComplaintDetailsState>(
@@ -39,12 +41,12 @@ class ComplaintDetailsView extends StatelessWidget {
             message: state.deleteSuccessMessage ?? "تم حذف هذه الشكوى بنجاح",
             isSuccess: true,
           );
-          // رجوع لصفحة قائمة الشكاوى بعد الحذف
+        
           Navigator.of(context).pop();
         }
       },
       builder: (context, state) {
-        // 👈 نفس الشروط القديمة بالضبط
+       
         if (state.isLoading && state.details == null) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
@@ -59,6 +61,7 @@ class ComplaintDetailsView extends StatelessWidget {
         final info = details.complaintInfo;
         final attachments = details.attachments;
         final history = details.history;
+        final statusColor = mapStatusColor(info.status);
 
         return Scaffold(
           body: Column(
@@ -171,8 +174,7 @@ class ComplaintDetailsView extends StatelessWidget {
                         ),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
-                          // لو حابة يبدأ من اليمين مع سكرول لليسار:
-                          // reverse: true,
+
                           child: Row(
                             children: [
                               ComplaintInformationWidget(
@@ -223,7 +225,7 @@ class ComplaintDetailsView extends StatelessWidget {
                           fontSize: SizeConfig.diagonal * .024,
                           titleDescreption: 'وصف الشكوى',
                           descreption: info.description,
-                          statuseColor: AppColor.blue,
+                          statuseColor: statusColor,
                         ),
                       ),
                       SizedBox(height: 16),
@@ -257,46 +259,7 @@ class ComplaintDetailsView extends StatelessWidget {
                               .map((h) => ComplaintHistoryItem(history: h))
                               .toList(),
                         ),
-                      // Padding(
-                      // padding: const EdgeInsets.symmetric(
-                      //   horizontal: 20,
-                      //   vertical: 12,
-                      // ),
 
-                      //   child: CustomDateInfo(
-                      //     date: 'الخميس - 2025/10/22',
-                      //     status: 'معلقة',
-                      //     statusColor: AppColor.statusProcessing,
-                      //   ),
-                      // ),
-
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(
-                      //     horizontal: 20,
-                      //     vertical: 12,
-                      //   ),
-                      //   child: CardDetaisWidget(
-                      //     title: "الأحد - 2025/10/22",
-                      //     status: 'قيد المعالجة',
-                      //     fontSize: SizeConfig.diagonal * .016,
-                      //     titleDescreption: 'ملاحظات',
-                      //     descreption:
-                      //         'اشغال رصيف شارع المجتهد الرئيسي من قبل بسطات البالة وعربات الترمس والفول النابت مما يؤدي الى عرقلة السير',
-                      //     statuseColor: AppColor.blue,
-                      //   ),
-                      // ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(
-                      //     horizontal: 20,
-                      //     vertical: 12,
-                      //   ),
-
-                      //   child: CustomDateInfo(
-                      //     date: 'الخميس - 2025/10/22',
-                      //     status: 'تمت معالجتها',
-                      //     statusColor: AppColor.green,
-                      //   ),
-                      // ),
                       SizedBox(height: 40),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -306,7 +269,18 @@ class ComplaintDetailsView extends StatelessWidget {
                           childHorizontalPad: SizeConfig.width * .07,
                           childVerticalPad: SizeConfig.height * .012,
                           borderRadius: 10,
-                          onTap: () {},
+                          onTap: () {
+                            // showModalBottomSheet(
+                            //   context: context,
+                            //   isScrollControlled: true,
+                            //   backgroundColor: Colors.transparent,
+                            //   builder: (_) {
+                            //     return AdditionalInfoBottomSheet(
+                            //       complaintId: complaintId,
+                            //     );
+                            //   },
+                            // );
+                          },
                           child: CustomTextWidget(
                             "إرفاق معلومات إضافية",
                             fontSize: SizeConfig.height * .025,

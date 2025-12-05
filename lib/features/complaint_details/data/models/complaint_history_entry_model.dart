@@ -18,7 +18,7 @@ class ComplaintHistoryEntryModel {
       day: json['day'] as String,
       date: json['date'] as String,
       status: json['status'] as String,
-      note: json['note'] as String?, // ممكن تكون null
+      note: json['note'] as String?,
     );
   }
 

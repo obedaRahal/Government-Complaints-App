@@ -51,7 +51,6 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
     );
   }
 
-  // 1) تحميل الجهات الحكومية من الـ API
   Future<void> loadAgencies() async {
     if (isClosed) return;
     emit(state.copyWith(isLoadingAgencies: true, agenciesErrorMessage: null));
@@ -76,7 +75,6 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
   Future<void> submitComplaint() async {
     debugPrint("===== SubmitComplaintCubit.submitComplaint START =====");
 
-    // 1) تحقق بسيط من الحقول المطلوبة
     if (state.selectedAgencyId == null) {
       emit(
         state.copyWith(
@@ -109,7 +107,6 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
       return;
     }
 
-    // 2) تجهيز مسارات الصور من الـ ImageFile
     final attachmentPaths = state.attachments
         .map((img) => img.path)
         .whereType<String>()
@@ -119,7 +116,6 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
       "submitComplaint -> attachments count: ${attachmentPaths.length}",
     );
 
-    // 3) حالة الـ loading
     emit(
       state.copyWith(
         isSubmitting: true,
@@ -129,7 +125,6 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
       ),
     );
 
-    // 4) استدعاء الـ UseCase
     final params = SubmitComplaintParams(
       agencyId: state.selectedAgencyId!,
       complaintTypeId: state.selectedComplaintTypeId!,
@@ -168,13 +163,13 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
 
     debugPrint("===== SubmitComplaintCubit.submitComplaint END =====");
   }
+
   @override
   Future<void> close() {
     descriptionController.dispose();
     return super.close();
   }
 
-  // 2) اختيار نوع الشكوى
   void selectComplaintTypeEntity(String? name) {
     if (name == null) {
       emit(
@@ -200,14 +195,12 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
     );
   }
 
-  // 3) اختيار الجهة الحكومية من الـ dropdown
   void selectGovEntity(String? name) {
     if (name == null) {
       emit(state.copyWith(selectedAgencyId: null, selectedAgencyName: null));
       return;
     }
 
-    // نبحث عن الـ AgencyEntity الذي يحمل هذا الاسم
     AgencyEntity? selected;
     for (final agency in state.agencies) {
       if (agency.name == name) {
@@ -221,7 +214,6 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
     );
   }
 
-  // 4) المرفقات
   void setAttachments(List<ImageFile> images) {
     emit(state.copyWith(attachments: images));
   }
@@ -259,23 +251,18 @@ class SubmitComplaintCubit extends Cubit<SubmitComplaintState> {
   void resetForm() {
     emit(
       state.copyWith(
-        // اختيار نوع الشكوى
         selectedComplaintTypeId: null,
         selectedComplaintTypeName: null,
 
-        // اختيار الجهة الحكومية
         selectedAgencyId: null,
         selectedAgencyName: null,
 
-        // حقول النص
         title: '',
         description: '',
         locationText: '',
 
-        // المرفقات
         attachments: [],
 
-        // حالة الإرسال
         isSubmitting: false,
         submitErrorMessage: null,
         submitSuccessMessage: null,
