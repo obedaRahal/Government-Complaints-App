@@ -23,11 +23,11 @@ class ComplaintDetailsRepositoryImpl implements ComplaintDetailsRepository {
   Future<Either<Failure, ComplaintDetailsEntity>> getComplaintDetails(
     int complaintId,
   ) async {
-    if (!await networkInfo.isConnected) {
-      return Left(
-       ConnectionFailure(errMessage: 'تحقق من اتصالك بالإنترنت'),
-      );
-    }
+    // if (!await networkInfo.isConnected) {
+    //   return Left(
+    //    ConnectionFailure(errMessage: 'تحقق من اتصالك بالإنترنت'),
+    //   );
+    // }
 
     try {
       debugPrint(
@@ -65,16 +65,39 @@ class ComplaintDetailsRepositoryImpl implements ComplaintDetailsRepository {
     }
   }
 
+  // @override
+  // Future<Either<Failure, AddComplaintDetailsResponseEntity>>
+  // addComplaintDetails(AddComplaintDetailsParams params) async {
+  //   try {
+  //     final result = await remoteDataSource.addComplaintDetails(params);
+  //     return Right(result);
+  //   } on ServerException catch (e) {
+  //     return Left(ServerFailure(errMessage: e.errorModel.errorMessage));
+  //   } catch (_) {
+  //     return Left(ServerFailure(errMessage: 'حدث خطأ غير متوقع'));
+  //   }
+  // }
   @override
-  Future<Either<Failure, AddComplaintDetailsResponseEntity>>
-  addComplaintDetails(AddComplaintDetailsParams params) async {
-    try {
-      final result = await remoteDataSource.addComplaintDetails(params);
-      return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(errMessage: e.errorModel.errorMessage));
-    } catch (_) {
-      return Left(ServerFailure(errMessage: 'حدث خطأ غير متوقع'));
-    }
+Future<Either<Failure, AddComplaintDetailsResponseEntity>>
+    addComplaintDetails(AddComplaintDetailsParams params) async {
+  try {
+    final result = await remoteDataSource.addComplaintDetails(params);
+    return Right(result);
+  } on ServerException catch (e, st) {
+    debugPrint("addComplaintDetails ServerException: ${e.errorModel.errorMessage}");
+    debugPrint(st.toString());
+    return Left(
+      ServerFailure(errMessage: e.errorModel.errorMessage),
+    );
+  } catch (e, st) {
+    debugPrint("addComplaintDetails UNEXPECTED error: $e");
+    debugPrint(st.toString());
+    return Left(
+      ServerFailure(
+        errMessage: 'خطأ غير متوقع داخل التطبيق أثناء إرسال المعلومات الإضافية',
+      ),
+    );
   }
+}
+
 }

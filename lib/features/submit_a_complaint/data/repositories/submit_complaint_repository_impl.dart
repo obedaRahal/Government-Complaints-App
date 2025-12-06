@@ -18,11 +18,11 @@ class SubmitComplaintRepositoryImpl implements SubmitComplaintRepository {
   // ****** Get Agencies ******
  @override
   Future<Either<Failure, List<AgencyEntity>>> getAgencies() async {
-    if (!await networkInfo.isConnected) {
-      return Left(
-        ConnectionFailure(errMessage: 'تحقق من اتصالك بالإنترنت'),
-      );
-    }
+    // if (!await networkInfo.isConnected) {
+    //   return Left(
+    //     ConnectionFailure(errMessage: 'تحقق من اتصالك بالإنترنت'),
+    //   );
+    // }
 
     try {
       final models = await remoteDataSource.getAgencies();
@@ -41,11 +41,11 @@ class SubmitComplaintRepositoryImpl implements SubmitComplaintRepository {
   // ****** Get Complaint Type ******
   @override
   Future<Either<Failure, List<ComplaintTypeEntity>>> getComplaintType()async {
-  if (!await networkInfo.isConnected) {
-      return Left(
-        ConnectionFailure(errMessage: 'تحقق من اتصالك بالإنترنت'),
-      );
-    }
+  // if (!await networkInfo.isConnected) {
+  //     return Left(
+  //       ConnectionFailure(errMessage: 'تحقق من اتصالك بالإنترنت'),
+  //     );
+  //   }
     try{
       final models = await remoteDataSource.getComplaintType();
      final entities = models.map((e) => e.toEntity()).toList();

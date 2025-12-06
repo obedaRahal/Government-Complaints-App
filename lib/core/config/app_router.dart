@@ -417,21 +417,16 @@ abstract class AppRourer {
             repository,
           );
 
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider<ComplaintDetailsCubit>(
-                create: (_) => ComplaintDetailsCubit(
-                  getComplaintDetailsUseCase,
-                  deleteComplaintUseCase,
-                )..loadComplaintDetails(complaintId),
-              ),
-
-              BlocProvider<AddDetailsCubit>(
-                create: (_) => AddDetailsCubit(addComplaintDetailsUseCase),
-              ),
-            ],
-            child: ComplaintDetailsView(complaintId: complaintId),
-          );
+          return BlocProvider<ComplaintDetailsCubit>(
+      create: (_) => ComplaintDetailsCubit(
+        getComplaintDetailsUseCase,
+        deleteComplaintUseCase,
+      )..loadComplaintDetails(complaintId),
+      child: ComplaintDetailsView(
+        complaintId: complaintId,
+        addComplaintDetailsUseCase: addComplaintDetailsUseCase,
+      ),
+    );
         },
       ),
     ],

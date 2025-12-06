@@ -27,7 +27,6 @@ class ComplaintDetailsRemoteDataSourceImpl
       "ComplaintDetailsRemoteDataSourceImpl.getComplaintDetails -> id: $complaintId",
     );
 
-
     final response = await apiConsumer.get(
       "${EndPoints.complaintDetails}$complaintId",
     );
@@ -43,25 +42,56 @@ class ComplaintDetailsRemoteDataSourceImpl
     return DeleteComplaintResponseModel.fromJson(response);
   }
 
-  @override
-  Future<AddComplaintDetailsResponseModel> addComplaintDetails(
-    AddComplaintDetailsParams params,
-  ) async {
-    final formData = FormData.fromMap({
+@override
+Future<AddComplaintDetailsResponseModel> addComplaintDetails(
+  AddComplaintDetailsParams params,
+) async {
+  try {
+    debugPrint("===== addComplaintDetails START =====");
+
+  
+    final url = '${EndPoints.addComplaintDetails}${params.complaintId}';
+    debugPrint("URL: $url");
+    debugPrint("extra_text: ${params.extraText}");
+    debugPrint("attachments count: ${params.attachmentPaths.length}");
+    debugPrint("paths: ${params.attachmentPaths}");
+
+   
+    final Map<String, dynamic> body = {
       'extra_text': params.extraText,
-      if (params.extraAttachmentPath != null)
-        'extra_attachment': await MultipartFile.fromFile(
-          params.extraAttachmentPath!,
-          filename: params.extraAttachmentPath!.split('/').last,
-        ),
-    });
+    };
+
+   
+    if (params.attachmentPaths.isNotEmpty) {
+     
+      final files = <MultipartFile>[];
+      for (final path in params.attachmentPaths) {
+        files.add(
+          await MultipartFile.fromFile(
+            path,
+            filename: path.split('/').last,
+          ),
+        );
+      }
+      body['extra_attachment'] = files;
+    }
 
     final response = await apiConsumer.post(
-      '${EndPoints.addComplaintDetails}/${params.complaintId}',
+      url,
       isFormData: true,
-      data: formData,
+      data: body,
     );
 
-    return AddComplaintDetailsResponseModel.fromJson(response);
+    debugPrint("addComplaintDetails response: $response");
+
+    return AddComplaintDetailsResponseModel.fromJson(
+      response as Map<String, dynamic>,
+    );
+  } catch (e, st) {
+    debugPrint("addComplaintDetails REMOTE error: $e");
+    debugPrint(st.toString());
+    rethrow;
   }
+}
+
 }

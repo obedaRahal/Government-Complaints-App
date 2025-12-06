@@ -10,9 +10,11 @@ class AddComplaintDetailsResponseModel
   factory AddComplaintDetailsResponseModel.fromJson(
     Map<String, dynamic> json,
   ) {
-    return AddComplaintDetailsResponseModel(
-      successMessage: json['successMessage'] ?? '',
-      statusCode: json['statusCode'] ?? 0,
+   return AddComplaintDetailsResponseModel(
+      successMessage: json['successMessage']?.toString() ?? '',
+      statusCode: json['statusCode'] is int
+          ? json['statusCode'] as int
+          : int.tryParse(json['statusCode'].toString()) ?? 0,
     );
   }
 }
