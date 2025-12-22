@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:complaints_app/core/services/notification/local_votification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+
 class PushNotificationService {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
 

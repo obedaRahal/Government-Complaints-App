@@ -18,6 +18,7 @@ import 'package:complaints_app/features/complaint_details/presentation/widgets/d
 import 'package:complaints_app/features/complaint_details/presentation/widgets/status_color_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ComplaintDetailsView extends StatelessWidget {
   const ComplaintDetailsView({
@@ -50,7 +51,8 @@ class ComplaintDetailsView extends StatelessWidget {
             message: state.deleteSuccessMessage ?? "تم حذف هذه الشكوى بنجاح",
             isSuccess: true,
           );
-          Navigator.of(context).pop();
+          //Navigator.of(context).pop();
+           context.pop(true);
         }
       },
       builder: (context, state) {
