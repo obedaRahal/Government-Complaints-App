@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:complaints_app/core/databases/cache/fcm_token.dart';
 import 'package:complaints_app/core/services/notification/local_votification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ class PushNotificationService {
     final token = await messaging.getToken();
     log("📲 FCM token is : $token");
 
+     await FcmTokenStorage.saveToken(token);
+     
     _handleForegroundMessages();
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {

@@ -46,6 +46,7 @@ abstract class AuthRepository {
   Future<Either<Failure, LoginResponse>> login({
     required String email,
     required String password,
+    String? fcmToken
   });
 
   Future<Either<Failure, LogoutResponse>> logout();

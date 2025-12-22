@@ -369,6 +369,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, LoginResponse>> login({
     required String email,
     required String password,
+    String? fcmToken
   }) async {
     debugPrint("============ AuthRepositoryImpl.login ============");
     debugPrint("→ params: {email: $email}");
@@ -385,6 +386,8 @@ class AuthRepositoryImpl implements AuthRepository {
       final model = await remoteDataSource.login(
         email: email,
         password: password,
+        fcmToken:fcmToken
+        
       );
 
       debugPrint("← remoteDataSource.login success, mapped to entity");

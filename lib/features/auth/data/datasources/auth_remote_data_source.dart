@@ -50,8 +50,8 @@ abstract class AuthRemoteDataSource {
   Future<LoginResponseModel> login({
     required String email,
     required String password,
+    String? fcmToken,
   });
-
 
   Future<LogoutREsponseModel> logout();
 }
@@ -248,17 +248,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<LoginResponseModel> login({
     required String email,
     required String password,
+    String? fcmToken,
   }) async {
-    debugPrint(
-      "============ AuthRemoteDataSourceImpl.login ============",
-    );
+    debugPrint("============ AuthRemoteDataSourceImpl.login ============");
     debugPrint(
       "→ endpoint: ${EndPoints.resendPasswordResetOtp} | data: {email: $email}",
     );
 
     final response = await apiConsumer.post(
       EndPoints.loginCitizen,
-      data: {"email": email, "password": password},
+      data: {
+        "email": email,
+        "password": password,
+        if (fcmToken != null && fcmToken.isNotEmpty) 'fcm_token': fcmToken,
+      },
     );
 
     debugPrint("← response (login): $response");
@@ -267,27 +270,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     return LoginResponseModel.fromJson(response as Map<String, dynamic>);
   }
 
-
   @override
   Future<LogoutREsponseModel> logout() async {
-    debugPrint(
-      "============ AuthRemoteDataSourceImpl.logout ============",
-    );
-    debugPrint(
-      "→ endpoint: ${EndPoints.logout} ",
-    );
+    debugPrint("============ AuthRemoteDataSourceImpl.logout ============");
+    debugPrint("→ endpoint: ${EndPoints.logout} ");
 
-    final response = await apiConsumer.get(
-      EndPoints.logout,
-    );
+    final response = await apiConsumer.get(EndPoints.logout);
 
     debugPrint("← response (logout): $response");
     debugPrint("=================================================");
 
     return LogoutREsponseModel.fromJson(response as Map<String, dynamic>);
   }
-
-
-
-
 }
