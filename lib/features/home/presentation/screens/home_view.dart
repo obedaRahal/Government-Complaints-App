@@ -1,15 +1,19 @@
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
+import 'package:complaints_app/core/common%20widget/switch_theme.dart';
 import 'package:complaints_app/core/config/route_name.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:complaints_app/features/auth/presentation/manager/logout_cubit/logout_cubit.dart';
+import 'package:complaints_app/features/complaint_details/presentation/widgets/status_color_helper.dart';
 import 'package:complaints_app/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:complaints_app/features/home/presentation/widgets/complaint_Card_widget.dart';
 import 'package:complaints_app/features/home/presentation/widgets/complaint_card_shimmer_widget.dart';
 import 'package:complaints_app/features/home/presentation/widgets/show_notification_bottom_sheet.dart';
 import 'package:complaints_app/features/home/presentation/widgets/top_part_home.dart';
+import 'package:complaints_app/features/settings/presentation/manager/theme_cubit.dart';
+import 'package:complaints_app/features/settings/presentation/manager/theme_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -48,6 +52,8 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return Column(
       children: [
         TopPartHome(
@@ -55,8 +61,131 @@ class HomeViewBody extends StatelessWidget {
             context.read<HomeCubit>().searchTextChanged(value);
           },
           onTapLogout: () {
-            debugPrint("loggg outtttt");
-            context.read<LogoutCubit>().logOutSubmitted();
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (bottomSheetContext) {
+                return BlocBuilder<ThemeCubit, ThemeState>(
+                  builder: (context, state) {
+                    final theme = Theme.of(bottomSheetContext);
+                    final isDark = state.mode == ThemeMode.dark;
+                    return Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: theme.scaffoldBackgroundColor,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(24),
+                          ),
+                        ),
+                        child: SafeArea(
+                          top: false,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 8),
+                                Container(
+                                  width: 45,
+                                  height: 4,
+                                  decoration: BoxDecoration(
+                                    color: isDark
+                                        ? AppColor.borderFieldDark
+                                        : AppColor.middleGrey,
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.onPrimary,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: CustomTextWidget(
+                                    "الاعدادات",
+                                    color: theme.colorScheme.primary,
+                                    fontSize: SizeConfig.height * .022,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Divider(
+                                  thickness: 2,
+                                  color: isDark
+                                      ? AppColor.backGroundGrey
+                                      : AppColor.lightGray,
+                                ),
+                                const SizedBox(height: 24),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                  ),
+                                  child: Row(
+                                    textDirection: TextDirection.rtl,
+                                    children: [
+                                      CustomTextWidget(
+                                        "هل تريد تسجيل الخروج؟",
+                                        color: theme.colorScheme.secondary,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Divider(
+                                  // endIndent: 120,
+                                  // //indent: 20,
+                                  thickness: 2,
+                                  color: isDark
+                                      ? AppColor.backGroundGrey
+                                      : AppColor.lightGray,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    debugPrint("loggg outtttt");
+                                    context
+                                        .read<LogoutCubit>()
+                                        .logOutSubmitted();
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                    child: Row(
+                                      textDirection: TextDirection.rtl,
+                                      children: [
+                                        CustomTextWidget(
+                                          'تسجيل الخروج',
+                                          color: theme.colorScheme.secondary,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Divider(
+                                  // endIndent: 120,
+                                  // //indent: 20,
+                                  thickness: 2,
+                                  color: isDark
+                                      ? AppColor.backGroundGrey
+                                      : AppColor.lightGray,
+                                ),
+                                ThemeSwitchTile(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
           },
 
           onTapNotification: () {
@@ -101,13 +230,13 @@ class HomeViewBody extends StatelessWidget {
               CustomTextWidget(
                 "سجل الشكاوي",
                 fontSize: SizeConfig.diagonal * .038,
-                color: AppColor.black,
+                color: theme.colorScheme.secondary,
               ),
               CustomButtonWidget(
                 borderRadius: 10,
                 childHorizontalPad: SizeConfig.width * .005,
                 childVerticalPad: SizeConfig.height * .002,
-                backgroundColor: AppColor.lightPurple,
+                backgroundColor: theme.colorScheme.onPrimary,
                 onTap: () async {
                   FocusManager.instance.primaryFocus?.unfocus();
 
@@ -123,7 +252,7 @@ class HomeViewBody extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.add_box_outlined,
-                      color: AppColor.primary,
+                      color: theme.colorScheme.primary,
                       size: SizeConfig.height * .025,
                     ),
                     SizedBox(width: SizeConfig.width * .01),
@@ -185,12 +314,12 @@ class HomeViewBody extends StatelessWidget {
                           onTap: () {
                             context.read<HomeCubit>().loadMoreComplaints();
                           },
-                          backgroundColor: AppColor.primary,
+                          backgroundColor: theme.colorScheme.primary,
                           borderRadius: 10,
                           childVerticalPad: 4,
                           childHorizontalPad: 12,
                           child: state.isLoadingMore
-                              ? const SizedBox(
+                              ? SizedBox(
                                   // height: 20,
                                   // width: 20,
                                   child: CircularProgressIndicator(
@@ -199,12 +328,12 @@ class HomeViewBody extends StatelessWidget {
                                       horizontal: 20,
                                     ),
                                     strokeWidth: 2,
-                                    color: AppColor.white,
+                                    color: theme.scaffoldBackgroundColor,
                                   ),
                                 )
                               : CustomTextWidget(
                                   'عرض المزيد',
-                                  color: AppColor.white,
+                                  color: theme.scaffoldBackgroundColor,
                                   fontSize: SizeConfig.diagonal * .025,
                                 ),
                         ),
@@ -215,7 +344,10 @@ class HomeViewBody extends StatelessWidget {
                   final complaint = complaints[index];
 
                   final statusText = complaint.currentStatus;
-                  final statusColor = _mapStatusColor(complaint.currentStatus);
+                  final statusColor = mapStatusColor(complaint.currentStatus);
+                  final statusColorDark = mapStatusColorDark(
+                    complaint.currentStatus,
+                  );
 
                   return GestureDetector(
                     onTap: () async {
@@ -234,7 +366,7 @@ class HomeViewBody extends StatelessWidget {
                     child: ComplaintCard(
                       title: complaint.title,
                       statusText: statusText,
-                      statusColor: statusColor,
+                      statusColor: isDark ? statusColorDark : statusColor,
                       number: complaint.number.toString(),
                       description: complaint.description,
                     ),
@@ -263,6 +395,7 @@ class LabelColumnTitleValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -275,7 +408,7 @@ class LabelColumnTitleValue extends StatelessWidget {
           value,
           textAlign: TextAlign.right,
           fontSize: SizeConfig.diagonal * .022,
-          color: AppColor.black,
+          color: theme.colorScheme.onSecondary,
           maxLines: maxLines,
           overflow: maxLines != null ? TextOverflow.ellipsis : null,
         ),
@@ -284,17 +417,32 @@ class LabelColumnTitleValue extends StatelessWidget {
   }
 }
 
-Color _mapStatusColor(String status) {
-  switch (status) {
-    case 'معلقة':
-      return AppColor.middleGrey;
-    case 'قيد المعالجة':
-      return AppColor.blue;
-    case 'تم معالجتها':
-      return AppColor.green;
-    case 'تم رفضها':
-      return AppColor.red;
-    default:
-      return AppColor.middleGrey;
-  }
-}
+// Color _mapStatusColor(String status) {
+//   switch (status) {
+//     case 'معلقة':
+//       return AppColor.middleGrey;
+//     case 'قيد المعالجة':
+//       return AppColor.blue;
+//     case 'تم معالجتها':
+//       return AppColor.green;
+//     case 'تم رفضها':
+//       return AppColor.red;
+//     default:
+//       return AppColor.middleGrey;
+//   }
+// }
+
+// Color _mapStatusColorDark(String status) {
+//   switch (status) {
+//     case 'معلقة':
+//       return AppColor.greyDark;
+//     case 'قيد المعالجة':
+//       return AppColor.blueDark;
+//     case 'تم معالجتها':
+//       return AppColor.greenDark;
+//     case 'تم رفضها':
+//       return AppColor.redDark;
+//     default:
+//       return AppColor.middleGrey;
+//   }
+// }

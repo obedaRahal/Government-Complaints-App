@@ -6,6 +6,7 @@ class DividerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(height: 50, width: 1.6, color: AppColor.lightGray);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(height: 50, width: 1.6, color: isDark? AppColor.backGroundGrey: AppColor.lightGray);
   }
 }

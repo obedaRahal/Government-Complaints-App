@@ -1,3 +1,4 @@
+import 'package:complaints_app/core/common%20widget/custom_app_bar.dart';
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
@@ -18,6 +19,8 @@ class SubmitComplaintView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return BlocConsumer<SubmitComplaintCubit, SubmitComplaintState>(
       listenWhen: (prev, curr) =>
           prev.submitErrorMessage != curr.submitErrorMessage ||
@@ -50,50 +53,7 @@ class SubmitComplaintView extends StatelessWidget {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 29),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 1,
-                          blurRadius: 3,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      //textDirection: TextDirection.rtl,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 12, bottom: 14),
-                          child: CustomTextWidget(
-                            "تقديم شكوى",
-                            fontSize: SizeConfig.diagonal * .04,
-                            color: AppColor.textColor,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12, bottom: 12),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 28,
-                              fontWeight: FontWeight.w500,
-                              color: AppColor.textColor,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                CustomAppBar(title:"تقديم شكوى",),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -172,7 +132,7 @@ class SubmitComplaintView extends StatelessWidget {
                       if (state.agenciesErrorMessage != null) {
                         return CustomTextWidget(
                           state.agenciesErrorMessage!,
-                          color: Colors.red,
+                          color: isDark?AppColor.redDark:AppColor.red,
                           fontSize: SizeConfig.diagonal * .028,
                         );
                       }
@@ -258,7 +218,7 @@ class SubmitComplaintView extends StatelessWidget {
 
                           return CustomButtonWidget(
                             width: double.infinity,
-                            backgroundColor: AppColor.primary,
+                            backgroundColor:theme.colorScheme.primary,
                             childHorizontalPad: SizeConfig.width * .07,
                             childVerticalPad: SizeConfig.height * .012,
                             borderRadius: 10,
@@ -270,7 +230,7 @@ class SubmitComplaintView extends StatelessWidget {
                             child: CustomTextWidget(
                               "تأكيد الارسال",
                               fontSize: SizeConfig.height * .025,
-                              color: AppColor.white,
+                              color:theme.scaffoldBackgroundColor,
                             ),
                           );
                         },

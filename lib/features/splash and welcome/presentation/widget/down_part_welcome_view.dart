@@ -12,15 +12,17 @@ class DownPartWelcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return CustomBackgroundWithChild(
       borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
       width: double.infinity,
-      backgroundColor: AppColor.primary,
+      backgroundColor: isDark ? AppColor.backGroundGrey : AppColor.primary,
       child: Column(
         children: [
           SizedBox(height: 10),
           Divider(
-            color: AppColor.white,
+            color: theme.colorScheme.onSecondary,
             thickness: 3,
             indent: 130,
             endIndent: 130,
@@ -28,7 +30,7 @@ class DownPartWelcome extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             child: CustomTextWidget(
-              color: AppColor.white,
+              color: theme.colorScheme.onSecondary,
               fontSize: SizeConfig.diagonal * .03,
               "تطبيق يساعد المواطنين على\n انشاء , تنظيم , متابعة الشكاوي\n بكفاءة وسهولة",
             ),
@@ -40,7 +42,9 @@ class DownPartWelcome extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CustomButtonWidget(
-                backgroundColor: AppColor.lightPurple,
+                backgroundColor: isDark
+                    ? AppColor.primaryDark
+                    : AppColor.lightPurple,
                 childHorizontalPad: SizeConfig.width * .07,
                 childVerticalPad: SizeConfig.height * .015,
                 borderRadius: 30,
@@ -51,7 +55,7 @@ class DownPartWelcome extends StatelessWidget {
                 child: CustomTextWidget(
                   "حساب جديد",
                   fontSize: SizeConfig.height * .025,
-                  color: AppColor.black,
+                  color: AppColor.textColor,
                 ),
               ),
               CustomButtonWidget(
@@ -67,7 +71,7 @@ class DownPartWelcome extends StatelessWidget {
                 child: CustomTextWidget(
                   "تسجيل الدخول",
                   fontSize: SizeConfig.height * .025,
-                  color: Colors.white,
+                  color: theme.colorScheme.onSecondary,
                 ),
               ),
             ],

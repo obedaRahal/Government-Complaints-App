@@ -26,10 +26,12 @@ class TopPartHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     String welcomeMessage = CacheHelper.getData(key: "welcomeMessage") ?? "";
     return CustomBackgroundWithChild(
       width: double.infinity,
-      backgroundColor: AppColor.primary,
+      backgroundColor: isDark ? AppColor.backGroundGrey : AppColor.primary,
       borderRadius: BorderRadius.vertical(bottom: Radius.circular(25)),
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -43,8 +45,7 @@ class TopPartHome extends StatelessWidget {
               children: [
                 CustomTextWidget(
                   welcomeMessage,
-                  //"مرحبا صديقي المواطن عبيده الرحال",
-                  color: AppColor.white,
+                  color: theme.colorScheme.onSecondary,
                   fontSize: SizeConfig.diagonal * .025,
                 ),
 
@@ -53,10 +54,10 @@ class TopPartHome extends StatelessWidget {
                   borderRadius: 30,
                   childHorizontalPad: 3,
                   childVerticalPad: 3,
-                  backgroundColor: AppColor.white,
+                  backgroundColor: theme.scaffoldBackgroundColor,
                   onTap: onTapLogout,
                   child: Icon(
-                    Icons.login_outlined,
+                    Icons.settings,
                     color: AppColor.middleGrey,
                     size: SizeConfig.height * .038,
                   ),
@@ -68,7 +69,7 @@ class TopPartHome extends StatelessWidget {
                   borderRadius: 30,
                   childHorizontalPad: 3,
                   childVerticalPad: 3,
-                  backgroundColor: AppColor.white,
+                  backgroundColor: theme.scaffoldBackgroundColor,
                   onTap: onTapNotification,
                   child: Icon(
                     Icons.notification_important_outlined,
@@ -81,7 +82,7 @@ class TopPartHome extends StatelessWidget {
             SizedBox(height: SizeConfig.height * .01),
             HomeSearchField(
               onChangedSearch: onChangedSearch,
-              onSearchTap: onSearchTap, // يرسل النص
+              onSearchTap: onSearchTap,
               onCancelTap: onTapCancel,
             ),
           ],
@@ -130,13 +131,15 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
   }
 
   void _onCancelPressed() {
-    _controller.clear(); 
-    FocusScope.of(context).unfocus(); 
-    widget.onCancelTap(); 
+    _controller.clear();
+    FocusScope.of(context).unfocus();
+    widget.onCancelTap();
   }
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -158,11 +161,11 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
           borderRadius: 30,
           childHorizontalPad: SizeConfig.width * .06,
           childVerticalPad: SizeConfig.height * .002,
-          backgroundColor: AppColor.white,
+          backgroundColor: theme.scaffoldBackgroundColor,
           onTap: _onCancelPressed,
           child: CustomTextWidget(
             "إالغاء",
-            color: AppColor.red,
+            color: isDark ? AppColor.redDark : AppColor.red,
             fontSize: SizeConfig.diagonal * .028,
           ),
         ),

@@ -1,5 +1,4 @@
 import 'package:complaints_app/core/theme/assets/fonts.dart';
-import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextWidget extends StatelessWidget {
@@ -23,6 +22,7 @@ class CustomTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Text(
       text,
       textAlign: textAlign,
@@ -32,7 +32,7 @@ class CustomTextWidget extends StatelessWidget {
         fontFamily: AppFonts.tasees,
         fontWeight: fontWeight,
         fontSize: fontSize,
-        color: color ?? AppColor.primary,
+        color: color ??theme.colorScheme.primary,
       ),
     );
   }

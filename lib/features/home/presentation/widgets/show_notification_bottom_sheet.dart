@@ -23,7 +23,8 @@ void showNotificationsBottomSheet({
     elevation: 0,
     builder: (ctx) {
       final height = SizeConfig.height * 0.6;
-
+      final isDark = Theme.of(ctx).brightness == Brightness.dark;
+      final theme = Theme.of(ctx);
       return BlocProvider.value(
         value: homeCubit,
         child: Directionality(
@@ -34,9 +35,10 @@ void showNotificationsBottomSheet({
               height: height,
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
               decoration: BoxDecoration(
-                color: AppColor.white,
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(32)),
+                color: theme.scaffoldBackgroundColor,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(32),
+                ),
               ),
               child: Column(
                 children: [
@@ -44,7 +46,7 @@ void showNotificationsBottomSheet({
                     width: SizeConfig.width * .17,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: Colors.black12,
+                      color: theme.colorScheme.secondary,
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -52,21 +54,29 @@ void showNotificationsBottomSheet({
                   SizedBox(height: SizeConfig.height * .01),
 
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
-                      color: AppColor.lightPurple.withOpacity(0.15),
+                      color: theme.colorScheme.onPrimary,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: CustomTextWidget(
                       title,
                       fontSize: SizeConfig.diagonal * .028,
-                      color: AppColor.primary,
+                      color: theme.colorScheme.primary,
                     ),
                   ),
 
-                  const SizedBox(height: 8),
-                  const Divider(thickness: 1, color: Colors.black12),
+                  const SizedBox(height: 12),
+                  Divider(
+                    thickness: 2,
+                    color: isDark
+                        ? AppColor.backGroundGrey
+                        : AppColor.lightGray,
+                  ),
+                  const SizedBox(height: 24),
 
                   Expanded(
                     child: BlocBuilder<HomeCubit, HomeState>(
@@ -115,12 +125,17 @@ Widget _buildNotificationsBody(
   BuildContext context,
   List<NotificationEntity> list,
 ) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+  final theme = Theme.of(context);
   return ListView.separated(
     padding: const EdgeInsets.symmetric(vertical: 8),
     itemCount: list.length,
     separatorBuilder: (_, __) => Padding(
       padding: EdgeInsets.symmetric(horizontal: SizeConfig.width * .15),
-      child: Divider(color: AppColor.grey, thickness: 1),
+      child: Divider(
+        color: isDark ? AppColor.backGroundGrey : AppColor.dividerLight,
+        thickness: 1,
+      ),
     ),
     itemBuilder: (context, index) {
       final n = list[index];
@@ -135,7 +150,7 @@ Widget _buildNotificationsBody(
             backgroundColor: const Color(0xFFF5F8FF),
             child: Icon(
               Icons.notifications_none,
-              color: AppColor.primary,
+              color: theme.colorScheme.primary,
               size: SizeConfig.width * .07,
             ),
           ),
@@ -149,7 +164,7 @@ Widget _buildNotificationsBody(
                 CustomTextWidget(
                   n.title,
                   fontSize: SizeConfig.diagonal * .025,
-                  color: AppColor.black,
+                  color: theme.colorScheme.secondary,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -159,7 +174,7 @@ Widget _buildNotificationsBody(
                 CustomTextWidget(
                   n.body,
                   fontSize: SizeConfig.diagonal * .021,
-                  color: AppColor.middleGrey,
+                  color: isDark ? AppColor.whiteDark : AppColor.middleGrey,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.right,
@@ -172,13 +187,13 @@ Widget _buildNotificationsBody(
                     Icon(
                       Icons.access_time,
                       size: SizeConfig.diagonal * .018,
-                      color: AppColor.middleGrey,
+                      color: isDark ? AppColor.whiteDark : AppColor.middleGrey,
                     ),
                     SizedBox(width: SizeConfig.width * .01),
                     CustomTextWidget(
                       n.date,
                       fontSize: SizeConfig.diagonal * .019,
-                      color: AppColor.middleGrey,
+                      color: isDark ? AppColor.whiteDark : AppColor.middleGrey,
                     ),
                   ],
                 ),

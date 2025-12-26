@@ -1,5 +1,4 @@
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
-import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:flutter/material.dart';
 
@@ -8,11 +7,12 @@ class CustomAppBar extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(top: 29),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.3),
@@ -31,7 +31,7 @@ class CustomAppBar extends StatelessWidget {
               child: CustomTextWidget(
                 title,
                 fontSize: SizeConfig.diagonal * .04,
-                color: AppColor.textColor,
+                color:theme.colorScheme.secondary,
               ),
             ),
             Padding(
@@ -41,7 +41,7 @@ class CustomAppBar extends StatelessWidget {
                   Icons.arrow_forward_ios,
                   size: 28,
                   fontWeight: FontWeight.w500,
-                  color: AppColor.textColor,
+                  color:theme.colorScheme.secondary,
                 ),
                 onPressed: () {
                   Navigator.pop(context);

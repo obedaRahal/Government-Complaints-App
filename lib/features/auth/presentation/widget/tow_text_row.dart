@@ -17,6 +17,7 @@ class TowTextRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -30,7 +31,7 @@ class TowTextRow extends StatelessWidget {
           child: CustomTextWidget(
             actionText,
             fontSize: SizeConfig.diagonal * .02,
-            color: AppColor.primary,
+            color: theme.colorScheme.primary,
           ),
         ),
       ],

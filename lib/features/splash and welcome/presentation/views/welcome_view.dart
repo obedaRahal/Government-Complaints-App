@@ -1,8 +1,8 @@
 import 'package:complaints_app/core/common%20widget/custom_background_with_child.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
+import 'package:complaints_app/core/common%20widget/switch_theme.dart';
 import 'package:complaints_app/core/theme/assets/fonts.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
-import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:complaints_app/features/splash%20and%20welcome/presentation/widget/down_part_welcome_view.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +22,8 @@ class WelcomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -31,13 +33,14 @@ class WelcomeViewBody extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: SvgPicture.asset(
-                AppImage.splashLogo,
+                isDark ? AppImage.splashLogoDark : AppImage.splashLogo,
                 height: SizeConfig.height * .065,
               ),
             ),
-    
-            Expanded(
-              flex: 0,
+
+            // بدل Expanded(flex:0) استخدم Flexible
+            Flexible(
+              fit: FlexFit.loose,
               child: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
@@ -46,7 +49,7 @@ class WelcomeViewBody extends StatelessWidget {
                     TextSpan(
                       text: "تو",
                       style: TextStyle(
-                        color: AppColor.primary,
+                        color: theme.colorScheme.primary,
                         fontFamily: AppFonts.tasees,
                         fontSize: SizeConfig.diagonal * .05,
                       ),
@@ -54,7 +57,7 @@ class WelcomeViewBody extends StatelessWidget {
                     TextSpan(
                       text: "اصل",
                       style: TextStyle(
-                        color: AppColor.black,
+                        color: theme.colorScheme.secondary,
                         fontFamily: AppFonts.tasees,
                         fontSize: SizeConfig.diagonal * .05,
                       ),
@@ -63,10 +66,14 @@ class WelcomeViewBody extends StatelessWidget {
                 ),
               ),
             ),
-            Spacer(),
+
+            const Spacer(),
+
+            // ✅ خليك مع Padding عادي بدون Expanded
+            Expanded(flex: 2, child: ThemeSwitchTile()),
           ],
         ),
-    
+
         Stack(
           children: [
             SizedBox(
@@ -74,11 +81,11 @@ class WelcomeViewBody extends StatelessWidget {
               child: SvgPicture.asset(
                 //height: 120,
                 width: SizeConfig.width * 1.6,
-                AppImage.zigzagLine,
+                isDark ? AppImage.zigzagLineDark : AppImage.zigzagLine,
                 fit: BoxFit.cover,
               ),
             ),
-    
+
             Positioned(
               left: SizeConfig.width * 0.26,
               right: SizeConfig.width * 0.26,
@@ -86,7 +93,7 @@ class WelcomeViewBody extends StatelessWidget {
               child: CustomBackgroundWithChild(
                 height: SizeConfig.height * .09,
                 //width: 100,
-                backgroundColor: AppColor.lightPurple,
+                backgroundColor:theme.colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(15),
                 childHorizontalPad: 10,
                 childVerticalPad: 2,
@@ -98,7 +105,7 @@ class WelcomeViewBody extends StatelessWidget {
             ),
           ],
         ),
-    
+
         DownPartWelcome(),
       ],
     );

@@ -8,6 +8,7 @@ class ArrowBack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
         GoRouter.of(context).pop();
@@ -17,7 +18,7 @@ class ArrowBack extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          CustomTextWidget("رجوع", color: AppColor.black, fontSize: 22),
+          CustomTextWidget("رجوع", color: theme.colorScheme.secondary, fontSize: 22),
           SizedBox(width: 5),
           Icon(Icons.arrow_forward_ios),
         ],

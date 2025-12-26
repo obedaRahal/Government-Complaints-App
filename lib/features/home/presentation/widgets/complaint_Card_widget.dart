@@ -23,13 +23,17 @@ class ComplaintCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return Card(
-      color: AppColor.white,
+      color: theme.colorScheme.surface,
       elevation: 2,
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: BorderSide(color: AppColor.grey),
+        side: BorderSide(
+          color: isDark ? AppColor.borderFieldDark : AppColor.grey,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8),
@@ -42,7 +46,7 @@ class ComplaintCard extends StatelessWidget {
                 CustomTextWidget(
                   title,
                   fontSize: SizeConfig.diagonal * .022,
-                  color: AppColor.black,
+                  color: theme.colorScheme.secondary,
                 ),
                 CustomBackgroundWithChild(
                   borderRadius: BorderRadius.circular(6),
@@ -52,12 +56,16 @@ class ComplaintCard extends StatelessWidget {
                   child: CustomTextWidget(
                     statusText,
                     fontSize: SizeConfig.diagonal * .02,
-                    color: AppColor.white,
+                    color: theme.scaffoldBackgroundColor,
                   ),
                 ),
               ],
             ),
-            const Divider(),
+            Divider(
+              color: isDark
+                  ? AppColor.borderFieldDark
+                  : AppColor.greyTextInCard,
+            ),
 
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,

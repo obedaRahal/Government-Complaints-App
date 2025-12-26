@@ -51,7 +51,8 @@ class _CustomDescriptionTextFielsState
   @override
   Widget build(BuildContext context) {
     final currentLength = widget.controller?.text.length ?? 0;
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,7 +64,7 @@ class _CustomDescriptionTextFielsState
                 CustomTextWidget(
                   widget.label!,
                   fontSize: SizeConfig.diagonal * .032,
-                  color: AppColor.textColor,
+                  color: theme.colorScheme.secondary,
                 ),
               if (widget.maxLength != null)
                 Text(
@@ -71,7 +72,7 @@ class _CustomDescriptionTextFielsState
                   style: TextStyle(
                     fontFamily: AppFonts.tasees,
                     fontSize: 16,
-                    color: AppColor.middleGrey,
+                    color: isDark ? AppColor.whiteDark : AppColor.middleGrey,
                   ),
                 ),
             ],
@@ -84,6 +85,11 @@ class _CustomDescriptionTextFielsState
           maxLines: widget.obscureText ? 1 : widget.maxLines,
           maxLength: widget.maxLength,
           maxLengthEnforcement: MaxLengthEnforcement.enforced,
+          style: TextStyle(
+            color: theme.colorScheme.secondary,
+            fontFamily: AppFonts.tasees,
+            fontSize:widget.hintFontSize,
+          ),
           onChanged: (value) {
             setState(() {});
             widget.onChanged?.call(value);
@@ -93,7 +99,7 @@ class _CustomDescriptionTextFielsState
             hintText: widget.hint,
             counterText: "",
             hintStyle: TextStyle(
-              color: AppColor.middleGrey,
+              color: theme.inputDecorationTheme.hintStyle!.color,
               fontFamily: AppFonts.tasees,
               fontSize: widget.hintFontSize,
             ),
@@ -104,7 +110,9 @@ class _CustomDescriptionTextFielsState
                     icon: Icon(
                       widget.suffixIcon,
                       size: 20,
-                      color: AppColor.middleGrey,
+                      color: isDark
+                          ? AppColor.middleGreyDark
+                          : AppColor.middleGrey,
                     ),
                   ),
             prefix: widget.prefixIcon == null
@@ -114,17 +122,20 @@ class _CustomDescriptionTextFielsState
                     icon: Icon(widget.prefixIcon, size: 20),
                   ),
             filled: true,
-            fillColor: AppColor.grey,
+            fillColor: theme.inputDecorationTheme.fillColor,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(widget.borderRadius),
-              borderSide: const BorderSide(
-                color: Color.fromARGB(255, 229, 229, 229),
+              borderSide: BorderSide(
+                color: theme.inputDecorationTheme.border!.borderSide.color,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: AppColor.primary),
+              borderSide: BorderSide(
+                color:
+                    theme.inputDecorationTheme.focusedBorder!.borderSide.color,
+              ),
             ),
           ),
         ),

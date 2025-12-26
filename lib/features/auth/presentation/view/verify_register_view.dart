@@ -30,6 +30,8 @@ class VerifyRegisterViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return BlocListener<VerifyRegisterCubit, VerifyRegisterState>(
       listener: (context, state) {
         if (state.errorMessage != null) {
@@ -74,7 +76,7 @@ class VerifyRegisterViewBody extends StatelessWidget {
               SizedBox(height: SizeConfig.height * .04),
 
               SvgPicture.asset(
-                AppImage.splashLogo,
+                isDark ? AppImage.splashLogoDark : AppImage.splashLogo,
                 height: SizeConfig.height * .07,
               ),
               CustomTextWidget(
@@ -93,7 +95,7 @@ class VerifyRegisterViewBody extends StatelessWidget {
               CustomBackgroundWithChild(
                 borderRadius: BorderRadius.circular(20),
                 width: double.infinity,
-                backgroundColor: AppColor.lightPurple,
+                backgroundColor: theme.colorScheme.onPrimary,
                 child: CustomTextWidget("نحن نقوم باجراء احترازي فقط"),
               ),
 

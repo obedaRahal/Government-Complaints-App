@@ -1,6 +1,5 @@
 import 'package:complaints_app/core/common%20widget/custom_text_feild.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
-import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:flutter/material.dart';
 
@@ -36,13 +35,14 @@ class AuthFieldLabel extends StatelessWidget {
   final VoidCallback? onSuffixTap;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomTextWidget(
           label,
           fontSize: SizeConfig.diagonal * .032,
-          color: AppColor.textColor,
+          color: theme.colorScheme.secondary,
         ),
         SizedBox(height: SizeConfig.height * .01),
         CustomTextField(
@@ -55,7 +55,7 @@ class AuthFieldLabel extends StatelessWidget {
           validator: validator,
           obscureText: obscureText,
           maxLines: maxLines ?? 1,
-          maxLength:maxLength,
+          maxLength: maxLength,
           keyboardType: keyboardType,
         ),
       ],

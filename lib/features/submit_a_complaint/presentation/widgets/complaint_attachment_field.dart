@@ -13,7 +13,6 @@ class ComplaintAttachmentField extends StatefulWidget {
     super.key,
     required this.onImagesSelected,
 
-    
     this.label,
     this.hint,
     this.maxImages = 3,
@@ -108,7 +107,8 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
 
     final labelText = widget.label ?? "مرفقات الشكوى";
     final hintText = widget.hint ?? "أدخل مرفقات الشكوى(اختياري)...";
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return Column(
       children: [
         Padding(
@@ -119,14 +119,14 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
               CustomTextWidget(
                 labelText,
                 fontSize: SizeConfig.diagonal * .032,
-                color: AppColor.textColor,
+                color: theme.colorScheme.secondary,
               ),
               Text(
                 "${widget.maxImages}/$count",
                 style: TextStyle(
                   fontFamily: AppFonts.tasees,
                   fontSize: 16,
-                  color: AppColor.middleGrey,
+                  color: isDark ? AppColor.whiteDark : AppColor.middleGrey,
                 ),
               ),
             ],
@@ -140,11 +140,20 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
               height: 58,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
               decoration: BoxDecoration(
-                color: AppColor.grey,
+                color: isDark ? AppColor.backGroundGrey : AppColor.grey,
                 borderRadius: BorderRadius.circular(10),
                 border: isSlected
-                    ? Border.all(color: AppColor.primary)
-                    : Border.all(color: Colors.grey.shade300),
+                    ? Border.all(
+                        color: theme
+                            .inputDecorationTheme
+                            .focusedBorder!
+                            .borderSide
+                            .color,
+                      )
+                    : Border.all(
+                        color:
+                            theme.inputDecorationTheme.border!.borderSide.color,
+                      ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,7 +166,9 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
                         style: TextStyle(
                           fontFamily: AppFonts.tasees,
                           fontSize: 16,
-                          color: AppColor.middleGrey,
+                          color: isDark
+                              ? AppColor.middleGreyDark
+                              : AppColor.middleGrey,
                         ),
                       ),
                     ],
@@ -166,20 +177,24 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
                     IconButton(
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.photo_library_outlined,
-                        color: Color(0xffACACAC),
+                        color: isDark
+                            ? AppColor.middleGreyDark
+                            : AppColor.middleGrey,
                       ),
                       onPressed: () {
                         showDialog(
                           context: context,
                           builder: (_) => AlertDialog(
-                            title: const Text(
+                            title: Text(
                               'الصور المختارة',
                               style: TextStyle(
                                 fontFamily: AppFonts.tasees,
                                 fontSize: 16,
-                                color: AppColor.middleGrey,
+                                color: isDark
+                                    ? AppColor.middleGreyDark
+                                    : AppColor.middleGrey,
                               ),
                             ),
                             content: SizedBox(
@@ -206,12 +221,14 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text(
+                                child: Text(
                                   "إغلاق",
                                   style: TextStyle(
                                     fontFamily: AppFonts.tasees,
                                     fontSize: 16,
-                                    color: AppColor.middleGrey,
+                                    color: isDark
+                                        ? AppColor.middleGreyDark
+                                        : AppColor.middleGrey,
                                   ),
                                 ),
                               ),
@@ -221,7 +238,12 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
                       },
                     ),
                   if (count == 0)
-                    const Icon(Icons.attach_file, color: Color(0xffACACAC)),
+                    Icon(
+                      Icons.attach_file,
+                      color: isDark
+                          ? AppColor.middleGreyDark
+                          : AppColor.middleGrey,
+                    ),
                 ],
               ),
             ),

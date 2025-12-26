@@ -31,6 +31,8 @@ class RegisterViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
         if (state.errorMessage != null) {
@@ -70,7 +72,7 @@ class RegisterViewBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * .04),
 
                 SvgPicture.asset(
-                  AppImage.splashLogo,
+                 isDark ? AppImage.splashLogoDark : AppImage.splashLogo,
                   height: SizeConfig.height * .07,
                 ),
                 CustomTextWidget(
@@ -183,7 +185,7 @@ class RegisterViewBody extends StatelessWidget {
 
                     return CustomButtonWidget(
                       width: double.infinity,
-                      backgroundColor: AppColor.primary,
+                      backgroundColor: theme.colorScheme.primary,
                       childHorizontalPad: SizeConfig.width * .07,
                       childVerticalPad: SizeConfig.height * .012,
                       borderRadius: 10,
@@ -198,7 +200,7 @@ class RegisterViewBody extends StatelessWidget {
                       child: CustomTextWidget(
                         "تأكيد الادخال",
                         fontSize: SizeConfig.height * .025,
-                        color: AppColor.white,
+                        color:theme.scaffoldBackgroundColor,
                       ),
                     );
                   },

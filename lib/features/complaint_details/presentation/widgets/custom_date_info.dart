@@ -17,11 +17,18 @@ class CustomDateInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: theme.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColor.borderContainer, width: 1),
+        border: Border.all(
+          color: isDark
+              ? AppColor.borderContainerDark
+              : AppColor.borderContainer,
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
             color: const Color(0x17000000),
@@ -39,7 +46,7 @@ class CustomDateInfo extends StatelessWidget {
             CustomTextWidget(
               date,
               fontSize: SizeConfig.diagonal * .016,
-              color: AppColor.textInCard,
+              color: isDark? AppColor.whiteDark: AppColor.textInCard,
               maxLines: 5,
               overflow: TextOverflow.visible,
               textAlign: TextAlign.start,
@@ -54,7 +61,7 @@ class CustomDateInfo extends StatelessWidget {
                 child: CustomTextWidget(
                   status,
                   fontSize: SizeConfig.diagonal * .02,
-                  color: AppColor.white,
+                  color: theme.scaffoldBackgroundColor,
                 ),
               ),
             ),

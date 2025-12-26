@@ -20,22 +20,24 @@ class SubmitComplaintTypeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return DropdownButtonFormField<String>(
       value: selectedType,
       icon: Icon(Icons.keyboard_arrow_down, color: Color(0xffACACAC)),
       style: TextStyle(
         fontFamily: AppFonts.tasees,
         fontSize: hintFontSize,
-        color: AppColor.middleGrey,
+        color: isDark ? AppColor.middleGreyDark : AppColor.middleGrey,
       ),
 
       decoration: InputDecoration(
         filled: true,
-        fillColor: AppColor.grey,
+        fillColor: theme.inputDecorationTheme.fillColor,
         hintText: hint,
 
         hintStyle: TextStyle(
-          color: AppColor.middleGrey,
+          color: isDark ? AppColor.middleGreyDark : AppColor.middleGrey,
           fontFamily: AppFonts.tasees,
           fontSize: hintFontSize,
         ),
@@ -49,12 +51,12 @@ class SubmitComplaintTypeField extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: const Color.fromARGB(255, 229, 229, 229),
+            color: theme.inputDecorationTheme.border!.borderSide.color,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColor.primary),
+          borderSide: BorderSide(color: theme.colorScheme.primary),
         ),
       ),
 

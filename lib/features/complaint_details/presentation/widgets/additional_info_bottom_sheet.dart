@@ -4,7 +4,6 @@ import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:complaints_app/features/complaint_details/presentation/manager/add_details_cubit.dart';
 import 'package:complaints_app/features/complaint_details/presentation/manager/add_details_state.dart';
-import 'package:complaints_app/features/complaint_details/presentation/manager/complaint_details_cubit.dart';
 import 'package:complaints_app/features/submit_a_complaint/presentation/widgets/complaint_attachment_field.dart';
 import 'package:complaints_app/features/submit_a_complaint/presentation/widgets/custom_description_text_fiels.dart';
 import 'package:complaints_app/core/common widget/custom_button_widget.dart';
@@ -17,22 +16,21 @@ class AdditionalInfoBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return BlocConsumer<AddDetailsCubit, AddDetailsState>(
-      // 🧠 مهم جداً: ما نسمع إلا لما تتغير الأخطاء أو النجاح
       listenWhen: (prev, curr) =>
           prev.errorMessage != curr.errorMessage ||
           prev.isSuccess != curr.isSuccess,
       listener: (context, state) {
-        // 🔴 في حال فشل
         if (state.errorMessage != null) {
           showTopSnackBar(
             context,
-            message: state.errorMessage!, // 👈 بدون ?? "حدث خطأ غير متوقع"
+            message: state.errorMessage!,
             isSuccess: false,
           );
         }
 
-        // ✅ في حال نجاح
         if (state.isSuccess) {
           showTopSnackBar(
             context,
@@ -40,8 +38,6 @@ class AdditionalInfoBottomSheet extends StatelessWidget {
                 state.successMessage ?? "تم إرسال المعلومات الإضافية بنجاح",
             isSuccess: true,
           );
-
-          // اغلاق الـ BottomSheet
           Navigator.of(context).pop();
 
           // إعادة تحميل تفاصيل الشكوى لتظهر التحديثات الجديدة
@@ -57,8 +53,8 @@ class AdditionalInfoBottomSheet extends StatelessWidget {
         return Directionality(
           textDirection: TextDirection.rtl,
           child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: theme.scaffoldBackgroundColor,
               borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
             ),
             child: SafeArea(
@@ -71,7 +67,9 @@ class AdditionalInfoBottomSheet extends StatelessWidget {
                     width: 45,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: AppColor.middleGrey,
+                      color: isDark
+                          ? AppColor.borderFieldDark
+                          : AppColor.middleGrey,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -82,15 +80,22 @@ class AdditionalInfoBottomSheet extends StatelessWidget {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColor.primary.withOpacity(.1),
+                      color: theme.colorScheme.onPrimary,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: CustomTextWidget(
                       "معلومات إضافية",
-                      color: AppColor.primary,
+                      color: theme.colorScheme.primary,
                       fontSize: SizeConfig.height * .022,
                       fontWeight: FontWeight.w600,
                     ),
+                  ),
+                  const SizedBox(height: 12),
+                  Divider(
+                    thickness: 2,
+                    color: isDark
+                        ? AppColor.backGroundGrey
+                        : AppColor.lightGray,
                   ),
                   const SizedBox(height: 24),
 
@@ -105,7 +110,6 @@ class AdditionalInfoBottomSheet extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // 📝 حقل الوصف الإضافي
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4),
                             child: CustomDescriptionTextFiels(
@@ -127,16 +131,14 @@ class AdditionalInfoBottomSheet extends StatelessWidget {
                             label: "مرفقات إضافية",
                             hint: "أدخل مرفقات إضافية (اختياري)...",
                             maxImages: 3,
-                            onImagesSelected:
-                                addCubit.setExtraAttachments, // 👈 ليست وحدة بس
+                            onImagesSelected: addCubit.setExtraAttachments,
                           ),
 
                           const SizedBox(height: 16),
 
-                          // 🔘 زر تأكيد الإرسال
                           CustomButtonWidget(
                             width: double.infinity,
-                            backgroundColor: AppColor.primary,
+                            backgroundColor: theme.colorScheme.primary,
                             childHorizontalPad: SizeConfig.width * .07,
                             childVerticalPad: SizeConfig.height * .012,
                             borderRadius: 10,
@@ -145,18 +147,18 @@ class AdditionalInfoBottomSheet extends StatelessWidget {
                               addCubit.submit(complaintId);
                             },
                             child: state.isSubmitting
-                                ? const SizedBox(
+                                ? SizedBox(
                                     height: 22,
                                     width: 22,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      color: Colors.white,
+                                      color: theme.scaffoldBackgroundColor,
                                     ),
                                   )
                                 : CustomTextWidget(
                                     "تأكيد الارسال",
                                     fontSize: SizeConfig.height * .025,
-                                    color: AppColor.white,
+                                    color: theme.scaffoldBackgroundColor,
                                   ),
                           ),
                           const SizedBox(height: 12),

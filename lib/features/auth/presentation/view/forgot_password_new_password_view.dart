@@ -2,7 +2,6 @@ import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/config/route_name.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
-import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:complaints_app/features/auth/presentation/manager/forget%20password%20cubit/forget_password_cubit.dart';
@@ -29,6 +28,8 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return BlocListener<ForgotPasswordCubit, ForgotPasswordState>(
       listenWhen: (prev, curr) =>
           prev.errorMessage != curr.errorMessage ||
@@ -68,7 +69,7 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
                   title: "انشاء كلمة مرور جديدة",
                   bodyText:
                       "يجب أن تكون كلمة المرور الجديدة\n مختلفة عن السابقة",
-                  img: AppImage.forgetPass3,
+                  img: isDark?AppImage.forgetPassDark3: AppImage.forgetPass3,
                   imgHeight: SizeConfig.height * .3,
                 ),
 
@@ -150,7 +151,7 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
                     }
                     return CustomButtonWidget(
                       width: double.infinity,
-                      backgroundColor: AppColor.primary,
+                      backgroundColor: theme.colorScheme.primary,
                       childHorizontalPad: SizeConfig.width * .07,
                       childVerticalPad: SizeConfig.height * .012,
                       borderRadius: 10,
@@ -165,7 +166,7 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
                       child: CustomTextWidget(
                         "تأكيد الإدخال",
                         fontSize: SizeConfig.height * .025,
-                        color: AppColor.white,
+                        color: theme.scaffoldBackgroundColor,
                       ),
                     );
                   },

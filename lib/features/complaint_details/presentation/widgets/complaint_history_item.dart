@@ -1,5 +1,3 @@
-import 'package:complaints_app/core/theme/color/app_color.dart';
-import 'package:complaints_app/core/common widget/custom_text_widget.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:complaints_app/features/complaint_details/domain/entities/complaint_history_entry_entity.dart';
 import 'package:complaints_app/features/complaint_details/presentation/widgets/card_detais_widget.dart';

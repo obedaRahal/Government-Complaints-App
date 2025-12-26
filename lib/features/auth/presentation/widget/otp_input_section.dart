@@ -29,13 +29,13 @@ class OtpInputSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final minutes = (remainingSeconds ~/ 60).toString().padLeft(1, '0');
     final seconds = (remainingSeconds % 60).toString().padLeft(2, '0');
-
+    final theme = Theme.of(context);
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CustomTextWidget("ادخل الرمز", color: AppColor.black),
+            CustomTextWidget("ادخل الرمز", color:theme.colorScheme.secondary),
             CustomTextWidget("$minutes:$seconds"),
           ],
         ),
@@ -47,7 +47,7 @@ class OtpInputSection extends StatelessWidget {
             length: 6,
             textStyle: TextStyle(
               fontSize: SizeConfig.height * .025,
-              color: AppColor.black,
+              color:theme.colorScheme.secondary,
               fontFamily: AppFonts.reemKufi,
             ),
             animationType: AnimationType.fade,
@@ -56,13 +56,13 @@ class OtpInputSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               fieldHeight: SizeConfig.height * .07,
               fieldWidth: SizeConfig.height * .07,
-              activeFillColor: AppColor.grey,
-              selectedFillColor: AppColor.grey,
-              inactiveFillColor: AppColor.grey,
-              inactiveColor: AppColor.lightPurple,
-              selectedColor: AppColor.primary,
-              activeColor: AppColor.primary,
-              errorBorderColor: Colors.red,
+              activeFillColor: theme.inputDecorationTheme.fillColor,
+              selectedFillColor: theme.inputDecorationTheme.fillColor,
+              inactiveFillColor: theme.inputDecorationTheme.fillColor,
+              inactiveColor: theme.colorScheme.onPrimary,
+              selectedColor: theme.colorScheme.primary,
+              activeColor: theme.colorScheme.primary,
+              errorBorderColor: AppColor.red,
             ),
             animationDuration: const Duration(milliseconds: 300),
             enableActiveFill: true,
@@ -82,7 +82,7 @@ class OtpInputSection extends StatelessWidget {
             ? const Center(child: CircularProgressIndicator())
             : CustomButtonWidget(
                 width: double.infinity,
-                backgroundColor: AppColor.primary,
+                backgroundColor:theme.colorScheme.primary,
                 childHorizontalPad: SizeConfig.width * .07,
                 childVerticalPad: SizeConfig.height * .012,
                 borderRadius: 10,
@@ -90,7 +90,7 @@ class OtpInputSection extends StatelessWidget {
                 child: CustomTextWidget(
                   buttonText,
                   fontSize: SizeConfig.height * .025,
-                  color: AppColor.white,
+                  color:theme.scaffoldBackgroundColor,
                 ),
               ),
 

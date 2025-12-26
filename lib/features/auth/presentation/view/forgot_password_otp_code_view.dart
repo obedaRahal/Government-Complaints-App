@@ -41,6 +41,7 @@ class _ForgetPasswordOtpCodeViewBodyState
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocListener<ForgotPasswordCubit, ForgotPasswordState>(
       listenWhen: (prev, curr) =>
           prev.errorMessage != curr.errorMessage ||
@@ -86,7 +87,7 @@ class _ForgetPasswordOtpCodeViewBodyState
                 title: "تأكيد البريد المدخل",
                 bodyText:
                     "الرجاء ادخال الرمز المكون من ستة \nأرقام الى بريدك الخاص",
-                img: AppImage.forgetPass1,
+                img:isDark ? AppImage.forgetPassDark2:  AppImage.forgetPass2,
                 imgHeight: SizeConfig.height * .3,
               ),
               SizedBox(height: SizeConfig.height * .04),

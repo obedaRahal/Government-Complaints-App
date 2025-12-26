@@ -19,7 +19,7 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.onSuffixTap,
-    this.initialText
+    this.initialText,
   });
 
   final TextEditingController? controller;
@@ -35,13 +35,14 @@ class CustomTextField extends StatelessWidget {
   final double hintFontSize;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
-  final VoidCallback? onSuffixTap ;
-   final String? initialText;
+  final VoidCallback? onSuffixTap;
+  final String? initialText;
 
   @override
   Widget build(BuildContext context) {
-    
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final inputTheme = theme.inputDecorationTheme;
     return SizedBox(
       //height: 50,
       child: TextFormField(
@@ -53,12 +54,17 @@ class CustomTextField extends StatelessWidget {
         maxLines: obscureText ? 1 : maxLines,
         onChanged: onChanged,
         validator: validator,
+        style: TextStyle(
+          color: theme.colorScheme.secondary,
+          fontFamily: AppFonts.tasees,
+          fontSize: hintFontSize,
+        ),
         decoration: InputDecoration(
           //labelText: label,
           hintText: hint,
           counterText: "",
           hintStyle: TextStyle(
-            color: AppColor.middleGrey,
+            color: inputTheme.hintStyle!.color,
             fontFamily: AppFonts.tasees,
             fontSize: hintFontSize,
           ),
@@ -76,19 +82,19 @@ class CustomTextField extends StatelessWidget {
                   onPressed: onSuffixTap,
                   icon: Icon(prefixIcon, size: 20),
                 ),
-          suffixIconColor: Color(0xffACACAC),
+          suffixIconColor: isDark ? AppColor.middleGreyDark : Color(0xffACACAC),
           filled: true,
-          fillColor: AppColor.grey,
+          fillColor: inputTheme.fillColor,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius),
-            borderSide: BorderSide(
-              color: const Color.fromARGB(255, 229, 229, 229),
-            ),
+            borderSide: BorderSide(color: inputTheme.border!.borderSide.color),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColor.primary),
+            borderSide: BorderSide(
+              color: inputTheme.focusedBorder!.borderSide.color,
+            ),
           ),
         ),
       ),

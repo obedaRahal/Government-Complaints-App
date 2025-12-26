@@ -17,3 +17,18 @@ Color mapStatusColor(String status) {
       return AppColor.borderContainer;
   }
 }
+Color mapStatusColorDark(String status) {
+  switch (status) {
+    case 'معلقة':
+      return AppColor.greyDark;
+    case 'قيد المعالجة':
+      return AppColor.blueDark;
+    case 'تم معالجتها':
+      return AppColor.greenDark;
+    case 'تم رفضها':
+      return AppColor.redDark;
+    default:
+      return AppColor.middleGrey;
+  }
+}
+

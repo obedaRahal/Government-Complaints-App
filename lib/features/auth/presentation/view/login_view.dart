@@ -31,6 +31,8 @@ class LogInViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state.errorMessage != null) {
@@ -67,7 +69,7 @@ class LogInViewBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * .04),
 
                 SvgPicture.asset(
-                  AppImage.splashLogo,
+                   isDark ? AppImage.splashLogoDark : AppImage.splashLogo,
                   height: SizeConfig.height * .07,
                 ),
                 CustomTextWidget(
@@ -142,7 +144,7 @@ class LogInViewBody extends StatelessWidget {
                     child: CustomTextWidget(
                       "نسبت كلمة المرور ؟",
                       fontSize: SizeConfig.diagonal * .03,
-                      color: AppColor.primary,
+                      color:theme.colorScheme.primary,
                     ),
                   ),
                 ),
@@ -156,7 +158,7 @@ class LogInViewBody extends StatelessWidget {
                     }
                     return CustomButtonWidget(
                       width: double.infinity,
-                      backgroundColor: AppColor.primary,
+                      backgroundColor:theme.colorScheme.primary,
                       childHorizontalPad: SizeConfig.width * .07,
                       childVerticalPad: SizeConfig.height * .012,
                       borderRadius: 10,
@@ -169,7 +171,7 @@ class LogInViewBody extends StatelessWidget {
                       child: CustomTextWidget(
                         "تأكيد الإدخال",
                         fontSize: SizeConfig.height * .025,
-                        color: AppColor.white,
+                        color:theme.scaffoldBackgroundColor,
                       ),
                     );
                   },

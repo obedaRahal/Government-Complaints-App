@@ -1,5 +1,4 @@
 import 'package:complaints_app/core/common%20widget/custom_app_bar.dart';
-import 'package:complaints_app/core/common%20widget/custom_background_with_child.dart';
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
@@ -32,6 +31,8 @@ class ComplaintDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     return BlocConsumer<ComplaintDetailsCubit, ComplaintDetailsState>(
       listenWhen: (prev, curr) =>
           prev.deleteErrorMessage != curr.deleteErrorMessage ||
@@ -52,7 +53,7 @@ class ComplaintDetailsView extends StatelessWidget {
             isSuccess: true,
           );
           //Navigator.of(context).pop();
-           context.pop(true);
+          context.pop(true);
         }
       },
       builder: (context, state) {
@@ -72,6 +73,8 @@ class ComplaintDetailsView extends StatelessWidget {
 
         final history = details.history;
         final statusColor = mapStatusColor(info.status);
+        final statusColorDark = mapStatusColorDark(info.status);
+
 
         return Scaffold(
           body: Column(
@@ -94,7 +97,7 @@ class ComplaintDetailsView extends StatelessWidget {
                                 borderRadius: 16,
                                 childHorizontalPad: 6,
                                 childVerticalPad: 4,
-                                backgroundColor: AppColor.lightPurple,
+                                backgroundColor: theme.colorScheme.onPrimary,
                                 onTap: () {},
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -162,7 +165,12 @@ class ComplaintDetailsView extends StatelessWidget {
                           ),
                         ),
 
-                        Divider(thickness: 2.3, color: AppColor.dividerColor),
+                        Divider(
+                          thickness: 2.3,
+                          color: isDark
+                              ? AppColor.backGroundGrey
+                              : AppColor.dividerColor,
+                        ),
                       ],
                       Padding(
                         padding: const EdgeInsets.only(top: 22, right: 16),
@@ -170,7 +178,7 @@ class ComplaintDetailsView extends StatelessWidget {
                           borderRadius: 16,
                           childHorizontalPad: 6,
                           childVerticalPad: 4,
-                          backgroundColor: AppColor.lightPurple,
+                          backgroundColor: theme.colorScheme.onPrimary,
                           onTap: () {},
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -192,7 +200,7 @@ class ComplaintDetailsView extends StatelessWidget {
                           child: Row(
                             children: [
                               ComplaintInformationWidget(
-                                titleColor: AppColor.textColor,
+                                titleColor: theme.colorScheme.secondary,
                                 hintColor: AppColor.greyText,
                                 image: AppImage.grid,
                                 title: 'النوع',
@@ -200,7 +208,7 @@ class ComplaintDetailsView extends StatelessWidget {
                               ),
                               DividerWidget(),
                               ComplaintInformationWidget(
-                                titleColor: AppColor.textColor,
+                                titleColor: theme.colorScheme.secondary,
                                 hintColor: AppColor.greyText,
                                 image: AppImage.layers,
                                 title: 'الجهة الحكومية',
@@ -208,7 +216,7 @@ class ComplaintDetailsView extends StatelessWidget {
                               ),
                               DividerWidget(),
                               ComplaintInformationWidget(
-                                titleColor: AppColor.textColor,
+                                titleColor: theme.colorScheme.secondary,
                                 hintColor: AppColor.greyText,
                                 image: AppImage.houreGlass,
                                 title: 'تاريخ الانشاء',
@@ -216,7 +224,7 @@ class ComplaintDetailsView extends StatelessWidget {
                               ),
                               DividerWidget(),
                               ComplaintInformationWidget(
-                                titleColor: AppColor.textColor,
+                                titleColor: theme.colorScheme.secondary,
                                 hintColor: AppColor.greyText,
                                 image: AppImage.group1,
                                 title: 'رقم الشكوى',
@@ -240,12 +248,17 @@ class ComplaintDetailsView extends StatelessWidget {
                           fontSize: SizeConfig.diagonal * .024,
                           titleDescreption: 'وصف الشكوى',
                           descreption: info.description,
-                          statuseColor: statusColor,
+                          statuseColor: isDark?statusColorDark: statusColor,
                         ),
                       ),
 
                       const SizedBox(height: 16),
-                      Divider(thickness: 2.3, color: AppColor.dividerColor),
+                      Divider(
+                        thickness: 2.3,
+                        color: isDark
+                            ? AppColor.backGroundGrey
+                            : AppColor.dividerColor,
+                      ),
 
                       Padding(
                         padding: const EdgeInsets.only(top: 22, right: 16),
@@ -253,7 +266,7 @@ class ComplaintDetailsView extends StatelessWidget {
                           borderRadius: 16,
                           childHorizontalPad: 6,
                           childVerticalPad: 4,
-                          backgroundColor: AppColor.lightPurple,
+                          backgroundColor: theme.colorScheme.onPrimary,
                           onTap: () {},
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -279,12 +292,13 @@ class ComplaintDetailsView extends StatelessWidget {
 
                       const SizedBox(height: 40),
 
-                      // 🔹 زر "إرفاق معلومات إضافية" مع حقن AddDetailsCubit في الـ BottomSheet
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: CustomButtonWidget(
                           width: double.infinity,
-                          backgroundColor: AppColor.middleGrey,
+                          backgroundColor: isDark
+                              ? AppColor.primaryDark
+                              : AppColor.middleGrey,
                           childHorizontalPad: SizeConfig.width * .07,
                           childVerticalPad: SizeConfig.height * .012,
                           borderRadius: 10,
@@ -308,7 +322,7 @@ class ComplaintDetailsView extends StatelessWidget {
                           child: CustomTextWidget(
                             "إرفاق معلومات إضافية",
                             fontSize: SizeConfig.height * .025,
-                            color: AppColor.white,
+                            color:theme.scaffoldBackgroundColor,
                           ),
                         ),
                       ),
@@ -320,7 +334,7 @@ class ComplaintDetailsView extends StatelessWidget {
                         ),
                         child: CustomButtonWidget(
                           width: double.infinity,
-                          backgroundColor: AppColor.red,
+                          backgroundColor: isDark? AppColor.redDark: AppColor.red,
                           childHorizontalPad: SizeConfig.width * .07,
                           childVerticalPad: SizeConfig.height * .012,
                           borderRadius: 10,
@@ -332,18 +346,18 @@ class ComplaintDetailsView extends StatelessWidget {
                                 .deleteComplaint(complaintId);
                           },
                           child: state.isDeleting
-                              ? const SizedBox(
+                              ? SizedBox(
                                   height: 22,
                                   width: 22,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
-                                    color: Colors.white,
+                                    color:theme.scaffoldBackgroundColor,
                                   ),
                                 )
                               : CustomTextWidget(
                                   "حذف الشكوى",
                                   fontSize: SizeConfig.height * .025,
-                                  color: AppColor.white,
+                                  color: theme.scaffoldBackgroundColor,
                                 ),
                         ),
                       ),
