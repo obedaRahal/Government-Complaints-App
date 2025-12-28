@@ -1,5 +1,6 @@
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/assets/fonts.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
@@ -13,7 +14,7 @@ class OtpInputSection extends StatelessWidget {
   final VoidCallback onResend;
   final bool isSubmitting;
   final int remainingSeconds;
-  final String buttonText;
+  final String? buttonText;
 
   const OtpInputSection({
     super.key,
@@ -22,7 +23,7 @@ class OtpInputSection extends StatelessWidget {
     required this.onResend,
     required this.isSubmitting,
     required this.remainingSeconds,
-    this.buttonText = "تأكيد الإدخال",
+    this.buttonText,
   });
 
   @override
@@ -35,14 +36,14 @@ class OtpInputSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CustomTextWidget("ادخل الرمز", color:theme.colorScheme.secondary),
+            CustomTextWidget(context.l10n.input_otp_code, color:theme.colorScheme.secondary),
             CustomTextWidget("$minutes:$seconds"),
           ],
         ),
         Directionality(
           textDirection: TextDirection.ltr,
           child: PinCodeTextField(
-            errorTextDirection: TextDirection.rtl,
+            errorTextDirection: Directionality.of(context),
             appContext: context,
             length: 6,
             textStyle: TextStyle(
@@ -69,7 +70,7 @@ class OtpInputSection extends StatelessWidget {
             onChanged: onOtpChanged,
             validator: (value) {
               if (value == null || value.length != 6) {
-                return 'أدخل الرمز المؤلف من 6 أرقام';
+                return context.l10n.otp_invalid_6_digits;
               }
               return null;
             },
@@ -88,7 +89,7 @@ class OtpInputSection extends StatelessWidget {
                 borderRadius: 10,
                 onTap: onSubmit,
                 child: CustomTextWidget(
-                  buttonText,
+                  buttonText ?? context.l10n.confirm_entry,
                   fontSize: SizeConfig.height * .025,
                   color:theme.scaffoldBackgroundColor,
                 ),
@@ -97,8 +98,8 @@ class OtpInputSection extends StatelessWidget {
         SizedBox(height: SizeConfig.height * .02),
 
         TowTextRow(
-          text: "لم تستلم رمز بعد ؟ ",
-          actionText: "إعادة ارسال الرمز",
+         text: context.l10n.didnt_get_code,      // ✅
+actionText: context.l10n.resent_otp_code,
           onTap: onResend,
         ),
       ],

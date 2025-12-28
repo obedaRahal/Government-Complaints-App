@@ -1,4 +1,5 @@
 import 'package:complaints_app/core/config/route_name.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
 import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
@@ -51,7 +52,7 @@ class _ForgetPasswordOtpCodeViewBodyState
         if (state.errorMessage != null) {
           showTopSnackBar(
             context,
-            message: state.errorMessage ?? "حدث خطأ غير متوقع",
+            message: state.errorMessage ?? context.l10n.unexpected_error,
             isSuccess: false,
           );
         }
@@ -59,7 +60,7 @@ class _ForgetPasswordOtpCodeViewBodyState
         if (state.successMessage != null && !state.isSuccess) {
           showTopSnackBar(
             context,
-            message: state.successMessage ?? "تم إرسال رمز جديد إلى بريدك",
+            message: state.successMessage ?? context.l10n.resent_otp_done,
             isSuccess: true,
           );
         }
@@ -67,7 +68,7 @@ class _ForgetPasswordOtpCodeViewBodyState
         if (state.isSuccess) {
           showTopSnackBar(
             context,
-            message: state.successMessage ?? "تم تأكيد الرمز بنجاح",
+            message: state.successMessage ?? context.l10n.verify_success,
             isSuccess: true,
           );
 
@@ -84,10 +85,9 @@ class _ForgetPasswordOtpCodeViewBodyState
           child: Column(
             children: [
               CommonTopPartForgetPassword(
-                title: "تأكيد البريد المدخل",
-                bodyText:
-                    "الرجاء ادخال الرمز المكون من ستة \nأرقام الى بريدك الخاص",
-                img:isDark ? AppImage.forgetPassDark2:  AppImage.forgetPass2,
+                title: context.l10n.forget_password_verify_email, // ✅
+                bodyText: context.l10n.forget_password_verify_email_description,
+                img: isDark ? AppImage.forgetPassDark2 : AppImage.forgetPass2,
                 imgHeight: SizeConfig.height * .3,
               ),
               SizedBox(height: SizeConfig.height * .04),

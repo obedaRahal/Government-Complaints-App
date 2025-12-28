@@ -1,4 +1,5 @@
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/features/settings/presentation/manager/theme_cubit.dart';
 import 'package:complaints_app/features/settings/presentation/manager/theme_state.dart';
@@ -13,36 +14,25 @@ class ThemeSwitchTile extends StatelessWidget {
     return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, state) {
         final isDark = state.mode == ThemeMode.dark;
+        final theme = Theme.of(context);
+
+        final label = isDark ? context.l10n.dark_mode : context.l10n.light_mode;
 
         return ListTile(
-          contentPadding: EdgeInsets.zero, // ✅ يشيل المسافة الخارجية
-          horizontalTitleGap: 0, // ✅ يقلل فجوة العنوان
-          minLeadingWidth: 0, // ✅ ما يحجز مساحة لليدينغ
-          title: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight, // ✅ يلزق يمين
-                    child: CustomTextWidget(
-                      isDark ? 'الوضع الليلي' : 'الوضع النهاري',
-                      color: isDark ? AppColor.whiteDark : AppColor.black,
-                      fontSize: 22,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Switch(
-                  value: isDark,
-                  onChanged: (value) {
-                    context.read<ThemeCubit>().change(
-                      value ? ThemeMode.dark : ThemeMode.light,
-                    );
-                  },
-                ),
-              ],
-            ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+          title: CustomTextWidget(
+            label,
+            color: theme.colorScheme.secondary,
+            fontSize: 22,
+            textAlign: TextAlign.start,
+          ),
+          trailing: Switch(
+            value: isDark,
+            onChanged: (value) {
+              context.read<ThemeCubit>().change(
+                value ? ThemeMode.dark : ThemeMode.light,
+              );
+            },
           ),
           onTap: () => context.read<ThemeCubit>().toggleLightDark(),
         );

@@ -1,8 +1,8 @@
 import 'package:complaints_app/core/config/route_name.dart';
 import 'package:complaints_app/core/databases/cache/token_storage.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/assets/fonts.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
-import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/auth_session.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +36,8 @@ class _SplashViewbodyState extends State<SplashViewBody>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
     SizeConfig.init(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -44,17 +46,18 @@ class _SplashViewbodyState extends State<SplashViewBody>
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: SvgPicture.asset(
-            AppImage.splashLogo,
+          isDark?AppImage.splashLogoDark:  AppImage.splashLogo,
             height: SizeConfig.height * 0.25,
             width: SizeConfig.width * .5,
           ),
         ),
         Text(
-          "تواصل",
+          context.l10n.appName,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: AppFonts.tasees,
             fontSize: SizeConfig.height * 0.035,
+            color: theme.colorScheme.secondary
           ),
         ),
         Divider(
@@ -115,18 +118,23 @@ class SlidingText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
+    final theme = Theme.of(context);
     return AnimatedBuilder(
       animation: slidingAnimation,
       builder: (context, _) {
         return SlideTransition(
           position: slidingAnimation,
           child: Text(
-            "تطبيق الشكاوي الحكومية",
+            context.l10n.splashNmae,
             textAlign: TextAlign.center,
+            maxLines: 1, 
+            overflow: TextOverflow.ellipsis, 
+            softWrap: false, 
             style: TextStyle(
-              fontSize: SizeConfig.height * 0.035,
+              fontSize: SizeConfig.height * (isEn ?0.030 : 0.035),
               fontFamily: AppFonts.reemKufi,
-              color: AppColor.primary,
+              color: theme.colorScheme.primary,
             ),
           ),
         );

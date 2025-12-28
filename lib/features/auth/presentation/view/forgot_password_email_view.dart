@@ -1,6 +1,7 @@
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/config/route_name.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
 import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
@@ -29,6 +30,7 @@ class ForgetPasswordEmailViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     final theme = Theme.of(context);
     return BlocListener<ForgotPasswordCubit, ForgotPasswordState>(
       listenWhen: (prev, curr) =>
@@ -42,7 +44,7 @@ class ForgetPasswordEmailViewBody extends StatelessWidget {
         if (state.errorMessage != null) {
           showTopSnackBar(
             context,
-            message: state.errorMessage ?? "حدث خطأ غير متوقع",
+            message: state.errorMessage ?? context.l10n.unexpected_error,
             isSuccess: false,
           );
         }
@@ -50,7 +52,7 @@ class ForgetPasswordEmailViewBody extends StatelessWidget {
         if (state.isSuccess) {
           showTopSnackBar(
             context,
-            message: state.successMessage ?? "تم إرسال رمز التحقق إلى بريدك",
+            message: state.successMessage ?? context.l10n.otp_has_sent,
             isSuccess: true,
           );
           debugPrint("ForgetPassword  Email success ✅");
@@ -66,9 +68,8 @@ class ForgetPasswordEmailViewBody extends StatelessWidget {
             child: Column(
               children: [
                 CommonTopPartForgetPassword(
-                  title: "نسيت كلمة المرور ؟",
-                  bodyText:
-                      "يرجى ادخال عنوان بريدك\n الالكتروني لتتلقى رمز التحقق عليه",
+                  title: context.l10n.did_you_forget_password, 
+                  bodyText: context.l10n.forget_password_description,
                   img: isDark ? AppImage.forgetPassDark1 : AppImage.forgetPass1,
                   imgHeight: SizeConfig.height * .3,
                 ),
@@ -76,8 +77,8 @@ class ForgetPasswordEmailViewBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * .04),
 
                 AuthFieldLabel(
-                  label: "البريد الالكتروني",
-                  hint: 'ادخل بريدك الالكتروني...',
+                  label: context.l10n.email_field,      
+                  hint: context.l10n.email_field_hint, 
                   suffixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
 
@@ -88,7 +89,7 @@ class ForgetPasswordEmailViewBody extends StatelessWidget {
 
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'الرجاء إدخال البريد';
+                      return context.l10n.please_enter_email;
                     }
                     return null;
                   },
@@ -114,7 +115,8 @@ class ForgetPasswordEmailViewBody extends StatelessWidget {
                         }
                       },
                       child: CustomTextWidget(
-                        "تأكيد الإدخال",
+                       context.l10n.confirm_entry,
+
                         fontSize: SizeConfig.height * .025,
                         color: theme.scaffoldBackgroundColor,
                       ),

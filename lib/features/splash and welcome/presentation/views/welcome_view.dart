@@ -1,6 +1,6 @@
 import 'package:complaints_app/core/common%20widget/custom_background_with_child.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
-import 'package:complaints_app/core/common%20widget/switch_theme.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/assets/fonts.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
@@ -22,6 +22,8 @@ class WelcomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
+    final brandFontSize = SizeConfig.diagonal * (isEn ? 0.043 : 0.05);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     return Column(
@@ -31,46 +33,46 @@ class WelcomeViewBody extends StatelessWidget {
         Row(
           children: [
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
               child: SvgPicture.asset(
                 isDark ? AppImage.splashLogoDark : AppImage.splashLogo,
                 height: SizeConfig.height * .065,
               ),
             ),
-
-            // بدل Expanded(flex:0) استخدم Flexible
-            Flexible(
-              fit: FlexFit.loose,
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                  children: [
+            Expanded(
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text.rich(
                     TextSpan(
-                      text: "تو",
-                      style: TextStyle(
-                        color: theme.colorScheme.primary,
-                        fontFamily: AppFonts.tasees,
-                        fontSize: SizeConfig.diagonal * .05,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                          text: context.l10n.brand_part1,
+                          style: TextStyle(
+                            color: theme.colorScheme.primary,
+                            fontFamily: AppFonts.tasees,
+                            fontSize: brandFontSize,
+                          ),
+                        ),
+                        TextSpan(
+                          text: context.l10n.brand_part2,
+                          style: TextStyle(
+                            color: theme.colorScheme.secondary,
+                            fontFamily: AppFonts.tasees,
+                            fontSize: brandFontSize,
+                          ),
+                        ),
+                      ],
                     ),
-                    TextSpan(
-                      text: "اصل",
-                      style: TextStyle(
-                        color: theme.colorScheme.secondary,
-                        fontFamily: AppFonts.tasees,
-                        fontSize: SizeConfig.diagonal * .05,
-                      ),
-                    ),
-                  ],
+                    maxLines: 1,
+                    softWrap: false,
+                  ),
                 ),
               ),
             ),
 
             const Spacer(),
-
-            // ✅ خليك مع Padding عادي بدون Expanded
-            Expanded(flex: 2, child: ThemeSwitchTile()),
           ],
         ),
 
@@ -86,19 +88,19 @@ class WelcomeViewBody extends StatelessWidget {
               ),
             ),
 
-            Positioned(
-              left: SizeConfig.width * 0.26,
-              right: SizeConfig.width * 0.26,
+            PositionedDirectional(
+              start: SizeConfig.width * 0.26, 
+              end: SizeConfig.width * 0.26,
               top: SizeConfig.height * .1,
               child: CustomBackgroundWithChild(
                 height: SizeConfig.height * .09,
                 //width: 100,
-                backgroundColor:theme.colorScheme.onPrimary,
+                backgroundColor: theme.colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(15),
                 childHorizontalPad: 10,
                 childVerticalPad: 2,
                 child: CustomTextWidget(
-                  "مرحبا بك !",
+                  context.l10n.welcome,
                   fontSize: SizeConfig.diagonal * .037,
                 ),
               ),

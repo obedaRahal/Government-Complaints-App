@@ -19,7 +19,7 @@ class CustomDescriptionTextFiels extends StatefulWidget {
     this.maxLines = 1,
     this.maxLength,
     this.borderRadius = 10,
-    this.hintFontSize = 16,
+    // this.hintFontSize ,
     this.onChanged,
     this.validator,
     this.onSuffixTap,
@@ -36,7 +36,7 @@ class CustomDescriptionTextFiels extends StatefulWidget {
   final int maxLines;
   final int? maxLength;
   final double borderRadius;
-  final double hintFontSize;
+  // final double? hintFontSize;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
   final VoidCallback? onSuffixTap;
@@ -51,6 +51,7 @@ class _CustomDescriptionTextFielsState
   @override
   Widget build(BuildContext context) {
     final currentLength = widget.controller?.text.length ?? 0;
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     return Column(
@@ -63,7 +64,7 @@ class _CustomDescriptionTextFielsState
               if (widget.label != null)
                 CustomTextWidget(
                   widget.label!,
-                  fontSize: SizeConfig.diagonal * .032,
+                  fontSize: SizeConfig.diagonal * (isEn ? .027 : .032),
                   color: theme.colorScheme.secondary,
                 ),
               if (widget.maxLength != null)
@@ -88,7 +89,7 @@ class _CustomDescriptionTextFielsState
           style: TextStyle(
             color: theme.colorScheme.secondary,
             fontFamily: AppFonts.tasees,
-            fontSize:widget.hintFontSize,
+            fontSize: SizeConfig.diagonal * (isEn ? .017 : .018),
           ),
           onChanged: (value) {
             setState(() {});
@@ -101,7 +102,7 @@ class _CustomDescriptionTextFielsState
             hintStyle: TextStyle(
               color: theme.inputDecorationTheme.hintStyle!.color,
               fontFamily: AppFonts.tasees,
-              fontSize: widget.hintFontSize,
+              fontSize: SizeConfig.diagonal * (isEn ? .017 : .018),
             ),
             suffixIcon: widget.suffixIcon == null
                 ? null
@@ -115,12 +116,25 @@ class _CustomDescriptionTextFielsState
                           : AppColor.middleGrey,
                     ),
                   ),
-            prefix: widget.prefixIcon == null
+            prefixIcon: widget.prefixIcon == null
                 ? null
                 : IconButton(
                     onPressed: widget.onSuffixTap,
-                    icon: Icon(widget.prefixIcon, size: 20),
+                    icon: Icon(
+                      widget.prefixIcon,
+                      size: 20,
+                      color: isDark
+                          ? AppColor.middleGreyDark
+                          : AppColor.middleGrey,
+                    ),
                   ),
+
+            // prefix: widget.prefixIcon == null
+            //     ? null
+            //     : IconButton(
+            //         onPressed: widget.onSuffixTap,
+            //         icon: Icon(widget.prefixIcon, size: 20),
+            //       ),
             filled: true,
             fillColor: theme.inputDecorationTheme.fillColor,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),

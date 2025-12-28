@@ -3,8 +3,6 @@ import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-
-
 class ComplaintsShimmerList extends StatelessWidget {
   const ComplaintsShimmerList({super.key, this.itemCount = 6});
 
@@ -12,8 +10,10 @@ class ComplaintsShimmerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
     return Shimmer.fromColors(
       baseColor: Colors.grey.shade300,
+      direction: isRtl ? ShimmerDirection.rtl : ShimmerDirection.ltr,
       highlightColor: Colors.grey.shade100,
       child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -32,6 +32,31 @@ class ComplaintCardShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final leftColumn = Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _ShimmerBox(height: 12, width: SizeConfig.width * 0.2),
+          const SizedBox(height: 6),
+          _ShimmerBox(height: 14, width: SizeConfig.width * 0.25),
+        ],
+      ),
+    );
+
+    final rightColumn = Expanded(
+      flex: 2,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _ShimmerBox(height: 12, width: SizeConfig.width * 0.25),
+          const SizedBox(height: 6),
+          _ShimmerBox(height: 14, width: double.infinity),
+          const SizedBox(height: 4),
+          _ShimmerBox(height: 14, width: SizeConfig.width * 0.6),
+        ],
+      ),
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Container(
@@ -61,32 +86,41 @@ class ComplaintCardShimmer extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _ShimmerBox(height: 12, width: SizeConfig.width * 0.2),
-                        const SizedBox(height: 6),
-                        _ShimmerBox(height: 14, width: SizeConfig.width * 0.25),
-                      ],
-                    ),
-                  ),
+                  if (isRtl) rightColumn else leftColumn,
                   SizedBox(width: SizeConfig.width * 0.04),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _ShimmerBox(height: 12, width: SizeConfig.width * 0.25),
-                        const SizedBox(height: 6),
-                        _ShimmerBox(height: 14, width: double.infinity),
-                        const SizedBox(height: 4),
-                        _ShimmerBox(height: 14, width: SizeConfig.width * 0.6),
-                      ],
-                    ),
-                  ),
+                  if (isRtl) leftColumn else rightColumn,
                 ],
               ),
+
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Expanded(
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           _ShimmerBox(height: 12, width: SizeConfig.width * 0.2),
+              //           const SizedBox(height: 6),
+              //           _ShimmerBox(height: 14, width: SizeConfig.width * 0.25),
+              //         ],
+              //       ),
+              //     ),
+              //     SizedBox(width: SizeConfig.width * 0.04),
+              //     Expanded(
+              //       flex: 2,
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           _ShimmerBox(height: 12, width: SizeConfig.width * 0.25),
+              //           const SizedBox(height: 6),
+              //           _ShimmerBox(height: 14, width: double.infinity),
+              //           const SizedBox(height: 4),
+              //           _ShimmerBox(height: 14, width: SizeConfig.width * 0.6),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
@@ -113,7 +147,7 @@ class _ShimmerBox extends StatelessWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: Colors.grey.shade300, 
+        color: Colors.grey.shade300,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
     );
@@ -142,7 +176,6 @@ class _ShimmerBox extends StatelessWidget {
 //     );
 //   }
 // }
-
 
 // class ComplaintCardShimmer extends StatelessWidget {
 //   const ComplaintCardShimmer({super.key});

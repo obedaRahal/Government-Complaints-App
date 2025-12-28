@@ -35,13 +35,14 @@ class AuthFieldLabel extends StatelessWidget {
   final VoidCallback? onSuffixTap;
   @override
   Widget build(BuildContext context) {
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomTextWidget(
           label,
-          fontSize: SizeConfig.diagonal * .032,
+          fontSize: SizeConfig.diagonal * (isEn ? .027 : .032),
           color: theme.colorScheme.secondary,
         ),
         SizedBox(height: SizeConfig.height * .01),
@@ -57,6 +58,7 @@ class AuthFieldLabel extends StatelessWidget {
           maxLines: maxLines ?? 1,
           maxLength: maxLength,
           keyboardType: keyboardType,
+          hintFontSize: SizeConfig.diagonal * (isEn ? .017 : .018),
         ),
       ],
     );

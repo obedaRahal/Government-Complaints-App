@@ -1,6 +1,7 @@
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/config/route_name.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
 import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
@@ -40,7 +41,7 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
         if (state.errorMessage != null) {
           showTopSnackBar(
             context,
-            message: state.errorMessage ?? "حدث خطأ غير متوقع",
+            message: state.errorMessage ?? context.l10n.unexpected_error,
             isSuccess: false,
           );
         }
@@ -48,9 +49,7 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
         if (state.isSuccess) {
           showTopSnackBar(
             context,
-            message:
-                state.successMessage ??
-                "تم تعيين كلمة المرور الجديدة بنجاح، يمكنك تسجيل الدخول الآن",
+            message: state.successMessage ?? context.l10n.password_updated_ok,
             isSuccess: true,
           );
           debugPrint("ForgetPasswordNewwwPassssssss success ✅");
@@ -66,10 +65,9 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
             child: Column(
               children: [
                 CommonTopPartForgetPassword(
-                  title: "انشاء كلمة مرور جديدة",
-                  bodyText:
-                      "يجب أن تكون كلمة المرور الجديدة\n مختلفة عن السابقة",
-                  img: isDark?AppImage.forgetPassDark3: AppImage.forgetPass3,
+                  title: context.l10n.new_password,
+                  bodyText: context.l10n.new_password_description,
+                  img: isDark ? AppImage.forgetPassDark3 : AppImage.forgetPass3,
                   imgHeight: SizeConfig.height * .3,
                 ),
 
@@ -80,8 +78,8 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
                     return Column(
                       children: [
                         AuthFieldLabel(
-                          label: "كلمة المرور",
-                          hint: 'ادخل كلمة المرور...',
+                          label: context.l10n.password_field, // ✅
+                          hint: context.l10n.password_field_hint,
                           suffixIcon: state.isPasswordObscure
                               ? Icons.visibility_off
                               : Icons.visibility,
@@ -108,8 +106,9 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
                         ),
 
                         AuthFieldLabel(
-                          label: "تأكيد كلمة المرور",
-                          hint: 'ادخل كلمة المرور مرة أخرى...',
+                          label:
+                              context.l10n.new_password_field, 
+                          hint: context.l10n.new_password_field_hint,
                           suffixIcon: state.isPasswordObscure
                               ? Icons.visibility_off
                               : Icons.visibility,
@@ -126,13 +125,13 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'الرجاء إدخال كلمة المرور';
+                              return context.l10n.please_enter_password;
                             }
                             if (value.length < 6) {
-                              return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+                              return context.l10n.password_at_least;
                             }
                             if (value != state.newPassword) {
-                              return 'كلمتا المرور غير متطابقتين';
+                              return context.l10n.passwords_not_match;
                             }
                             return null;
                           },
@@ -164,7 +163,7 @@ class ForgotPasswordNewPasswordViewBody extends StatelessWidget {
                         }
                       },
                       child: CustomTextWidget(
-                        "تأكيد الإدخال",
+                        context.l10n.confirm_entry,
                         fontSize: SizeConfig.height * .025,
                         color: theme.scaffoldBackgroundColor,
                       ),

@@ -2,6 +2,7 @@ import 'package:complaints_app/core/common%20widget/arrow_back.dart';
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/config/route_name.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
@@ -32,13 +33,14 @@ class LogInViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     final theme = Theme.of(context);
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state.errorMessage != null) {
           showTopSnackBar(
             context,
-            message: state.errorMessage ?? "حدث خطأ غير متوقع",
+            message: state.errorMessage ?? context.l10n.unexpected_error,
             isSuccess: false,
           );
         }
@@ -46,9 +48,7 @@ class LogInViewBody extends StatelessWidget {
         if (state.isSuccess) {
           showTopSnackBar(
             context,
-            message:
-                state.successMessage ??
-                "تم تسجيل الدخول بنجاح، أهلاً بك مجدداً",
+            message: state.successMessage ?? context.l10n.login_success,
             isSuccess: true,
           );
           debugPrint("im at login view at BlocListener anddd Login success ✅");
@@ -69,16 +69,16 @@ class LogInViewBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * .04),
 
                 SvgPicture.asset(
-                   isDark ? AppImage.splashLogoDark : AppImage.splashLogo,
+                  isDark ? AppImage.splashLogoDark : AppImage.splashLogo,
                   height: SizeConfig.height * .07,
                 ),
                 CustomTextWidget(
-                  "تسجيل الدخول",
+                  context.l10n.login,
                   fontSize: SizeConfig.diagonal * .045,
                 ),
                 CustomTextWidget(
-                  "مرحبا بك مجددا سجل دخولك وقم بالمساعدة في بناء سورية جديدة",
-                  fontSize: SizeConfig.diagonal * .025,
+                  context.l10n.login_description,
+                  fontSize: SizeConfig.diagonal * (isEn ? .021 : .025),
                   color: AppColor.middleGrey,
                   textAlign: TextAlign.start,
                 ),
@@ -86,8 +86,8 @@ class LogInViewBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * .02),
 
                 AuthFieldLabel(
-                  label: "البريد الالكتروني",
-                  hint: 'ادخل بريدك الالكتروني...',
+                  label: context.l10n.email_field,
+                  hint: context.l10n.email_field_hint,
                   suffixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
 
@@ -98,7 +98,7 @@ class LogInViewBody extends StatelessWidget {
 
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'الرجاء إدخال البريد';
+                      return context.l10n.please_enter_email;
                     }
                     return null;
                   },
@@ -109,8 +109,8 @@ class LogInViewBody extends StatelessWidget {
                 BlocBuilder<LoginCubit, LoginState>(
                   builder: (context, state) {
                     return AuthFieldLabel(
-                      label: "كلمة المرور",
-                      hint: 'ادخل كلمة المرور...',
+                      label: context.l10n.password_field,
+                      hint: context.l10n.password_field_hint,
                       suffixIcon: state.isPasswordObscure
                           ? Icons.visibility_off
                           : Icons.visibility,
@@ -124,10 +124,10 @@ class LogInViewBody extends StatelessWidget {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'الرجاء إدخال كلمة المرور';
+                          return context.l10n.please_enter_password;
                         }
                         if (value.length < 6) {
-                          return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+                          return context.l10n.password_at_least;
                         }
                         return null;
                       },
@@ -136,15 +136,15 @@ class LogInViewBody extends StatelessWidget {
                 ),
 
                 Align(
-                  alignment: AlignmentGeometry.centerLeft,
+                  alignment: AlignmentDirectional.centerStart,
                   child: InkWell(
                     onTap: () {
                       context.pushNamed(AppRouteRName.forgotPasswordEmailView);
                     },
                     child: CustomTextWidget(
-                      "نسبت كلمة المرور ؟",
-                      fontSize: SizeConfig.diagonal * .03,
-                      color:theme.colorScheme.primary,
+                      context.l10n.did_you_forget_password,
+                      fontSize: SizeConfig.diagonal * (isEn ? .027 : .03),
+                      color: theme.colorScheme.primary,
                     ),
                   ),
                 ),
@@ -158,7 +158,7 @@ class LogInViewBody extends StatelessWidget {
                     }
                     return CustomButtonWidget(
                       width: double.infinity,
-                      backgroundColor:theme.colorScheme.primary,
+                      backgroundColor: theme.colorScheme.primary,
                       childHorizontalPad: SizeConfig.width * .07,
                       childVerticalPad: SizeConfig.height * .012,
                       borderRadius: 10,
@@ -169,9 +169,9 @@ class LogInViewBody extends StatelessWidget {
                         }
                       },
                       child: CustomTextWidget(
-                        "تأكيد الإدخال",
+                        context.l10n.confirm_entry,
                         fontSize: SizeConfig.height * .025,
-                        color:theme.scaffoldBackgroundColor,
+                        color: theme.scaffoldBackgroundColor,
                       ),
                     );
                   },
@@ -180,8 +180,8 @@ class LogInViewBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * .02),
 
                 TowTextRow(
-                  text: "ليس لديك حساب ؟ قم بإنشاء ",
-                  actionText: "حساب جديد",
+                  text: context.l10n.didnt_have_account,
+                  actionText: context.l10n.new_account,
                   onTap: () {
                     GoRouter.of(
                       context,

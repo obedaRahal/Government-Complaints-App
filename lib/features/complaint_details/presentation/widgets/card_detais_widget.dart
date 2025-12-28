@@ -27,6 +27,7 @@ class CardDetaisWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
@@ -59,7 +60,7 @@ class CardDetaisWidget extends StatelessWidget {
                   CustomTextWidget(
                     title,
                     fontSize: fontSize,
-                    color:theme.colorScheme.secondary,
+                    color: theme.colorScheme.secondary,
                   ),
                   CustomBackgroundWithChild(
                     borderRadius: BorderRadius.circular(6),
@@ -71,14 +72,21 @@ class CardDetaisWidget extends StatelessWidget {
                       child: CustomTextWidget(
                         status,
                         fontSize: SizeConfig.diagonal * .02,
-                        color:theme.scaffoldBackgroundColor,
+                        color: theme.scaffoldBackgroundColor,
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            const Divider(endIndent: 10, indent: 10),
+            Divider(
+              indent: 10,
+              endIndent: 10,
+              color: isDark
+                  ? AppColor.borderFieldDark
+                  : AppColor.greyTextInCard,
+            ),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
 
@@ -92,45 +100,55 @@ class CardDetaisWidget extends StatelessWidget {
                       children: [
                         CustomTextWidget(
                           titleDescreption,
-                          fontSize: SizeConfig.diagonal * .016,
+                          fontSize: SizeConfig.diagonal * (isEn ? .012 : .016),
                           color: AppColor.greyTextInCard,
                         ),
                         const SizedBox(height: 6),
                         CustomTextWidget(
                           descreption,
                           fontSize: SizeConfig.diagonal * .016,
-                          color: isDark? AppColor.whiteDark: AppColor.textInCard,
+                          color: isDark
+                              ? AppColor.whiteDark
+                              : AppColor.textInCard,
                           maxLines: 7,
-                          overflow: TextOverflow.visible,
-                          textAlign: TextAlign.start,
-                        ),
-                      ],
-                    ),
-                  ),
+                          // overflow: TextOverflow.visible,
+                          overflow: TextOverflow.ellipsis,
 
-                  const SizedBox(width: 14),
-                  Expanded(
-                    flex: titleLocation == null ? 0 : 4,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomTextWidget(
-                          titleLocation ?? "",
-                          fontSize: SizeConfig.diagonal * .016,
-                          color: AppColor.greyTextInCard,
-                        ),
-                        const SizedBox(height: 6),
-                        CustomTextWidget(
-                          location ?? "",
-                          fontSize: SizeConfig.diagonal * .016,
-                          color: isDark? AppColor.whiteDark: AppColor.textInCard,
-                          maxLines: 5,
-                          overflow: TextOverflow.visible,
                           textAlign: TextAlign.start,
                         ),
                       ],
                     ),
                   ),
+                  if (titleLocation != null) ...[
+                    const SizedBox(width: 14),
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomTextWidget(
+                            titleLocation!,
+                            fontSize:
+                                SizeConfig.diagonal * (isEn ? .012 : .016),
+                            color: AppColor.greyTextInCard,
+                          ),
+                          const SizedBox(height: 6),
+                          CustomTextWidget(
+                            location ?? "",
+                            fontSize: SizeConfig.diagonal * .016,
+                            color: isDark
+                                ? AppColor.whiteDark
+                                : AppColor.textInCard,
+                            maxLines: 5,
+                            // overflow: TextOverflow.visible,
+                            overflow: TextOverflow.ellipsis,
+
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),

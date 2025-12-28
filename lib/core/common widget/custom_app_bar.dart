@@ -8,8 +8,10 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
     return Padding(
-      padding: const EdgeInsets.only(top: 29),
+      padding: const EdgeInsets.only(top: 30),
       child: Container(
         decoration: BoxDecoration(
           color: theme.scaffoldBackgroundColor,
@@ -27,21 +29,22 @@ class CustomAppBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 12, bottom: 14),
+              padding: const EdgeInsetsDirectional.only(start: 12, bottom: 14),
               child: CustomTextWidget(
                 title,
-                fontSize: SizeConfig.diagonal * .04,
-                color:theme.colorScheme.secondary,
+                fontSize: SizeConfig.diagonal * (isEn ? .03 : .04),
+                color: theme.colorScheme.secondary,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 12, bottom: 12),
+              padding: const EdgeInsetsDirectional.only(start: 12, bottom: 12),
               child: IconButton(
                 icon: Icon(
+                  //   isRtl ? Icons.arrow_forward_ios : Icons.arrow_back_ios_new,
                   Icons.arrow_forward_ios,
                   size: 28,
                   fontWeight: FontWeight.w500,
-                  color:theme.colorScheme.secondary,
+                  color: theme.colorScheme.secondary,
                 ),
                 onPressed: () {
                   Navigator.pop(context);

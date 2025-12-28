@@ -1,6 +1,7 @@
 import 'package:complaints_app/core/common%20widget/custom_app_bar.dart';
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
@@ -33,6 +34,9 @@ class ComplaintDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
+
     return BlocConsumer<ComplaintDetailsCubit, ComplaintDetailsState>(
       listenWhen: (prev, curr) =>
           prev.deleteErrorMessage != curr.deleteErrorMessage ||
@@ -41,7 +45,7 @@ class ComplaintDetailsView extends StatelessWidget {
         if (state.deleteErrorMessage != null) {
           showTopSnackBar(
             context,
-            message: state.deleteErrorMessage ?? "حدث خطأ غير متوقع",
+            message: state.deleteErrorMessage ?? context.l10n.unexpected_error,
             isSuccess: false,
           );
         }
@@ -49,7 +53,9 @@ class ComplaintDetailsView extends StatelessWidget {
         if (state.isDeleteSuccess) {
           showTopSnackBar(
             context,
-            message: state.deleteSuccessMessage ?? "تم حذف هذه الشكوى بنجاح",
+            message:
+                state.deleteSuccessMessage ??
+                context.l10n.delete_complaint_done,
             isSuccess: true,
           );
           //Navigator.of(context).pop();
@@ -75,11 +81,10 @@ class ComplaintDetailsView extends StatelessWidget {
         final statusColor = mapStatusColor(info.status);
         final statusColorDark = mapStatusColorDark(info.status);
 
-
         return Scaffold(
           body: Column(
             children: [
-              CustomAppBar(title: "تفاصيل الشكوى"),
+              CustomAppBar(title: context.l10n.top_bar_complaints_details),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -89,9 +94,9 @@ class ComplaintDetailsView extends StatelessWidget {
                         Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(
+                              padding: const EdgeInsetsDirectional.only(
                                 top: 22,
-                                right: 16,
+                                start: 16,
                               ),
                               child: CustomButtonWidget(
                                 borderRadius: 16,
@@ -104,8 +109,10 @@ class ComplaintDetailsView extends StatelessWidget {
                                     horizontal: 14,
                                   ),
                                   child: CustomTextWidget(
-                                    "مرفقات الشكوى",
-                                    fontSize: SizeConfig.diagonal * .026,
+                                    context.l10n.complaint_attachments,
+                                    fontSize:
+                                        SizeConfig.diagonal *
+                                        (isEn ? .022 : .026),
                                     fontWeight: FontWeight.w800,
                                   ),
                                 ),
@@ -124,6 +131,7 @@ class ComplaintDetailsView extends StatelessWidget {
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: attachments.length,
+                              reverse: false,
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 8,
                               ),
@@ -173,7 +181,10 @@ class ComplaintDetailsView extends StatelessWidget {
                         ),
                       ],
                       Padding(
-                        padding: const EdgeInsets.only(top: 22, right: 16),
+                        padding: const EdgeInsetsDirectional.only(
+                          top: 22,
+                          start: 16,
+                        ),
                         child: CustomButtonWidget(
                           borderRadius: 16,
                           childHorizontalPad: 6,
@@ -183,8 +194,9 @@ class ComplaintDetailsView extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 14),
                             child: CustomTextWidget(
-                              "معلومات الشكوى",
-                              fontSize: SizeConfig.diagonal * .026,
+                              context.l10n.complaint_info,
+                              fontSize:
+                                  SizeConfig.diagonal * (isEn ? .022 : .026),
                               fontWeight: FontWeight.w800,
                             ),
                           ),
@@ -197,13 +209,14 @@ class ComplaintDetailsView extends StatelessWidget {
                         ),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
+                          reverse: isRtl,
                           child: Row(
                             children: [
                               ComplaintInformationWidget(
                                 titleColor: theme.colorScheme.secondary,
                                 hintColor: AppColor.greyText,
                                 image: AppImage.grid,
-                                title: 'النوع',
+                                title: context.l10n.complaint_type,
                                 hint: info.complaintType,
                               ),
                               DividerWidget(),
@@ -211,7 +224,7 @@ class ComplaintDetailsView extends StatelessWidget {
                                 titleColor: theme.colorScheme.secondary,
                                 hintColor: AppColor.greyText,
                                 image: AppImage.layers,
-                                title: 'الجهة الحكومية',
+                                title: context.l10n.government_agency,
                                 hint: info.agency,
                               ),
                               DividerWidget(),
@@ -219,7 +232,7 @@ class ComplaintDetailsView extends StatelessWidget {
                                 titleColor: theme.colorScheme.secondary,
                                 hintColor: AppColor.greyText,
                                 image: AppImage.houreGlass,
-                                title: 'تاريخ الانشاء',
+                                title: context.l10n.date_of_ceartion,
                                 hint: info.createdAt.toString(),
                               ),
                               DividerWidget(),
@@ -227,7 +240,7 @@ class ComplaintDetailsView extends StatelessWidget {
                                 titleColor: theme.colorScheme.secondary,
                                 hintColor: AppColor.greyText,
                                 image: AppImage.group1,
-                                title: 'رقم الشكوى',
+                                title: context.l10n.complaint_number,
                                 hint: info.complaintNumber.toString(),
                               ),
                             ],
@@ -243,12 +256,12 @@ class ComplaintDetailsView extends StatelessWidget {
                         child: CardDetaisWidget(
                           title: info.title,
                           status: info.status,
-                          titleLocation: 'عنوان الشكوى',
+                          titleLocation: context.l10n.complaint_location,
                           location: info.locationText,
                           fontSize: SizeConfig.diagonal * .024,
-                          titleDescreption: 'وصف الشكوى',
+                          titleDescreption: context.l10n.complaint_description,
                           descreption: info.description,
-                          statuseColor: isDark?statusColorDark: statusColor,
+                          statuseColor: isDark ? statusColorDark : statusColor,
                         ),
                       ),
 
@@ -261,7 +274,10 @@ class ComplaintDetailsView extends StatelessWidget {
                       ),
 
                       Padding(
-                        padding: const EdgeInsets.only(top: 22, right: 16),
+                        padding: const EdgeInsetsDirectional.only(
+                          top: 22,
+                          start: 16,
+                        ),
                         child: CustomButtonWidget(
                           borderRadius: 16,
                           childHorizontalPad: 6,
@@ -271,8 +287,9 @@ class ComplaintDetailsView extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 14),
                             child: CustomTextWidget(
-                              "مراحل الشكوى",
-                              fontSize: SizeConfig.diagonal * .026,
+                              context.l10n.complaints_history,
+                              fontSize:
+                                  SizeConfig.diagonal * (isEn ? .022 : .026),
                               fontWeight: FontWeight.w800,
                             ),
                           ),
@@ -280,7 +297,7 @@ class ComplaintDetailsView extends StatelessWidget {
                       ),
                       if (history.isEmpty)
                         CustomTextWidget(
-                          "لا يوجد سجل بعد لهذه الشكوى.",
+                          context.l10n.not_found_history,
                           color: AppColor.middleGrey,
                         )
                       else
@@ -320,9 +337,9 @@ class ComplaintDetailsView extends StatelessWidget {
                             );
                           },
                           child: CustomTextWidget(
-                            "إرفاق معلومات إضافية",
+                            context.l10n.add_more_attachments,
                             fontSize: SizeConfig.height * .025,
-                            color:theme.scaffoldBackgroundColor,
+                            color: theme.scaffoldBackgroundColor,
                           ),
                         ),
                       ),
@@ -334,7 +351,9 @@ class ComplaintDetailsView extends StatelessWidget {
                         ),
                         child: CustomButtonWidget(
                           width: double.infinity,
-                          backgroundColor: isDark? AppColor.redDark: AppColor.red,
+                          backgroundColor: isDark
+                              ? AppColor.redDark
+                              : AppColor.red,
                           childHorizontalPad: SizeConfig.width * .07,
                           childVerticalPad: SizeConfig.height * .012,
                           borderRadius: 10,
@@ -351,11 +370,11 @@ class ComplaintDetailsView extends StatelessWidget {
                                   width: 22,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
-                                    color:theme.scaffoldBackgroundColor,
+                                    color: theme.scaffoldBackgroundColor,
                                   ),
                                 )
                               : CustomTextWidget(
-                                  "حذف الشكوى",
+                                  context.l10n.delete_complaint,
                                   fontSize: SizeConfig.height * .025,
                                   color: theme.scaffoldBackgroundColor,
                                 ),

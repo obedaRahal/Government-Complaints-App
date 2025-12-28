@@ -1,0 +1,155 @@
+{
+  "@@locale": "ar",
+  "appName": "تواصل",
+  "splashNmae": "تطبيق الشكاوى الحكومية",
+
+  "selected_count": "تم اختيار {count}",
+  "@selected_count": {
+    "description": "Shows how many items are selected",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "arrow_back": "رجوع",
+  "confirm_entry": "تأكيد الادخال",
+  "confirm_of_dispatch": "تأكيد الارسال",
+  "common_ok": "حسناً",
+  "common_cancel": "إلغاء",
+  "closing": "إغلاق",
+
+  "welcome": "! مرحبا بك",
+  "app_description": "تطبيق يساعد المواطنين على\nإنشاء، تنظيم، متابعة الشكاوى\nبكفاءة وسهولة",
+  "new_account": "حساب جديد",
+  "login": "تسجيل الدخول",
+  "brand_part1": "تو",
+  "brand_part2": "اصل",
+
+  "email_field": "البريد الالكتروني",
+  "password_field": "كلمة المرور",
+  "name_field": "الاسم",
+  "national_number_field": "الرقم الوطني",
+  "new_password_field": "تأكيد كلمة المرور",
+  "email_field_hint": "ادخل بريدك الالكتروني...",
+  "password_field_hint": "ادخل كلمة المرور الخاصة بك...",
+  "name_field_hint": "ادخل اسمك باللغة العربية...",
+  "national_number_field_hint": "ادخل الرقم الوطني الخاص بك...",
+  "new_password_field_hint": "ادخل كلمة المرور مرة أخرى...",
+
+  "login_description": "مرحبا بك مجددا سجل دخولك وقم بالمساعدة في بناء سورية جديدة",
+  "did_you_forget_password": "نسيت كلمة المرور ؟",
+  "didnt_have_account": "ليس لديك حساب ، قم بانشاء",
+
+  "signup": "انشاء حساب",
+  "signup_description": "انضم الينا وابدا رحلتك في التعامل المريح مع مؤسسات الدولة",
+  "did_you_have_account": "لديك حساب فعلا ، قم بعملية",
+  "signup_verify_email": "تأكيد الحساب",
+  "signup_verify_email_description": "عزيزي المستخدم يرجى منك تأكيد بريدك الالكتروني عن طريق ادخال الرمز المكون من ست ارقام علما انك ستفقد الرمز الخاص بك في حال المغادرة",
+  "signup_verify_email_note": "نحن نقوم باجراء احترازي فقط",
+  "input_otp_code": "ادخل الرمز",
+  "didnt_get_code": "لم تستلم رمز بعد ؟",
+  "resent_otp_code": "إعادة ارسال الرمز",
+
+  "forget_password_description": "يرجى ادخال عنوان بريدك\n الالكتروني لتتلقى رمز التحقق عليه",
+
+  "forget_password_verify_email": "تأكيد البريد المدخل",
+  "forget_password_verify_email_description": "الرجاء ادخال الرمز المكون من ستة \nأرقام الى بريدك الخاص",
+
+  "new_password": "انشاء كلمة مرور جديدة",
+  "new_password_description": "يجب أن تكون كلمة المرور الجديدة\n مختلفة عن السابقة",
+
+  "search_in_complaints": "البحث في سجل الشكاوي...",
+  "add_new_complaint": "اضافة شكوى جديدة",
+  "complaint_number": "رقم الشكوى",
+  "complaint_description": "وصف الشكوى",
+  "complaints_history_home": "سجل الشكوى",
+
+  "top_bar_complaints_details": "تفاصيل الشكوى",
+  "complaint_attachments": "مرفقات الشكوى",
+  "complaint_info": "معلومات الشكوى",
+  "complaint_type": "النوع",
+  "government_agency": "الجهة الحكومية",
+  "date_of_ceartion": "تاريخ الانشاء",
+  "complaint_location": "عنوان الشكوى",
+  "complaints_history": "مراحل الشكوى",
+  "add_more_attachments": "ارفاق معلومات اضافية",
+  "delete_complaint": "حذف الشكوى",
+  "notes": "ملاحظات",
+
+  "additional_description": "وصف اضافي",
+  "additional_description_hint": "ادخل وصفا إضافيا للمشكلة التي تواجهها...",
+  "additional_attachment": "مرفق اضافي",
+  "additional_attachment_hint": "ادخل مرفقا للشكوى...",
+  "more_info_bottom_sheet": "معلومات اضافية",
+
+  "notification_bottom_sheet": "الاشعارات",
+  "not_found_notification": "لا توجد إشعارات حالياً",
+
+  "top_bar_submit_complaint": "تقديم شكوى",
+  "complaint_name": "اسم الشكوى",
+  "complaint_name_hint": "ادخل اسم للشكوى الخاصة بك...",
+  "complaint_type_hint": "اختار نوع الشكوى...",
+  "government_agency_hint": "اختر الجهة الحكومية...",
+  "problem_description": "وصف المشكلة",
+  "problem_description_hint": "ادخل وصفا للمشكلة التي تواجهها...",
+  "compliant_location_hint": "ادخل عنوان الشكوى...",
+  "complaint_attachments_hint": "أدخل مرفقات الشكوى(اختياري)...",
+
+  "settings": "الاعدادات",
+  "dark_mode": "الوضع الليلي",
+  "light_mode": "الوضع النهاري",
+  "did_you_want_logout": "هل تريد تسجيل الخروج؟",
+  "logout": "تسجيل الخروج",
+
+  "something_went_wrong": "حدث خطأ ما",
+
+  "not_found_complaints": "لا توجد شكاوى حالياً",
+  "show_more": "عرض المزيد",
+  "not_found_searching": "لا يوجد شكوى بهذا الرقم",
+
+  "unexpected_error": "حدث خطأ غير متوقع",
+
+  "otp_has_sent": "تم إرسال رمز التحقق إلى بريدك",
+
+  "please_enter_email": "الرجاء إدخال البريد",
+
+  "password_updated_ok": "تم تعيين كلمة المرور الجديدة بنجاح، يمكنك تسجيل الدخول الآن",
+
+  "please_enter_password": "الرجاء إدخال كلمة المرور",
+
+  "password_at_least": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+
+  "passwords_not_match": "كلمتا المرور غير متطابقتين",
+
+  "resent_otp_done": "تم إرسال رمز جديد إلى بريدك",
+
+  "verify_success": "تم تأكيد الرمز بنجاح",
+
+  "login_success": "تم تسجيل الدخول بنجاح، أهلاً بك مجدداً",
+
+  "success": "تمت العملية بنجاح",
+
+  "please_enter_name": "الرجاء إدخال الاسم",
+
+  "please_enter_national_number": "الرجاء إدخال الرقم الوطني",
+
+  "national_number_atleast": "الرقم الوطني يجب أن يكون 11 رقم",
+
+  "delete_complaint_done": "تم حذف هذه الشكوى بنجاح",
+
+  "not_found_history": "لا يوجد سجل بعد لهذه الشكوى.",
+
+  "info_sent_success": "تم إرسال المعلومات الإضافية بنجاح",
+
+  "logout_error": "حدث خطأ أثناء تسجيل الخروج",
+
+  "complaint_sent": "تم إرسال الشكوى بنجاح",
+
+  "download_agency": "جارٍ تحميل الجهات...",
+
+  "download_types": "جارٍ تحميل أنواع الشكاوى...",
+
+  "otp_invalid_6_digits": "أدخل الرمز المؤلف من 6 أرقام",
+
+  "photos_selected": "الصور المختارة"
+}

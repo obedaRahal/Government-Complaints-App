@@ -22,17 +22,35 @@ class CommonTopPartForgetPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     return CustomBackgroundWithChild(
       borderRadius: BorderRadius.circular(20),
       width: double.infinity,
-      backgroundColor:theme.colorScheme.onPrimary,
+      backgroundColor: theme.colorScheme.onPrimary,
       child: Column(
         children: [
-          ArrowBack(),
+          Padding(padding: const EdgeInsets.all(8.0), child: ArrowBack()),
           SvgPicture.asset(img, height: imgHeight),
 
-          CustomTextWidget(title, fontSize: SizeConfig.diagonal * .05),
-          CustomTextWidget(bodyText, color: theme.colorScheme.secondary),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: CustomTextWidget(
+              title,
+              fontSize: SizeConfig.diagonal * (isEn ? .03 : .05),
+              textAlign: TextAlign.center,
+              // maxLines: 1,
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+            child: CustomTextWidget(
+              bodyText,
+              color: theme.colorScheme.secondary,
+              textAlign: TextAlign.center,
+            ),
+          ),
+
           SizedBox(height: SizeConfig.height * .03),
         ],
       ),

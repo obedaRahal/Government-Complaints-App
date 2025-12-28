@@ -49,4 +49,19 @@ class CacheHelper {
   static Future<bool> clearData() async {
     return await _sharedPreferences.clear();
   }
+
+  static Future<void> clearDataButKeepSettings() async {
+  final savedLocale = CacheHelper.getData(key: 'app_locale');
+  final savedTheme = CacheHelper.getData(key: 'theme_mode');
+
+  await CacheHelper.clearData();
+
+  if (savedLocale != null) {
+    await CacheHelper.saveData(key: 'app_locale', value: savedLocale);
+  }
+  if (savedTheme != null) {
+    await CacheHelper.saveData(key: 'theme_mode', value: savedTheme);
+  }
+}
+
 }

@@ -1,6 +1,7 @@
 import 'package:complaints_app/core/common%20widget/custom_app_bar.dart';
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
@@ -19,6 +20,7 @@ class SubmitComplaintView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     return BlocConsumer<SubmitComplaintCubit, SubmitComplaintState>(
@@ -29,7 +31,7 @@ class SubmitComplaintView extends StatelessWidget {
         if (state.submitErrorMessage != null) {
           showTopSnackBar(
             context,
-            message: state.submitErrorMessage ?? "حدث خطأ غير متوقع",
+            message: state.submitErrorMessage ?? context.l10n.unexpected_error,
             isSuccess: false,
           );
         }
@@ -37,12 +39,12 @@ class SubmitComplaintView extends StatelessWidget {
         if (state.isSubmitSuccess) {
           showTopSnackBar(
             context,
-            message: state.submitSuccessMessage ?? "تم إرسال الشكوى بنجاح",
+            message: state.submitSuccessMessage ?? context.l10n.complaint_sent,
             isSuccess: true,
           );
           //context.read<SubmitComplaintCubit>().resetForm();
 
-           context.pop(true);
+          context.pop(true);
           //Navigator.pop(context);
         }
       },
@@ -53,15 +55,21 @@ class SubmitComplaintView extends StatelessWidget {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                CustomAppBar(title:"تقديم شكوى",),
+                CustomAppBar(title: context.l10n.top_bar_submit_complaint),
+                SizedBox(height: 12),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  // padding: const EdgeInsets.symmetric(
+                  //   horizontal: 16,
+                  //   vertical: 4,
+                  // ),
+                  padding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,
                     vertical: 4,
                   ),
+
                   child: AuthFieldLabel(
-                    label: "اسم الشكوى",
-                    hint: "ادخل اسم للشكوى الخاصة بك...",
+                    label: context.l10n.complaint_name,
+                    hint: context.l10n.complaint_name_hint,
                     suffixIcon: Icons.edit_document,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {
@@ -71,7 +79,7 @@ class SubmitComplaintView extends StatelessWidget {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,
                     vertical: 4,
                   ),
@@ -83,8 +91,9 @@ class SubmitComplaintView extends StatelessWidget {
                           child: SubmitComplaintFildLable(
                             selectedType: null,
                             items: const [],
-                            label: "نوع الشكوى",
-                            hint: "جارٍ تحميل أنواع الشكاوى...",
+                            label: context.l10n.complaint_type,
+                            hint: context.l10n.download_types,
+
                             onChanged: (String? p1) {},
                           ),
                         );
@@ -101,8 +110,9 @@ class SubmitComplaintView extends StatelessWidget {
                         items: state.complaintTypes
                             .map((agency) => agency.name)
                             .toList(),
-                        hint: "اختار نوع الشكوى...",
-                        label: "نوع الشكوى",
+                        hint: context.l10n.complaint_type_hint,
+                        label: context.l10n.complaint_type,
+
                         onChanged: cubit.selectComplaintTypeEntity,
                       );
                     },
@@ -110,7 +120,7 @@ class SubmitComplaintView extends StatelessWidget {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,
                     vertical: 4,
                   ),
@@ -122,8 +132,8 @@ class SubmitComplaintView extends StatelessWidget {
                           child: SubmitComplaintFildLable(
                             selectedType: null,
                             items: const [],
-                            label: "الجهة الحكومية",
-                            hint: "جارٍ تحميل الجهات...",
+                            label: context.l10n.government_agency,
+                            hint: context.l10n.download_agency,
                             onChanged: (String? p1) {},
                           ),
                         );
@@ -132,7 +142,7 @@ class SubmitComplaintView extends StatelessWidget {
                       if (state.agenciesErrorMessage != null) {
                         return CustomTextWidget(
                           state.agenciesErrorMessage!,
-                          color: isDark?AppColor.redDark:AppColor.red,
+                          color: isDark ? AppColor.redDark : AppColor.red,
                           fontSize: SizeConfig.diagonal * .028,
                         );
                       }
@@ -142,8 +152,9 @@ class SubmitComplaintView extends StatelessWidget {
                         items: state.agencies
                             .map((agency) => agency.name)
                             .toList(),
-                        label: "الجهة الحكومية",
-                        hint: "اختر الجهة الحكومية...",
+                        label: context.l10n.government_agency,
+                        hint: context.l10n.government_agency_hint,
+
                         onChanged: cubit.selectGovEntity,
                       );
                     },
@@ -151,30 +162,29 @@ class SubmitComplaintView extends StatelessWidget {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,
                     vertical: 4,
                   ),
                   child: CustomDescriptionTextFiels(
-                    label: "وصف المشكلة",
+                    label: context.l10n.problem_description,
+                    hint: context.l10n.problem_description_hint,
                     controller: cubit.descriptionController,
                     maxLines: 3,
                     maxLength: 512,
                     suffixIcon: Icons.layers_outlined,
                     keyboardType: TextInputType.multiline,
-                    onChanged:
-                        cubit.descriptionChanged,
-                    hint: "ادخل وصفا للمشكلة التي تواجهها...",
+                    onChanged: cubit.descriptionChanged,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,
                     vertical: 4,
                   ),
                   child: AuthFieldLabel(
-                    label: "عنوان الشكوى",
-                    hint: "ادخل عنوان الشكوى...",
+                    label: context.l10n.complaint_location,
+                    hint: context.l10n.compliant_location_hint,
                     suffixIcon: Icons.pin_drop_outlined,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {
@@ -185,13 +195,13 @@ class SubmitComplaintView extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,
                     vertical: 4,
                   ),
                   child: ComplaintAttachmentField(
-                    label: "مرفقات الشكوى",
-                    hint: "أدخل مرفقات الشكوى(اختياري)...",
+                    label: context.l10n.complaint_attachments,
+                    hint: context.l10n.complaint_attachments_hint,
                     maxImages: 3,
                     onImagesSelected: (images) {
                       context.read<SubmitComplaintCubit>().setAttachments(
@@ -203,7 +213,7 @@ class SubmitComplaintView extends StatelessWidget {
 
                 SizedBox(height: SizeConfig.height / 16),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,
                     // vertical: 16,
                   ),
@@ -218,7 +228,7 @@ class SubmitComplaintView extends StatelessWidget {
 
                           return CustomButtonWidget(
                             width: double.infinity,
-                            backgroundColor:theme.colorScheme.primary,
+                            backgroundColor: theme.colorScheme.primary,
                             childHorizontalPad: SizeConfig.width * .07,
                             childVerticalPad: SizeConfig.height * .012,
                             borderRadius: 10,
@@ -228,9 +238,9 @@ class SubmitComplaintView extends StatelessWidget {
                                   .submitComplaint();
                             },
                             child: CustomTextWidget(
-                              "تأكيد الارسال",
+                              context.l10n.confirm_of_dispatch,
                               fontSize: SizeConfig.height * .025,
-                              color:theme.scaffoldBackgroundColor,
+                              color: theme.scaffoldBackgroundColor,
                             ),
                           );
                         },

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/assets/fonts.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
@@ -105,14 +106,97 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
     final imagesList = controller.images.toList();
     final count = imagesList.length;
 
-    final labelText = widget.label ?? "مرفقات الشكوى";
-    final hintText = widget.hint ?? "أدخل مرفقات الشكوى(اختياري)...";
+    final labelText = widget.label ?? context.l10n.complaint_attachments;
+    final hintText = widget.hint ?? context.l10n.complaint_attachments_hint;
+
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
+
+    final leadingWidget = Row(
+      children: [
+        const SizedBox(width: 8),
+        Text(
+          count == 0 ? hintText : context.l10n.selected_count(count),
+          style: TextStyle(
+            fontFamily: AppFonts.tasees,
+            fontSize: SizeConfig.diagonal * (isEn ? .016 : .018),
+            color: isDark ? AppColor.middleGreyDark : AppColor.middleGrey,
+          ),
+        ),
+      ],
+    );
+
+    final trailingWidget = count > 0
+        ? IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            icon: Icon(
+              Icons.photo_library_outlined,
+              color: isDark ? AppColor.middleGreyDark : AppColor.middleGrey,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text(
+                    context.l10n.photos_selected,
+                    style: TextStyle(
+                      fontFamily: AppFonts.tasees,
+                      fontSize: SizeConfig.diagonal * (isEn ? .027 : .032),
+                      color: isDark
+                          ? AppColor.middleGreyDark
+                          : AppColor.middleGrey,
+                    ),
+                  ),
+                  content: SizedBox(
+                    width: double.maxFinite,
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: imagesList.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 4,
+                            crossAxisSpacing: 4,
+                          ),
+                      itemBuilder: (context, index) {
+                        final file = imagesList[index];
+                        return ImageFileView(
+                          imageFile: file,
+                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.circular(10),
+                        );
+                      },
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        context.l10n.closing,
+                        style: TextStyle(
+                          fontFamily: AppFonts.tasees,
+                          fontSize: 16,
+                          color: isDark
+                              ? AppColor.middleGreyDark
+                              : AppColor.middleGrey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          )
+        : Icon(
+            Icons.attach_file,
+            color: isDark ? AppColor.middleGreyDark : AppColor.middleGrey,
+          );
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
+          padding: const EdgeInsetsDirectional.symmetric(vertical: 4),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -138,7 +222,10 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
             onTap: resetAndPickImages,
             child: Container(
               height: 58,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+              padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: 8,
+                vertical: 14,
+              ),
               decoration: BoxDecoration(
                 color: isDark ? AppColor.backGroundGrey : AppColor.grey,
                 borderRadius: BorderRadius.circular(10),
@@ -158,92 +245,8 @@ class _ComplaintAttachmentFieldState extends State<ComplaintAttachmentField> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      const SizedBox(width: 8),
-                      Text(
-                        count == 0 ? hintText : "تم اختيار $count",
-                        style: TextStyle(
-                          fontFamily: AppFonts.tasees,
-                          fontSize: 16,
-                          color: isDark
-                              ? AppColor.middleGreyDark
-                              : AppColor.middleGrey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (count > 0)
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      icon: Icon(
-                        Icons.photo_library_outlined,
-                        color: isDark
-                            ? AppColor.middleGreyDark
-                            : AppColor.middleGrey,
-                      ),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) => AlertDialog(
-                            title: Text(
-                              'الصور المختارة',
-                              style: TextStyle(
-                                fontFamily: AppFonts.tasees,
-                                fontSize: 16,
-                                color: isDark
-                                    ? AppColor.middleGreyDark
-                                    : AppColor.middleGrey,
-                              ),
-                            ),
-                            content: SizedBox(
-                              width: double.maxFinite,
-                              child: GridView.builder(
-                                shrinkWrap: true,
-                                itemCount: imagesList.length,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      mainAxisSpacing: 4,
-                                      crossAxisSpacing: 4,
-                                    ),
-                                itemBuilder: (context, index) {
-                                  final file = imagesList[index];
-                                  return ImageFileView(
-                                    imageFile: file,
-                                    fit: BoxFit.cover,
-                                    borderRadius: BorderRadius.circular(10),
-                                  );
-                                },
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text(
-                                  "إغلاق",
-                                  style: TextStyle(
-                                    fontFamily: AppFonts.tasees,
-                                    fontSize: 16,
-                                    color: isDark
-                                        ? AppColor.middleGreyDark
-                                        : AppColor.middleGrey,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  if (count == 0)
-                    Icon(
-                      Icons.attach_file,
-                      color: isDark
-                          ? AppColor.middleGreyDark
-                          : AppColor.middleGrey,
-                    ),
+                  leadingWidget,
+                  trailingWidget,
                 ],
               ),
             ),

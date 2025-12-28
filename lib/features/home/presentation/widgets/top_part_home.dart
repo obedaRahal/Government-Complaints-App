@@ -2,6 +2,7 @@ import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_feild.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/databases/cache/cache_helper.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:flutter/material.dart';
@@ -29,63 +30,70 @@ class TopPartHome extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     String welcomeMessage = CacheHelper.getData(key: "welcomeMessage") ?? "";
-    return CustomBackgroundWithChild(
-      width: double.infinity,
-      backgroundColor: isDark ? AppColor.backGroundGrey : AppColor.primary,
-      borderRadius: BorderRadius.vertical(bottom: Radius.circular(25)),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: SizeConfig.height * .02,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CustomTextWidget(
-                  welcomeMessage,
-                  color: theme.colorScheme.onSecondary,
-                  fontSize: SizeConfig.diagonal * .025,
-                ),
-
-                Spacer(),
-                CustomButtonWidget(
-                  borderRadius: 30,
-                  childHorizontalPad: 3,
-                  childVerticalPad: 3,
-                  backgroundColor: theme.scaffoldBackgroundColor,
-                  onTap: onTapLogout,
-                  child: Icon(
-                    Icons.settings,
-                    color: AppColor.middleGrey,
-                    size: SizeConfig.height * .038,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: CustomBackgroundWithChild(
+        width: double.infinity,
+        backgroundColor: isDark ? AppColor.backGroundGrey : AppColor.primary,
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(25)),
+        child: Padding(
+          // padding: EdgeInsets.symmetric(
+          //   horizontal: 16,
+          //   vertical: SizeConfig.height * .02,
+          // ),
+          padding: EdgeInsetsDirectional.symmetric(
+            horizontal: 16,
+            vertical: SizeConfig.height * .02,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CustomTextWidget(
+                    welcomeMessage,
+                    color: theme.colorScheme.onSecondary,
+                    fontSize: SizeConfig.diagonal * .025,
                   ),
-                ),
 
-                SizedBox(width: SizeConfig.width * .02),
-
-                CustomButtonWidget(
-                  borderRadius: 30,
-                  childHorizontalPad: 3,
-                  childVerticalPad: 3,
-                  backgroundColor: theme.scaffoldBackgroundColor,
-                  onTap: onTapNotification,
-                  child: Icon(
-                    Icons.notification_important_outlined,
-                    color: AppColor.middleGrey,
-                    size: SizeConfig.height * .038,
+                  Spacer(),
+                  CustomButtonWidget(
+                    borderRadius: 30,
+                    childHorizontalPad: 3,
+                    childVerticalPad: 3,
+                    backgroundColor: theme.scaffoldBackgroundColor,
+                    onTap: onTapLogout,
+                    child: Icon(
+                      Icons.settings,
+                      color: AppColor.middleGrey,
+                      size: SizeConfig.height * .038,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: SizeConfig.height * .01),
-            HomeSearchField(
-              onChangedSearch: onChangedSearch,
-              onSearchTap: onSearchTap,
-              onCancelTap: onTapCancel,
-            ),
-          ],
+
+                  SizedBox(width: SizeConfig.width * .02),
+
+                  CustomButtonWidget(
+                    borderRadius: 30,
+                    childHorizontalPad: 3,
+                    childVerticalPad: 3,
+                    backgroundColor: theme.scaffoldBackgroundColor,
+                    onTap: onTapNotification,
+                    child: Icon(
+                      Icons.notification_important_outlined,
+                      color: AppColor.middleGrey,
+                      size: SizeConfig.height * .038,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: SizeConfig.height * .01),
+              HomeSearchField(
+                onChangedSearch: onChangedSearch,
+                onSearchTap: onSearchTap,
+                onCancelTap: onTapCancel,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -138,37 +146,69 @@ class _HomeSearchFieldState extends State<HomeSearchField> {
 
   @override
   Widget build(BuildContext context) {
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          width: SizeConfig.width * .65,
-          height: SizeConfig.height * .06,
-          child: CustomTextField(
-            controller: _controller,
-            hint: 'البحث في سجل الشكاوي...',
-            suffixIcon: Icons.search,
-            hintFontSize: SizeConfig.diagonal * .022,
+        Expanded(
+          child: SizedBox(
+            height: SizeConfig.height * .06,
+            child: CustomTextField(
+              controller: _controller,
+              hint: context.l10n.search_in_complaints,
+              suffixIcon: Icons.search,
+              //hintFontSize: SizeConfig.diagonal * .022,
+              borderRadius: 30,
+              keyboardType: TextInputType.number,
+              onChanged: widget.onChangedSearch,
+              onSuffixTap: _onSearchPressed,
+            ),
+          ),
+        ),
+        SizedBox(width: SizeConfig.width * .02),
+        FittedBox(
+          // ✅ يمنع overflow لو كلمة cancel صارت أطول
+          child: CustomButtonWidget(
             borderRadius: 30,
-            keyboardType: TextInputType.number,
-            onChanged: widget.onChangedSearch,
-            onSuffixTap: _onSearchPressed,
+            childHorizontalPad: SizeConfig.width * .04,
+            childVerticalPad: SizeConfig.height * .002,
+            backgroundColor: theme.scaffoldBackgroundColor,
+            onTap: _onCancelPressed,
+            child: CustomTextWidget(
+              context.l10n.common_cancel,
+              color: isDark ? AppColor.redDark : AppColor.red,
+              fontSize: SizeConfig.diagonal * (isEn ? .022 : .028),
+            ),
           ),
         ),
-        CustomButtonWidget(
-          borderRadius: 30,
-          childHorizontalPad: SizeConfig.width * .06,
-          childVerticalPad: SizeConfig.height * .002,
-          backgroundColor: theme.scaffoldBackgroundColor,
-          onTap: _onCancelPressed,
-          child: CustomTextWidget(
-            "إالغاء",
-            color: isDark ? AppColor.redDark : AppColor.red,
-            fontSize: SizeConfig.diagonal * .028,
-          ),
-        ),
+        // SizedBox(
+        //   width: SizeConfig.width * .65,
+        //   height: SizeConfig.height * .06,
+        //   child: CustomTextField(
+        //     controller: _controller,
+        //     hint: context.l10n.search_in_complaints,
+        //     suffixIcon: Icons.search,
+        //     hintFontSize: SizeConfig.diagonal * .022,
+        //     borderRadius: 30,
+        //     keyboardType: TextInputType.number,
+        //     onChanged: widget.onChangedSearch,
+        //     onSuffixTap: _onSearchPressed,
+        //   ),
+        // ),
+        // CustomButtonWidget(
+        //   borderRadius: 30,
+        //   childHorizontalPad: SizeConfig.width * .06,
+        //   childVerticalPad: SizeConfig.height * .002,
+        //   backgroundColor: theme.scaffoldBackgroundColor,
+        //   onTap: _onCancelPressed,
+        //   child: CustomTextWidget(
+        //     context.l10n.common_cancel,
+        //     color: isDark ? AppColor.redDark : AppColor.red,
+        //     fontSize: SizeConfig.diagonal * .028,
+        //   ),
+        // ),
       ],
     );
   }

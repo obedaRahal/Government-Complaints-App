@@ -53,7 +53,7 @@ class CustomButtonWidget extends StatelessWidget {
         color: backgroundColor,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-      padding: EdgeInsets.symmetric(
+      padding: EdgeInsetsDirectional.symmetric(
         horizontal: childHorizontalPad,
         vertical: childVerticalPad,
       ),

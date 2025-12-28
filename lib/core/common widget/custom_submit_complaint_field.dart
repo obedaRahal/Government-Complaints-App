@@ -42,11 +42,11 @@ class SubmitComplaintTypeField extends StatelessWidget {
           fontSize: hintFontSize,
         ),
 
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 14,
-        ),
-
+        contentPadding: const EdgeInsetsDirectional.fromSTEB(12, 14, 12, 14),
+        // contentPadding: const EdgeInsetsDirectional.symmetric(
+        //   horizontal: 12,
+        //   vertical: 14,
+        // ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

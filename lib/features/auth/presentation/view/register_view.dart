@@ -2,6 +2,7 @@ import 'package:complaints_app/core/common%20widget/arrow_back.dart';
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/config/route_name.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
@@ -32,13 +33,14 @@ class RegisterViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     final theme = Theme.of(context);
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
         if (state.errorMessage != null) {
           showTopSnackBar(
             context,
-            message: state.errorMessage ?? "حدث خطأ غير متوقع",
+            message: state.errorMessage ?? context.l10n.unexpected_error,
             isSuccess: false,
           );
         }
@@ -46,7 +48,7 @@ class RegisterViewBody extends StatelessWidget {
         if (state.isSuccess) {
           showTopSnackBar(
             context,
-            message: state.successMessage ?? "تمت العملية بنجاح",
+            message: state.successMessage ?? context.l10n.success,
             isSuccess: true,
           );
           debugPrint(
@@ -72,16 +74,16 @@ class RegisterViewBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * .04),
 
                 SvgPicture.asset(
-                 isDark ? AppImage.splashLogoDark : AppImage.splashLogo,
+                  isDark ? AppImage.splashLogoDark : AppImage.splashLogo,
                   height: SizeConfig.height * .07,
                 ),
                 CustomTextWidget(
-                  "إنشاء حساب",
+                  context.l10n.signup,
                   fontSize: SizeConfig.diagonal * .045,
                 ),
                 CustomTextWidget(
-                  "انضم الينا وابدا رحلتك في التعامل المريح مع مؤسسات الدولة",
-                  fontSize: SizeConfig.diagonal * .025,
+                  context.l10n.signup_description,
+                  fontSize: SizeConfig.diagonal * (isEn ? .021 : .025),
                   color: AppColor.middleGrey,
                   textAlign: TextAlign.start,
                 ),
@@ -89,8 +91,8 @@ class RegisterViewBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * .02),
 
                 AuthFieldLabel(
-                  label: "الاسم",
-                  hint: 'ادخل اسمك باللغة العربية...',
+                  label: context.l10n.name_field,
+                  hint: context.l10n.name_field_hint,
                   suffixIcon: Icons.person_2_outlined,
                   keyboardType: TextInputType.name,
                   onChanged: (value) {
@@ -98,7 +100,7 @@ class RegisterViewBody extends StatelessWidget {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'الرجاء إدخال الاسم';
+                      return context.l10n.please_enter_name;
                     }
                     return null;
                   },
@@ -106,8 +108,8 @@ class RegisterViewBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * .01),
 
                 AuthFieldLabel(
-                  label: "البريد الالكتروني",
-                  hint: 'ادخل بريدك الالكتروني...',
+                  label: context.l10n.email_field, // ✅
+                  hint: context.l10n.email_field_hint,
                   suffixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (value) {
@@ -115,7 +117,7 @@ class RegisterViewBody extends StatelessWidget {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'الرجاء إدخال البريد';
+                      return context.l10n.please_enter_email;
                     }
                     return null;
                   },
@@ -124,9 +126,8 @@ class RegisterViewBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * .01),
 
                 AuthFieldLabel(
-                  label: "الرقم الوطني",
-                  //controller: _numberController,
-                  hint: 'ادخل رقمك الوطني...',
+                  label: context.l10n.national_number_field, // ✅
+                  hint: context.l10n.national_number_field_hint,
                   suffixIcon: Icons.format_list_numbered_sharp,
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
@@ -134,10 +135,10 @@ class RegisterViewBody extends StatelessWidget {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'الرجاء إدخال الرقم الوطني';
+                      return context.l10n.please_enter_national_number;
                     }
                     if (value.length != 11) {
-                      return 'الرقم الوطني يجب أن يكون 11 رقم';
+                      return context.l10n.national_number_atleast;
                     }
                     return null;
                   },
@@ -148,8 +149,8 @@ class RegisterViewBody extends StatelessWidget {
                 BlocBuilder<RegisterCubit, RegisterState>(
                   builder: (context, state) {
                     return AuthFieldLabel(
-                      label: "كلمة المرور",
-                      hint: 'ادخل كلمة المرور...',
+                      label: context.l10n.password_field, // ✅
+                      hint: context.l10n.password_field_hint,
                       suffixIcon: state.isPasswordObscure
                           ? Icons.visibility_off
                           : Icons.visibility,
@@ -164,10 +165,10 @@ class RegisterViewBody extends StatelessWidget {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'الرجاء إدخال كلمة المرور';
+                          return context.l10n.please_enter_password;
                         }
                         if (value.length < 6) {
-                          return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+                          return context.l10n.password_at_least;
                         }
                         return null;
                       },
@@ -198,9 +199,9 @@ class RegisterViewBody extends StatelessWidget {
                         }
                       },
                       child: CustomTextWidget(
-                        "تأكيد الادخال",
+                        context.l10n.confirm_entry,
                         fontSize: SizeConfig.height * .025,
-                        color:theme.scaffoldBackgroundColor,
+                        color: theme.scaffoldBackgroundColor,
                       ),
                     );
                   },
@@ -209,12 +210,13 @@ class RegisterViewBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * .02),
 
                 TowTextRow(
-                  text: "لديك حساب ؟ قم بعملية  ",
-                  actionText: "تسجيل الدخول",
+                  text: context.l10n.did_you_have_account,
+                  actionText: context.l10n.login,
                   onTap: () {
                     GoRouter.of(context).replaceNamed(AppRouteRName.loginView);
                   },
                 ),
+                SizedBox(height: 20),
               ],
             ),
           ),

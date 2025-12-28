@@ -46,6 +46,7 @@ class CustomTextField extends StatelessWidget {
     return SizedBox(
       //height: 50,
       child: TextFormField(
+        textAlign: TextAlign.start,
         key: initialText != null ? ValueKey(initialText) : null,
         controller: controller,
         keyboardType: keyboardType,
@@ -75,13 +76,17 @@ class CustomTextField extends StatelessWidget {
                   onPressed: onSuffixTap,
                   icon: Icon(suffixIcon, size: 20),
                 ),
-
-          prefix: prefixIcon == null
+          //prefix
+          prefixIcon: prefixIcon == null
               ? null
               : IconButton(
                   onPressed: onSuffixTap,
                   icon: Icon(prefixIcon, size: 20),
                 ),
+          prefixIconColor: isDark
+              ? AppColor.middleGreyDark
+              : const Color(0xffACACAC),
+
           suffixIconColor: isDark ? AppColor.middleGreyDark : Color(0xffACACAC),
           filled: true,
           fillColor: inputTheme.fillColor,

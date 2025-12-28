@@ -46,9 +46,11 @@ class CustomDateInfo extends StatelessWidget {
             CustomTextWidget(
               date,
               fontSize: SizeConfig.diagonal * .016,
-              color: isDark? AppColor.whiteDark: AppColor.textInCard,
+              color: isDark ? AppColor.whiteDark : AppColor.textInCard,
               maxLines: 5,
-              overflow: TextOverflow.visible,
+              // overflow: TextOverflow.visible,
+              overflow: TextOverflow.ellipsis,
+              // maxLines: 2,
               textAlign: TextAlign.start,
             ),
             CustomBackgroundWithChild(

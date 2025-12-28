@@ -21,11 +21,14 @@ class TowTextRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CustomTextWidget(
-          text,
-          fontSize: SizeConfig.diagonal * .018,
-          color: AppColor.middleGrey,
+        Flexible(
+          child: CustomTextWidget(
+            text,
+            fontSize: SizeConfig.diagonal * .018,
+            color: AppColor.middleGrey,
+          ),
         ),
+        const SizedBox(width: 6),
         InkWell(
           onTap: onTap,
           child: CustomTextWidget(

@@ -33,7 +33,7 @@ class CustomBackgroundWithChild extends StatelessWidget {
         borderRadius: borderRadius,
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: EdgeInsetsDirectional.symmetric(
           horizontal: childHorizontalPad,
           vertical: childVerticalPad,
         ),

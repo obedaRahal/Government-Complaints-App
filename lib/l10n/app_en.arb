@@ -1,0 +1,155 @@
+{
+  "@@locale": "en",
+  "appName": "Tawasul",
+  "splashNmae": "Government Complaints App",
+
+  "selected_count": "{count} selected",
+  "@selected_count": {
+    "description": "Shows how many items are selected",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "arrow_back": "Back",
+  "confirm_entry": "Confirm entry",
+  "confirm_of_dispatch": "Confirm sending",
+  "common_ok": "OK",
+  "common_cancel": "Cancel",
+  "closing": "Close",
+
+  "welcome": "Welcome!",
+  "app_description": "An app that helps citizens create, organize,\n and track complaints\nefficiently and easily",
+  "new_account": "Sign up",
+  "login": "Log in",
+  "brand_part1": "Ta",
+  "brand_part2": "wasul",
+
+  "email_field": "Email",
+  "password_field": "Password",
+  "name_field": "Name",
+  "national_number_field": "National number",
+  "new_password_field": "Confirm password",
+  "email_field_hint": "enter your email...",
+  "password_field_hint": "enter your password...",
+  "name_field_hint": "enter your name in Arabic...",
+  "national_number_field_hint": "enter your national number...",
+  "new_password_field_hint": "enter the password again...",
+
+  "login_description": "Welcome back. Log in and help build a new Syria.",
+  "did_you_forget_password": "Forgot your password?",
+  "didnt_have_account": "Don’t have an account? Create one",
+
+  "signup": "Sign up",
+  "signup_description": "Join us and start your journey with a smoother experience with government institutions",
+  "did_you_have_account": "Already have an account? Go to",
+  "signup_verify_email": "Verify account",
+  "signup_verify_email_description": "Dear user, please verify your email by entering the 6-digit code. Note that you will lose your code if you leave this page.",
+  "signup_verify_email_note": "This is an extra security step",
+  "input_otp_code": "Enter the code",
+  "didnt_get_code": "Didn’t receive a code?",
+  "resent_otp_code": "Resend code",
+
+  "forget_password_description": "Please enter your email address to receive a verification code",
+
+  "forget_password_verify_email": "Verify entered email",
+  "forget_password_verify_email_description": "Please enter the 6-digit code sent to your email",
+
+  "new_password": "Create a new password",
+  "new_password_description": "Your new password must be different from the previous one",
+
+  "search_in_complaints": "search in complaints",
+  "add_new_complaint": "Add a new complaint",
+  "complaint_number": "Complaint number",
+  "complaint_description": "Complaint description",
+
+  "top_bar_complaints_details": "Complaint details",
+  "complaint_attachments": "Attachments",
+  "complaint_info": "Complaint info",
+  "complaint_type": "Type",
+  "government_agency": "Government agency",
+  "date_of_ceartion": "Creation date",
+  "complaint_location": "Complaint address",
+  "complaints_history_home": "Complaint history",
+  "complaints_history": "Complaint stages",
+  "add_more_attachments": "Attach additional information",
+  "delete_complaint": "Delete complaint",
+  "notes": "Notes",
+
+  "additional_description": "Additional description",
+  "additional_description_hint": "enter an additional description of the issue...",
+  "additional_attachment": "Additional attachment",
+  "additional_attachment_hint": "add an attachment for the complaint...",
+  "more_info_bottom_sheet": "Additional information",
+
+  "notification_bottom_sheet": "Notifications",
+  "not_found_notification": "No notifications at the moment",
+
+  "top_bar_submit_complaint": "Submit a complaint",
+  "complaint_name": "Complaint title",
+  "complaint_name_hint": "enter a title for your complaint...",
+  "complaint_type_hint": "select complaint type...",
+  "government_agency_hint": "select government agency...",
+  "problem_description": "Problem description",
+  "problem_description_hint": "describe the issue you are facing...",
+  "compliant_location_hint": "enter the complaint address...",
+  "complaint_attachments_hint": "Add complaint attachments (optional)...",
+
+  "settings": "Settings",
+  "dark_mode": "Dark mode",
+  "light_mode": "Light mode",
+  "did_you_want_logout": "Do you want to log out?",
+  "logout": "Log out",
+
+  "something_went_wrong": "Something went wrong",
+
+  "not_found_complaints": "No complaints at the moment",
+  "show_more": "Show more",
+  "not_found_searching": "No complaint found with this number",
+
+  "unexpected_error": "An unexpected error occurred",
+
+  "otp_has_sent": "A verification code has been sent to your email",
+
+  "please_enter_email": "Please enter your email",
+
+  "password_updated_ok": "Your new password has been set successfully. You can log in now.",
+
+  "please_enter_password": "Please enter your password",
+
+  "password_at_least": "Password must be at least 6 characters",
+
+  "passwords_not_match": "Passwords do not match",
+
+  "resent_otp_done": "A new code has been sent to your email",
+
+  "verify_success": "Code verified successfully",
+
+  "login_success": "Logged in successfully. Welcome back!",
+
+  "success": "Operation completed successfully",
+
+  "please_enter_name": "Please enter your name",
+
+  "please_enter_national_number": "Please enter your national number",
+
+  "national_number_atleast": "National number must be 11 digits",
+
+  "delete_complaint_done": "Complaint deleted successfully",
+
+  "not_found_history": "No history yet for this complaint.",
+
+  "info_sent_success": "Additional information sent successfully",
+
+  "logout_error": "An error occurred while logging out",
+
+  "complaint_sent": "Complaint submitted successfully",
+
+  "download_agency": "Loading agencies...",
+
+  "download_types": "Loading complaint types...",
+
+  "otp_invalid_6_digits": "Enter the 6-digit code",
+
+  "photos_selected": "Selected photos"
+}

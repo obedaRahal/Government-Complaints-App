@@ -20,13 +20,14 @@ class SubmitComplaintFildLable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomTextWidget(
           label,
-          fontSize: SizeConfig.diagonal * .032,
-          color:theme.colorScheme.secondary,
+          fontSize: SizeConfig.diagonal * (isEn ? .027 : .032),
+          color: theme.colorScheme.secondary,
         ),
         SizedBox(height: SizeConfig.height * .01),
         SubmitComplaintTypeField(
@@ -34,6 +35,7 @@ class SubmitComplaintFildLable extends StatelessWidget {
           selectedType: selectedType,
           items: items,
           onChanged: onChanged,
+          hintFontSize: SizeConfig.diagonal * (isEn ? .017 : .018),
           //  (value) {
           //   context.read<SubmitComplaintCubit>().selectType(value);
           // },

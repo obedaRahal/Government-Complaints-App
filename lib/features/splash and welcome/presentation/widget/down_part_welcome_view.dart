@@ -2,6 +2,7 @@ import 'package:complaints_app/core/common%20widget/custom_background_with_child
 import 'package:complaints_app/core/common%20widget/custom_button_widget.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/config/route_name.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class DownPartWelcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+final isEn = Localizations.localeOf(context).languageCode == 'en';
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     return CustomBackgroundWithChild(
@@ -31,8 +33,9 @@ class DownPartWelcome extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             child: CustomTextWidget(
               color: theme.colorScheme.onSecondary,
-              fontSize: SizeConfig.diagonal * .03,
-              "تطبيق يساعد المواطنين على\n انشاء , تنظيم , متابعة الشكاوي\n بكفاءة وسهولة",
+              fontSize: SizeConfig.diagonal * (isEn ? 0.026 : 0.03),
+              context.l10n.app_description,
+              maxLines: 4,
             ),
           ),
 
@@ -53,7 +56,7 @@ class DownPartWelcome extends StatelessWidget {
                   context.pushNamed(AppRouteRName.registerView);
                 },
                 child: CustomTextWidget(
-                  "حساب جديد",
+                  context.l10n.new_account,
                   fontSize: SizeConfig.height * .025,
                   color: AppColor.textColor,
                 ),
@@ -69,7 +72,7 @@ class DownPartWelcome extends StatelessWidget {
                   debugPrint(" loginnnnnnnnn ");
                 },
                 child: CustomTextWidget(
-                  "تسجيل الدخول",
+                  context.l10n.login,
                   fontSize: SizeConfig.height * .025,
                   color: theme.colorScheme.onSecondary,
                 ),

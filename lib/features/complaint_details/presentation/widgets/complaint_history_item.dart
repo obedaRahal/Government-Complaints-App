@@ -1,3 +1,4 @@
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:complaints_app/features/complaint_details/domain/entities/complaint_history_entry_entity.dart';
 import 'package:complaints_app/features/complaint_details/presentation/widgets/card_detais_widget.dart';
@@ -41,7 +42,7 @@ class ComplaintHistoryItem extends StatelessWidget {
         statuseColor: statusColor,
         fontSize: SizeConfig.diagonal * .022,
 
-        titleDescreption: "ملاحظات",
+        titleDescreption: context.l10n.notes,
         descreption: history.note ?? "",
 
        

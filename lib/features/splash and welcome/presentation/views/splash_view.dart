@@ -12,8 +12,8 @@ class _SplashViewState extends State<SplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 228, 225, 248),
-      body: SafeArea(child: SplashViewBody()),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: SafeArea(child: const SplashViewBody()),
     );
   }
 }

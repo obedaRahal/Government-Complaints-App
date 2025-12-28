@@ -1,5 +1,6 @@
 import 'package:complaints_app/core/common%20widget/custom_background_with_child.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:complaints_app/features/home/presentation/screens/home_view.dart';
@@ -23,6 +24,7 @@ class ComplaintCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     return Card(
@@ -72,7 +74,7 @@ class ComplaintCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: LabelColumnTitleValue(
-                    label: 'رقم الشكوى',
+                    label: context.l10n.complaint_number,
                     value: number,
                   ),
                 ),
@@ -80,7 +82,7 @@ class ComplaintCard extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: LabelColumnTitleValue(
-                    label: 'وصف الشكوى',
+                    label: context.l10n.complaint_description,
                     value: description,
                     maxLines: 3,
                   ),

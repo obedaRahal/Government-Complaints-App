@@ -2,6 +2,7 @@ import 'package:complaints_app/core/common%20widget/arrow_back.dart';
 import 'package:complaints_app/core/common%20widget/custom_background_with_child.dart';
 import 'package:complaints_app/core/common%20widget/custom_text_widget.dart';
 import 'package:complaints_app/core/config/route_name.dart';
+import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/assets/images.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/custom_snackbar_validation.dart';
@@ -30,6 +31,7 @@ class VerifyRegisterViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     return BlocListener<VerifyRegisterCubit, VerifyRegisterState>(
@@ -37,14 +39,14 @@ class VerifyRegisterViewBody extends StatelessWidget {
         if (state.errorMessage != null) {
           showTopSnackBar(
             context,
-            message: state.errorMessage ?? "حدث خطأ غير متوقع",
+            message: state.errorMessage ?? context.l10n.unexpected_error,
             isSuccess: false,
           );
         }
         if (state.successMessage != null && !state.isSuccess) {
           showTopSnackBar(
             context,
-            message: state.successMessage ?? "تم الأمر بنجاح",
+            message: state.successMessage ?? context.l10n.resent_otp_done,
             isSuccess: true,
           );
         }
@@ -52,7 +54,7 @@ class VerifyRegisterViewBody extends StatelessWidget {
         if (state.isSuccess) {
           showTopSnackBar(
             context,
-            message: state.successMessage ?? "تم تأكيد الحساب بنجاح",
+            message: state.successMessage ?? context.l10n.verify_success,
             isSuccess: true,
           );
 
@@ -80,12 +82,12 @@ class VerifyRegisterViewBody extends StatelessWidget {
                 height: SizeConfig.height * .07,
               ),
               CustomTextWidget(
-                "تاكيد الحساب",
+                context.l10n.signup_verify_email,
                 fontSize: SizeConfig.diagonal * .045,
               ),
               CustomTextWidget(
-                "عزيزي المستخدم يرجى منك تأكيد بريدك الالكتروني عن طريق ادخال الرمز المكون من ست ارقام علما انك ستفقد الرمز الخاص بك في حال المغادرة",
-                fontSize: SizeConfig.diagonal * .025,
+                context.l10n.signup_verify_email_description,
+                fontSize: SizeConfig.diagonal * (isEn ? .021 : .025),
                 color: AppColor.middleGrey,
                 textAlign: TextAlign.start,
               ),
@@ -96,7 +98,12 @@ class VerifyRegisterViewBody extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 width: double.infinity,
                 backgroundColor: theme.colorScheme.onPrimary,
-                child: CustomTextWidget("نحن نقوم باجراء احترازي فقط"),
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: CustomTextWidget(
+                    context.l10n.signup_verify_email_note,
+                  ),
+                ),
               ),
 
               SizedBox(height: SizeConfig.height * .04),

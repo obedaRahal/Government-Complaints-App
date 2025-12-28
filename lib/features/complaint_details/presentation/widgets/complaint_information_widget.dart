@@ -1,4 +1,5 @@
 import 'package:complaints_app/core/theme/assets/fonts.dart';
+import 'package:complaints_app/core/utils/media_query_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -18,6 +19,7 @@ class ComplaintInformationWidget extends StatelessWidget {
   final String image;
   @override
   Widget build(BuildContext context) {
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
     return Padding(
       padding: const EdgeInsets.all(11.0),
       child: Column(
@@ -26,17 +28,24 @@ class ComplaintInformationWidget extends StatelessWidget {
           const SizedBox(height: 5),
           Text(
             title,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: titleColor,
               fontWeight: FontWeight.bold,
+
               fontFamily: AppFonts.tasees,
-              fontSize: 18,
+              fontSize: SizeConfig.diagonal * (isEn ? .017 : .018),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 1),
             child: Text(
               hint,
+              textAlign: TextAlign.center, // ✅
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: hintColor,
                 fontFamily: AppFonts.tasees,
