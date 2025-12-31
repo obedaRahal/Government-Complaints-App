@@ -14,7 +14,7 @@
   "arrow_back": "رجوع",
   "confirm_entry": "تأكيد الادخال",
   "confirm_of_dispatch": "تأكيد الارسال",
-  "common_ok": "حسناً",
+  "common_ok": "التالي",
   "common_cancel": "إلغاء",
   "closing": "إغلاق",
 
@@ -151,5 +151,19 @@
 
   "otp_invalid_6_digits": "أدخل الرمز المؤلف من 6 أرقام",
 
-  "photos_selected": "الصور المختارة"
+  "photos_selected": "الصور المختارة",
+
+  "common_skip": "تخطي",
+
+  "tour_settings_title": "ايقونة الاعدادات",
+
+  "tour_settings_desc": "هنا يمكنك ادارة تطبيقك من حيث اختيار اللغة والثيم، وتسجيل الخروج ان اردت ذلك.",
+
+  "tour_add_complaint_title": "التقديم على شكوى",
+
+  "tour_add_complaint_desc": "هنا يمكنك التقديم على الشكوى التي تواجهها واضافة شكوى جديدة الى سجل الشكاوى الخاصة بك، وتتبع حالة كل شكوى من خلال الضغط عليها وعرض تفاصيلها.",
+
+  "tour_notifications_title": "ايقونة الاشعارات",
+
+  "tour_notifications_desc": "هنا يمكنك رؤية جميع الاشعارات الخاصة بك"
 }

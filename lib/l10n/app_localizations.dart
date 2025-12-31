@@ -137,7 +137,7 @@ abstract class AppLocalizations {
   /// No description provided for @common_ok.
   ///
   /// In en, this message translates to:
-  /// **'OK'**
+  /// **'Next'**
   String get common_ok;
 
   /// No description provided for @common_cancel.
@@ -733,6 +733,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Selected photos'**
   String get photos_selected;
+
+  /// No description provided for @common_skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get common_skip;
+
+  /// No description provided for @tour_settings_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings icon'**
+  String get tour_settings_title;
+
+  /// No description provided for @tour_settings_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Here you can manage your application in terms of language and theme selection, and log out if you wish.'**
+  String get tour_settings_desc;
+
+  /// No description provided for @tour_add_complaint_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit a complaint'**
+  String get tour_add_complaint_title;
+
+  /// No description provided for @tour_add_complaint_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Here you can submit the complaint you are facing, add a new complaint to your complaint log, and track the status of each complaint by clicking on it and viewing its details.'**
+  String get tour_add_complaint_desc;
+
+  /// No description provided for @tour_notifications_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications icon'**
+  String get tour_notifications_title;
+
+  /// No description provided for @tour_notifications_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Here you can see all your notifications'**
+  String get tour_notifications_desc;
 }
 
 class _AppLocalizationsDelegate

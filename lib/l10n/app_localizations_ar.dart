@@ -29,7 +29,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirm_of_dispatch => 'تأكيد الارسال';
 
   @override
-  String get common_ok => 'حسناً';
+  String get common_ok => 'التالي';
 
   @override
   String get common_cancel => 'إلغاء';
@@ -336,4 +336,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get photos_selected => 'الصور المختارة';
+
+  @override
+  String get common_skip => 'تخطي';
+
+  @override
+  String get tour_settings_title => 'ايقونة الاعدادات';
+
+  @override
+  String get tour_settings_desc =>
+      'هنا يمكنك ادارة تطبيقك من حيث اختيار اللغة والثيم، وتسجيل الخروج ان اردت ذلك.';
+
+  @override
+  String get tour_add_complaint_title => 'التقديم على شكوى';
+
+  @override
+  String get tour_add_complaint_desc =>
+      'هنا يمكنك التقديم على الشكوى التي تواجهها واضافة شكوى جديدة الى سجل الشكاوى الخاصة بك، وتتبع حالة كل شكوى من خلال الضغط عليها وعرض تفاصيلها.';
+
+  @override
+  String get tour_notifications_title => 'ايقونة الاشعارات';
+
+  @override
+  String get tour_notifications_desc =>
+      'هنا يمكنك رؤية جميع الاشعارات الخاصة بك';
 }

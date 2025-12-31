@@ -26,8 +26,8 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
-  //  await CacheHelper.clearData();
-  await CacheHelper.clearDataButKeepSettings();
+    //  await CacheHelper.clearData();
+   await CacheHelper.clearDataButKeepSettings();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 

@@ -49,6 +49,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  tutorial_coach_mark: ^1.3.3
 dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:

@@ -11,62 +11,61 @@ class ArrowBack extends StatelessWidget {
     final theme = Theme.of(context);
     final isRtl = Directionality.of(context) == TextDirection.rtl;
 
-    return InkWell(
-      onTap: () {
-        GoRouter.of(context).pop();
-      },
-      child: Row(
-        mainAxisAlignment: isRtl
-            ? MainAxisAlignment.end
-            : MainAxisAlignment.start,
-        children: [
-          if (isRtl) ...[
-            CustomTextWidget(
-              context.l10n.arrow_back,
-              color: theme.colorScheme.secondary,
-              fontSize: 22,
+    return Align(
+      alignment: isRtl ? Alignment.centerLeft : Alignment.centerLeft,
+      child: Material(
+        color: Colors.transparent,
+        child: Ink(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10),
+            splashColor: theme.colorScheme.secondary.withOpacity(
+              0.12,
+            ), // رمادي/لون خفيف
+            highlightColor: theme.colorScheme.secondary.withOpacity(0.06),
+            onTap: () {
+              // GoRouter.of(context).pop();
+              Future.microtask(() => GoRouter.of(context).pop());
+            },
+            child: Row(
+              // mainAxisAlignment: isRtl
+              //     ? MainAxisAlignment.end
+              //     : MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (isRtl) ...[
+                  CustomTextWidget(
+                    context.l10n.arrow_back,
+                    color: theme.colorScheme.secondary,
+                    fontSize: 22,
+                  ),
+                  const SizedBox(width: 6),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: theme.colorScheme.secondary,
+                    size: 18,
+                  ),
+                ] else ...[
+                  Icon(
+                    Icons.arrow_back_ios,
+                    color: theme.colorScheme.secondary,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 6),
+                  CustomTextWidget(
+                    context.l10n.arrow_back,
+                    color: theme.colorScheme.secondary,
+                    fontSize: 22,
+                  ),
+                ],
+              ],
             ),
-            const SizedBox(width: 6),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: theme.colorScheme.secondary,
-              size: 18,
-            ),
-          ] else ...[
-            Icon(
-              Icons.arrow_back_ios,
-              color: theme.colorScheme.secondary,
-              size: 18,
-            ),
-            const SizedBox(width: 6),
-            CustomTextWidget(
-              context.l10n.arrow_back,
-              color: theme.colorScheme.secondary,
-              fontSize: 22,
-            ),
-          ],
-        ],
+          ),
+        ),
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   final theme = Theme.of(context);
-  //   return GestureDetector(
-  //     onTap: () {
-  //       GoRouter.of(context).pop();
-  //       debugPrint("backkkk ");
-  //     },
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       crossAxisAlignment: CrossAxisAlignment.end,
-  //       children: [
-  //         CustomTextWidget("رجوع", color: theme.colorScheme.secondary, fontSize: 22),
-  //         SizedBox(width: 5),
-  //         Icon(Icons.arrow_forward_ios),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

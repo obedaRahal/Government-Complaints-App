@@ -29,7 +29,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirm_of_dispatch => 'Confirm sending';
 
   @override
-  String get common_ok => 'OK';
+  String get common_ok => 'Next';
 
   @override
   String get common_cancel => 'Cancel';
@@ -339,4 +339,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photos_selected => 'Selected photos';
+
+  @override
+  String get common_skip => 'Skip';
+
+  @override
+  String get tour_settings_title => 'Settings icon';
+
+  @override
+  String get tour_settings_desc =>
+      'Here you can manage your application in terms of language and theme selection, and log out if you wish.';
+
+  @override
+  String get tour_add_complaint_title => 'Submit a complaint';
+
+  @override
+  String get tour_add_complaint_desc =>
+      'Here you can submit the complaint you are facing, add a new complaint to your complaint log, and track the status of each complaint by clicking on it and viewing its details.';
+
+  @override
+  String get tour_notifications_title => 'Notifications icon';
+
+  @override
+  String get tour_notifications_desc =>
+      'Here you can see all your notifications';
 }

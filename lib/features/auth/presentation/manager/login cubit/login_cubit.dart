@@ -80,6 +80,10 @@ class LoginCubit extends Cubit<LoginState> {
       },
       (response) {
         CacheHelper.saveData(key: "welcomeMessage" , value: response.name);
+        CacheHelper.saveData(key: "user_email", value: state.email.trim().toLowerCase());
+        CacheHelper.saveData(key: "token", value: response.token);
+        debugPrint("Saved user_email: ${state.email.trim().toLowerCase()}");
+
         debugPrint(
           "loginSubmitted -> SUCCESS, name: ${response.name}, statusCode: ${response.statusCode}",
         );

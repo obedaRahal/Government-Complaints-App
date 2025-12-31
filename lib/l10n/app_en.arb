@@ -14,7 +14,7 @@
   "arrow_back": "Back",
   "confirm_entry": "Confirm entry",
   "confirm_of_dispatch": "Confirm sending",
-  "common_ok": "OK",
+  "common_ok": "Next",
   "common_cancel": "Cancel",
   "closing": "Close",
 
@@ -151,5 +151,19 @@
 
   "otp_invalid_6_digits": "Enter the 6-digit code",
 
-  "photos_selected": "Selected photos"
+  "photos_selected": "Selected photos",
+
+  "common_skip": "Skip",
+
+  "tour_settings_title": "Settings icon",
+
+  "tour_settings_desc": "Here you can manage your application in terms of language and theme selection, and log out if you wish.",
+
+  "tour_add_complaint_title": "Submit a complaint",
+  
+  "tour_add_complaint_desc": "Here you can submit the complaint you are facing, add a new complaint to your complaint log, and track the status of each complaint by clicking on it and viewing its details.",
+
+  "tour_notifications_title": "Notifications icon",
+
+  "tour_notifications_desc": "Here you can see all your notifications"
 }

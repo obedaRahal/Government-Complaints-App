@@ -5,6 +5,7 @@ import 'package:complaints_app/core/databases/cache/cache_helper.dart';
 import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
+import 'package:complaints_app/features/home/presentation/tour/home_tour_keys.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/common widget/custom_background_with_child.dart';
@@ -57,31 +58,37 @@ class TopPartHome extends StatelessWidget {
                   ),
 
                   Spacer(),
-                  CustomButtonWidget(
-                    borderRadius: 30,
-                    childHorizontalPad: 3,
-                    childVerticalPad: 3,
-                    backgroundColor: theme.scaffoldBackgroundColor,
-                    onTap: onTapLogout,
-                    child: Icon(
-                      Icons.settings,
-                      color: AppColor.middleGrey,
-                      size: SizeConfig.height * .038,
+                  Container(
+                    key: HomeTourKeys.settingsKey,
+                    child: CustomButtonWidget(
+                      borderRadius: 30,
+                      childHorizontalPad: 3,
+                      childVerticalPad: 3,
+                      backgroundColor: theme.scaffoldBackgroundColor,
+                      onTap: onTapLogout,
+                      child: Icon(
+                        Icons.settings,
+                        color: AppColor.middleGrey,
+                        size: SizeConfig.height * .038,
+                      ),
                     ),
                   ),
 
                   SizedBox(width: SizeConfig.width * .02),
 
-                  CustomButtonWidget(
-                    borderRadius: 30,
-                    childHorizontalPad: 3,
-                    childVerticalPad: 3,
-                    backgroundColor: theme.scaffoldBackgroundColor,
-                    onTap: onTapNotification,
-                    child: Icon(
-                      Icons.notification_important_outlined,
-                      color: AppColor.middleGrey,
-                      size: SizeConfig.height * .038,
+                  Container(
+                    key: HomeTourKeys.notificationsKey,
+                    child: CustomButtonWidget(
+                      borderRadius: 30,
+                      childHorizontalPad: 3,
+                      childVerticalPad: 3,
+                      backgroundColor: theme.scaffoldBackgroundColor,
+                      onTap: onTapNotification,
+                      child: Icon(
+                        Icons.notification_important_outlined,
+                        color: AppColor.middleGrey,
+                        size: SizeConfig.height * .038,
+                      ),
                     ),
                   ),
                 ],
