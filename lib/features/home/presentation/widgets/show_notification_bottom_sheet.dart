@@ -1,5 +1,6 @@
 import 'package:complaints_app/core/common widget/custom_background_with_child.dart';
 import 'package:complaints_app/core/common widget/custom_text_widget.dart';
+import 'package:complaints_app/core/config/route_name.dart';
 import 'package:complaints_app/core/localization/localization_ext.dart';
 import 'package:complaints_app/core/theme/color/app_color.dart';
 import 'package:complaints_app/core/utils/media_query_config.dart';
@@ -7,6 +8,7 @@ import 'package:complaints_app/features/home/domain/entities/notification_entity
 import 'package:complaints_app/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 void showNotificationsBottomSheet({
   required BuildContext parentContext,
@@ -192,78 +194,41 @@ Widget _buildNotificationsBody(
         ),
       );
 
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (isRtl) ...[
-            contentWidget,
-            SizedBox(width: SizeConfig.width * .03),
-            iconWidget,
-          ] else ...[
-            iconWidget,
-            SizedBox(width: SizeConfig.width * .03),
-            contentWidget,
+
+      // ✅ نجعل الصف قابل للضغط
+      return InkWell(
+        onTap: () async {
+          final complaintId = n.complaintId; // أو compliantId حسب الاسم عندك
+          if (complaintId == null) return;
+
+          // اغلاق البوتوم شيت أولاً
+          Navigator.of(context).pop();
+
+          // الذهاب لواجهة تفاصيل الشكوى
+          final result = await context.pushNamed<bool>(
+            AppRouteRName.complaintDetailsView,
+            pathParameters: {'id': complaintId.toString()},
+          );
+
+          // (اختياري) لو رجعت true من صفحة التفاصيل، مثلاً تعمل refresh للـ home
+          if (result == true) {
+            context.read<HomeCubit>().loadComplaints();
+          }
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (isRtl) ...[
+              contentWidget,
+              SizedBox(width: SizeConfig.width * .03),
+              iconWidget,
+            ] else ...[
+              iconWidget,
+              SizedBox(width: SizeConfig.width * .03),
+              contentWidget,
+            ],
           ],
-
-          // CustomBackgroundWithChild(
-          //   borderRadius: BorderRadius.circular(30),
-          //   height: SizeConfig.width * .12,
-          //   width: SizeConfig.width * .12,
-          //   backgroundColor: const Color(0xFFF5F8FF),
-          //   child: Icon(
-          //     Icons.notifications_none,
-          //     color: theme.colorScheme.primary,
-          //     size: SizeConfig.width * .07,
-          //   ),
-          // ),
-
-          // SizedBox(width: SizeConfig.width * .03),
-
-          // Expanded(
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       CustomTextWidget(
-          //         n.title,
-          //         fontSize: SizeConfig.diagonal * .025,
-          //         color: theme.colorScheme.secondary,
-          //         maxLines: 1,
-          //         overflow: TextOverflow.ellipsis,
-          //       ),
-
-          //       SizedBox(height: SizeConfig.height * .003),
-
-          //       CustomTextWidget(
-          //         n.body,
-          //         fontSize: SizeConfig.diagonal * .021,
-          //         color: isDark ? AppColor.whiteDark : AppColor.middleGrey,
-          //         maxLines: 2,
-          //         overflow: TextOverflow.ellipsis,
-          //        // textAlign: TextAlign.right,
-          //        textAlign: TextAlign.start,
-          //       ),
-
-          //       SizedBox(height: SizeConfig.height * .004),
-
-          //       Row(
-          //         children: [
-          //           Icon(
-          //             Icons.access_time,
-          //             size: SizeConfig.diagonal * .018,
-          //             color: isDark ? AppColor.whiteDark : AppColor.middleGrey,
-          //           ),
-          //           SizedBox(width: SizeConfig.width * .01),
-          //           CustomTextWidget(
-          //             n.date,
-          //             fontSize: SizeConfig.diagonal * .019,
-          //             color: isDark ? AppColor.whiteDark : AppColor.middleGrey,
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
-        ],
+        ),
       );
     },
   );

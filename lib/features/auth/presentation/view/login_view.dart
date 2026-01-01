@@ -37,11 +37,43 @@ class LogInViewBody extends StatelessWidget {
     final theme = Theme.of(context);
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
+        // if (state.errorMessage != null) {
+        //   showTopSnackBar(
+        //     context,
+        //     message: state.errorMessage ?? context.l10n.unexpected_error,
+        //     isSuccess: false,
+        //   );
+        // }
+
         if (state.errorMessage != null) {
+          final msg = state.errorMessage!;
+
+          // هنا تقدر تستخدم المطابقة اللي تناسب رسالتكم من الباك
+          final bool isAccountLockedOrNeedVerify = msg.contains(
+            'تم قفل حسابك لاسباب تتعلق بسياسة الاستخدام',
+          );
+
           showTopSnackBar(
             context,
-            message: state.errorMessage ?? context.l10n.unexpected_error,
+            message: msg,
             isSuccess: false,
+            acceptClick: isAccountLockedOrNeedVerify,
+            onTap: isAccountLockedOrNeedVerify
+                ? () {
+                    // روح لواجهة تأكيد الحساب
+                    context.pushNamed(
+                      AppRouteRName.verifyRegisterView,
+                      extra: {
+                        'email': state.email,
+                        'autoResend': true,
+                      },
+                    );
+                    debugPrint("go to verifyyyyyyyyyyyyyyyyyyyy");
+                    debugPrint("and email is ${state.email}");
+                  }
+                : null,
+            // ممكن تخلي مدته أطول شوي
+            displayDuration: const Duration(seconds: 5),
           );
         }
 

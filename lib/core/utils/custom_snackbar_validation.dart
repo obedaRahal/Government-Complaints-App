@@ -140,7 +140,7 @@ class _TopSnackBarOverlayState extends State<_TopSnackBarOverlay>
                   TextButton(
                     onPressed: widget.onTap ?? () {},
                     child: const Text(
-                      "حسناً",
+                      "  تأكيد \nالحساب؟",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

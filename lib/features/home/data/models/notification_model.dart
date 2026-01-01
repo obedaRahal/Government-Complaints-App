@@ -6,6 +6,7 @@ class NotificationModel extends NotificationEntity {
     required super.title,
     required super.body,
     required super.date,
+    required super.complaintId
   });
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
@@ -14,6 +15,7 @@ class NotificationModel extends NotificationEntity {
       title: json['title']?.toString() ?? '',
       body: json['body']?.toString() ?? '',
       date: json['date']?.toString() ?? '',
+      complaintId: json['compliant_id'] as int?,
     );
   }
 
@@ -23,6 +25,7 @@ class NotificationModel extends NotificationEntity {
       title: title,
       body: body,
       date: date,
+      complaintId: complaintId
     );
   }
 }

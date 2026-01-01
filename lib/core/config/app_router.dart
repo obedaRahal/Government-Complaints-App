@@ -185,7 +185,21 @@ abstract class AppRourer {
         path: '/verifyRegisterView',
         name: AppRouteRName.verifyRegisterView,
         builder: (context, state) {
-          final email = state.extra as String;
+          //final email = state.extra as String;
+          final extra = state.extra;
+          late final String email;
+          bool autoResend = false;
+
+          if (extra is String) {
+            // قديم: لما كنت تبعث فقط الإيميل من صفحة التسجيل
+            email = extra;
+          } else if (extra is Map<String, dynamic>) {
+            email = extra['email'] as String;
+            autoResend = (extra['autoResend'] as bool?) ?? false;
+          } else {
+            // fallback احتياطي (ما بصير توصل له نظرياً)
+            email = '';
+          }
 
           final dio = Dio(
             BaseOptions(
@@ -210,11 +224,20 @@ abstract class AppRourer {
           final resendUseCase = ResendCodeUseCase(authRepository);
 
           return BlocProvider(
-            create: (_) => VerifyRegisterCubit(
-              email: email,
-              verifyRegisterUseCase: verifyUseCase,
-              resendCodeUseCase: resendUseCase,
-            ),
+            create: (_) {
+              final cubit = VerifyRegisterCubit(
+                email: email,
+                verifyRegisterUseCase: verifyUseCase,
+                resendCodeUseCase: resendUseCase,
+              );
+
+              // 👈 هنا السحر: لو جاي من اللوج إن وبدنا نرسل كود تلقائي
+              if (autoResend) {
+                cubit.resendCode();
+              }
+
+              return cubit;
+            },
             child: VerifyRegisterView(email: email),
           );
         },
@@ -418,15 +441,15 @@ abstract class AppRourer {
           );
 
           return BlocProvider<ComplaintDetailsCubit>(
-      create: (_) => ComplaintDetailsCubit(
-        getComplaintDetailsUseCase,
-        deleteComplaintUseCase,
-      )..loadComplaintDetails(complaintId),
-      child: ComplaintDetailsView(
-        complaintId: complaintId,
-        addComplaintDetailsUseCase: addComplaintDetailsUseCase,
-      ),
-    );
+            create: (_) => ComplaintDetailsCubit(
+              getComplaintDetailsUseCase,
+              deleteComplaintUseCase,
+            )..loadComplaintDetails(complaintId),
+            child: ComplaintDetailsView(
+              complaintId: complaintId,
+              addComplaintDetailsUseCase: addComplaintDetailsUseCase,
+            ),
+          );
         },
       ),
     ],

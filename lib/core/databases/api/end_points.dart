@@ -1,6 +1,6 @@
 class EndPoints {
   /// عدّل الـ baseUrl حسب الـ API تبعك
-  static const String baseUrl = 'http://192.168.155.187/api/v1/';
+  static const String baseUrl = 'http://192.168.1.101/api/v1/';
   static const String refreshToken = 'http://192.168.137.88/api/refresh';
 
 
