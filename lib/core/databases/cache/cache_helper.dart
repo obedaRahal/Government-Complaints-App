@@ -54,7 +54,7 @@ class CacheHelper {
   final savedLocale = CacheHelper.getData(key: 'app_locale');
   final savedTheme = CacheHelper.getData(key: 'theme_mode');
 
-  await CacheHelper.clearData();
+  //await CacheHelper.clearData();
 
   if (savedLocale != null) {
     await CacheHelper.saveData(key: 'app_locale', value: savedLocale);
